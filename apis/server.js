@@ -5,9 +5,10 @@ const sql = require('mssql');
 
 const connection = {
     user: 'your_username',
-    password: 'your_password',
+    password: 'enjoyBBDJK$2826',
     server: 'your_server_name', // This should be the name or IP address of your SQL Server instance
     database: 'your_database_name',
+
 };
 
 // Define a route for the '/hello' endpoint
@@ -16,9 +17,7 @@ app.get('/hello', (req, res) => {
     return res.send({ message: "Hello, server alive" }).status(200)
 });
 
-app.get('/sign', (req, res) => {
-    res.send('response').status(200)
-});
+
 app.get('/sign-in', (req, res) => {
     let username = "";
 
