@@ -1,0 +1,26 @@
+name: Run Terraform
+
+on:
+  push:
+    branches: [ "Josh/Actions" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.8.2
+
+      - name: Initialize Terraform
+        run: terraform init infrastructure/
+
+      - name: Apply Terraform
+        run: terraform apply -auto-approve infrastructure/
