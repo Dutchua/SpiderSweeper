@@ -20,10 +20,10 @@ jobs:
           terraform_version: 1.8.2
 
       - name: Initialize Terraform
-        run: terraform init -chdir infrastructure/
+        run: terraform init -chdir ${{ github.workspace }}/infrastructure/
 
       - name: Apply Terraform
-        run: terraform apply -auto-approve -chdir infrastructure/
+        run: terraform apply -auto-approve -chdir ${{ github.workspace }}/infrastructure/
 
   upload:
     needs: terraform
