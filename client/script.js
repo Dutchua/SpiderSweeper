@@ -5,8 +5,8 @@ import GamePage from "./src/screens/game-page.js";
 const root = document.getElementById("root");
 root.innerHTML = GamePage();
 
-// const loginButtonTag = document.getElementById("login");
+const loginButtonTag = document.getElementById("login");
 
-// loginButtonTag.addEventListener("click", () => {
-//   root.innerHTML = GamePage();
-// });
+loginButtonTag.addEventListener("click", () => {
+  root.innerHTML = GamePage();
+});
