@@ -192,7 +192,7 @@ nav {
 }
 
 /* Tiles */
-/*-------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------------------------*/
 .tile {
   max-width: 3.75rem;
   max-height: 3.75rem;
@@ -214,7 +214,7 @@ nav {
 
 #newspaper{
   background-color: var(--background-color);
-  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\newspaper.svg');
+  background-image: url('client\public\icons\newspaper.svg');
 }
 
 #flower{
