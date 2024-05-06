@@ -7,8 +7,9 @@ const GamePage = () => {
     <section>
     ` +
     Navbar() +
+    `<section class="cover center">` +
     GameFunctions() +
-    `
+    `</section>
     </section>
   `
   );

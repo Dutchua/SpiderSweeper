@@ -25,6 +25,16 @@ class Timer {
     const elapsedTime = Math.floor((this.endTime - this.startTime) / 1000);
     console.log(`Total time: ${elapsedTime} seconds`);
   }
+
+  reset() {
+    clearInterval(this.intervalId);
+    this.startTime = null;
+    this.endTime = null;
+    const minutesLabel = document.getElementById("minutes");
+    const secondsLabel = document.getElementById("seconds");
+    minutesLabel.innerHTML = "00";
+    secondsLabel.innerHTML = "00";
+  }
 }
 
 export default Timer;

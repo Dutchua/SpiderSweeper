@@ -20,3 +20,7 @@ export const NewGameButton = () => {
 export const RestartGameButton = () => {
   return `<button class="button" id="restart">Restart Game</button>`;
 };
+
+export const RestartGameButtonMini = () => {
+  return `<button class="button" id="restart-mini">Restart Game</button>`;
+};
