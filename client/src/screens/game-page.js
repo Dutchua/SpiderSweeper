@@ -3,7 +3,7 @@ import GameFunctions from "../components/game-functions.js";
 import Grid from "../components/grid.js";
 import { DummyData } from "../dummy.js";
 
-const GamePage = () => {
+const GamePage = (score) => {
   const gridHTML = {
     grid: DummyData.grid,
   };
@@ -13,10 +13,12 @@ const GamePage = () => {
     <section>
     ` +
     Navbar() +
-    `<section class="cover center column">` +
+    `<section class="cover center"><section class="column">` +
     GameFunctions() +
     Grid(gridHTML) +
-    `</section>
+    `<label id="Score">High Score: ${score}</label>
+    </section>
+    </section>
     </section> 
   `
   );

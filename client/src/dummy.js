@@ -146,16 +146,23 @@ export const DummyData = {
     ],
     [
       {
-        isOpen: false,
+        isOpen: true,
         isMine: true,
         isFlagged: false,
         isExploded: true,
         value: 0,
       },
       {
-        isOpen: false,
+        isOpen: true,
         isMine: false,
-        isFlagged: false,
+        isFlagged: true,
+        isExploded: false,
+        value: 1,
+      },
+      {
+        isOpen: true,
+        isMine: true,
+        isFlagged: true,
         isExploded: false,
         value: 1,
       },
@@ -195,17 +202,10 @@ export const DummyData = {
         value: 1,
       },
       {
-        isOpen: false,
-        isMine: false,
-        isFlagged: false,
-        isExploded: false,
-        value: 1,
-      },
-      {
-        isOpen: false,
-        isMine: false,
-        isFlagged: false,
-        isExploded: false,
+        isOpen: true,
+        isMine: true,
+        isFlagged: true,
+        isExploded: true,
         value: 1,
       },
       {
@@ -692,11 +692,11 @@ export const DummyData = {
         value: 1,
       },
       {
-        isOpen: false,
+        isOpen: true,
         isMine: false,
         isFlagged: false,
         isExploded: false,
-        value: 1,
+        value: 0,
       },
       {
         isOpen: false,

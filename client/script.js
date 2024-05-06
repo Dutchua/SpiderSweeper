@@ -3,7 +3,7 @@ import GamePage from "./src/screens/game-page.js";
 import Timer from "./src/utils/Timer.js";
 
 const root = document.getElementById("root");
-root.innerHTML = GamePage();
+root.innerHTML = GamePage("01:32");
 
 const timer = new Timer();
 timer.start();

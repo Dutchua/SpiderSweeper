@@ -1,4 +1,12 @@
-import { ClosedTile, NumberTile, FlagTile, EmptyTile } from "./tiles.js";
+import {
+  ClosedTile,
+  NumberTile,
+  FlagTile,
+  EmptyTile,
+  MineExplodedTile,
+  MineFlagTile,
+  MineTile,
+} from "./tiles.js";
 
 const Grid = ({ grid }) => {
   const gridHTML = grid.map((row) => {
@@ -6,9 +14,9 @@ const Grid = ({ grid }) => {
       if (tile.isOpen) {
         if (tile.isMine) {
           if (tile.isFlagged) {
-            return FlagTile();
+            return tile.isExploded ? MineExplodedTile() : MineFlagTile();
           }
-          return EmptyTile();
+          return MineTile();
         }
         if (tile.isFlagged) {
           return FlagTile();

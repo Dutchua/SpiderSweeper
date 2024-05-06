@@ -18,13 +18,13 @@ export const MineTile = () => {
 
 export const MineFlagTile = () => {
   return `<button class="tile open flag">
-  <img class="icon" src="./public/icons/newspaper.svg" alt="icon" />
+  <img class="icon" src="./public/icons/flower.svg" alt="icon" />
   </button>`;
 };
 
 export const MineExplodedTile = () => {
   return `<button class="tile open exploded">
-  <img class="icon" src="./public/icons/star.svg" alt="icon" />
+  <img class="icon" src="./public/icons/splat.svg" alt="icon" />
   </button>`;
 };
 

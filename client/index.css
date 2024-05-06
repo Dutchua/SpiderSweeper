@@ -1,5 +1,5 @@
 /* Imports */
-@import url("https://fonts.googleapis.com/css2?family=Creepster&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Creepster&display=swap"); */
 
 /* Root Variables */
 :root {
@@ -68,7 +68,7 @@ label {
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100%;
+  gap: 1rem;
 }
 
 .button {
@@ -177,7 +177,7 @@ nav {
 
 #GameFunctions {
   margin-top: 7%;
-  min-width: 37.5rem;
+  min-width: 25rem;
   display: flex;
   align-items: center;
   height: fit-content;
@@ -190,52 +190,15 @@ nav {
   }
 }
 
-/* Tiles */
-/*------------------------------------------------------------------------------------------------------------------*/
-.tile {
-  max-width: 3.75rem;
-  max-height: 3.75rem;
-  min-width: 1.25rem;
-  min-height: 1.25rem;
-  background-color: var(--primary-color);
-  border-color: var(--secondary-color);
-}
-
-#safe {
-  background-color: var(--secondary-text-color);
-}
-
-#number {
-  background-color: var(--background-color);
-  font-family: var(--font-family-body);
-  color: var(--primary-text-color);
-}
-
-#newspaper {
-  background-color: var(--background-color);
-  background-image: url("client\public\icons\newspaper.svg");
-}
-
-#flower {
-  background-color: var(--background-color);
-  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\flower.svg");
-}
-
-#spider {
-  background-color: var(--background-color);
-  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\gameboard_spider.svg");
-}
-
-#splat {
-  background-color: var(--background-color);
-  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\splat.svg");
-}
-
 #GameBoard {
   display: flex;
   align-items: center;
   justify-content: center;
   border: var(--primary-text-color) solid 0.1rem;
+}
+
+#Score {
+  align-self: flex-start;
 }
 /* ------------------------------------------------------------------ */
 
@@ -251,7 +214,7 @@ nav {
   font-weight: 600;
   width: clamp(1.25rem, 2.5rem, 3.75rem);
   height: clamp(1.25rem, 2.5rem, 3.75rem);
-  background-color: var(--primary-color);
+  background-color: var(--background-color);
   color: var(--primary-text-color);
   border-bottom-color: var(--primary-color);
   border-right-color: var(--primary-color);
@@ -272,9 +235,4 @@ nav {
 
 .empty {
   background-color: var(--secondary-text-color);
-  color: var(--primary-text-color);
-}
-
-.flag {
-  background-color: var(--background-color);
 }
