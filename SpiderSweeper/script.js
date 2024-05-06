@@ -1,5 +1,9 @@
+//Import background
+//------------------------------------------------------------------------------------------------------
+//import BackGround from "C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\src\components\background.js";
+
 //Timer
-//----------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
 var minutesLabel = document.getElementById("minutes");
 var secondsLabel = document.getElementById("seconds");
 var totalSeconds = 0;
@@ -21,7 +25,7 @@ function pad(val) {
 }
 
 //Define Game Board Size
-//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
 const numRows = 8;
 const numCols = 8;
 const numMines = 10;
@@ -204,3 +208,4 @@ function renderBoard() {
  
 initializeBoard();
 renderBoard();
+
