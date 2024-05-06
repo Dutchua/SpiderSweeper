@@ -25,7 +25,7 @@ jobs:
         run: terraform init
 
       - name: Apply Terraform
-        run: terraform apply -auto-approve -debug
+        run: terraform apply -auto-approve
         env:
             TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
             TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
