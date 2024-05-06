@@ -9,13 +9,6 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
-    env:
-      TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
-      TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
-      TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
-      TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
-      TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.ssh_private_key }}
-
     defaults:
       run:
         working-directory: infrastructure
@@ -29,9 +22,21 @@ jobs:
           terraform_version: 1.8.2
 
       - name: Initialize Terraform
+        env:
+          TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
+          TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
+          TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
+          TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
+          TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.ssh_private_key }}
         run: terraform init
 
       - name: Apply Terraform
+        env:
+          TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
+          TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
+          TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
+          TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
+          TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.ssh_private_key }}
         run: terraform apply -auto-approve
 
 
