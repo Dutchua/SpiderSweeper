@@ -14,9 +14,13 @@ export const HighScoreButton = () => {
 };
 
 export const NewGameButton = () => {
-  return `<button class="button" id="start">Start Game</button>`;
+  return `<button class="button" id="start"><img class="icon" src="./public/icons/restart.svg" alt="icon" />Start Game</button>`;
 };
 
 export const RestartGameButton = () => {
   return `<button class="button" id="restart">Restart Game</button>`;
+};
+
+export const RestartGameButtonMini = () => {
+  return `<button class="button" id="restart-mini">Restart Game</button>`;
 };
