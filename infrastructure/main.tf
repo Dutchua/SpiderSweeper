@@ -37,6 +37,34 @@ resource "aws_security_group" "allow_mssql_current" {
   }
 }
 
+resource "aws_key_pair" "my_key_pair" {
+  key_name   = "josh-key"
+  public_key = file("~/.ssh/spider_id.pub")
+}
+
+resource "aws_security_group" "allow_http" {
+  name        = "allow_http"
+  description = "Allow HTTP inbound traffic"
+  
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+    ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Allow HTTP"
+    owner = "josh@bbd.co.za"
+  }
+}
+
 resource "aws_db_instance" "web-levelup-db" {
   identifier             = "web-levelup-db"
   engine                 = "sqlserver-ex"
@@ -52,5 +80,27 @@ resource "aws_db_instance" "web-levelup-db" {
   tags = {
     owner         = "josh@bbd.co.za"
     created-using = "terraform"
+  }
+}
+
+  resource "aws_s3_bucket" "static_files_bucket" {
+  bucket = "thisstatic-bucket"
+  acl    = "private"
+
+  tags = {
+    Name = "Static Files Bucket"
+    }
+  }
+
+  resource "aws_instance" "web_server" {
+  ami           = "ami-04e2e94de097d3986" 
+  instance_type = "t2.micro"
+  subnet_id     = aws_default_subnet.subnet_az1.id
+  key_name      = aws_key_pair.my_key_pair.key_name 
+
+  security_groups = [aws_security_group.allow_http.id]
+
+  tags = {
+    Name = "Web Server Instance"
   }
 }

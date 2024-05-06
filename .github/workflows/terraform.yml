@@ -24,3 +24,16 @@ jobs:
 
       - name: Apply Terraform
         run: terraform apply -auto-approve -chdir infrastructure/
+
+  upload:
+    needs: terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
