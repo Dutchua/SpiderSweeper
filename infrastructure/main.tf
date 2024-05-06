@@ -1,5 +1,8 @@
 
-variable "SSH_PRIVATE_KEY" {}
+variable "SSH_PRIVATE_KEY" {
+  type = string
+  sensitive = true
+}
 
 resource "aws_default_vpc" "default_vpc" {
   tags = {
