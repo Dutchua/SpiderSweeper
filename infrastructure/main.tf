@@ -1,5 +1,6 @@
-variable "db_password" {}
-variable "db_username" {}
+variable "DB_PASSWORD" {}
+variable "DB_USERNAME" {}
+variable "SSH_PRIVATE_KEY" {}
 
 resource "aws_default_vpc" "default_vpc" {
   tags = {
@@ -39,7 +40,7 @@ resource "aws_security_group" "allow_mssql_current" {
 
 resource "aws_key_pair" "my_key_pair" {
   key_name   = "josh-key"
-  public_key = file("~/.ssh/spider_id.pub")
+  public_key = var.SSH_PRIVATE_KEY
 }
 
 resource "aws_security_group" "allow_http" {
@@ -73,8 +74,8 @@ resource "aws_db_instance" "web-levelup-db" {
   allocated_storage      = 20
   storage_type           = "gp2"
   publicly_accessible    = true
-  username               = var.db_username
-  password               = var.db_password
+  username               = var.DB_USERNAME
+  password               = var.DB_PASSWORD
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.allow_mssql_current.id]
   tags = {

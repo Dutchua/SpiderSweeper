@@ -9,6 +9,11 @@ on:
 jobs:
   deploy-infrastructure:
     runs-on: ubuntu-latest
+    env:
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
     defaults:
       run:
         shell: bash
