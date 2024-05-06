@@ -1,5 +1,4 @@
 name: Run Terraform
-
 on:
   push:
     branches: [ "Josh/Actions" ]
@@ -28,9 +27,11 @@ jobs:
       - name: Apply Terraform
         run: terraform apply -auto-approve -debug
         env:
-          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
+            TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
+            TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
+            TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
+            TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
   upload:
     needs: terraform

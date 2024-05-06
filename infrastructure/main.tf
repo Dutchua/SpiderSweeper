@@ -1,8 +1,6 @@
-
-variable "SSH_PRIVATE_KEY" {
-  type = string
-  sensitive = true
-}
+variable "db_username" {}
+variable "db_password" {}
+variable "ssh_private_key" {}
 
 resource "aws_default_vpc" "default_vpc" {
   tags = {
@@ -42,7 +40,7 @@ resource "aws_security_group" "allow_mssql_current" {
 
 resource "aws_key_pair" "my_key_pair" {
   key_name   = "josh-key"
-  public_key = var.SSH_PRIVATE_KEY
+  public_key = var.ssh_private_key
 }
 
 resource "aws_security_group" "allow_http" {
@@ -76,8 +74,8 @@ resource "aws_db_instance" "web-levelup-db" {
   allocated_storage      = 20
   storage_type           = "gp2"
   publicly_accessible    = true
-  username               = "admin"
-  password               = "supersecret"
+  username               = var.db_username
+  password               = var.db_password
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.allow_mssql_current.id]
   tags = {
