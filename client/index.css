@@ -21,6 +21,17 @@ body {
   overflow: hidden;
 }
 
+/* Text margin 0 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
 .creepster-regular {
   font-family: "Creepster", system-ui;
   font-weight: 400;
@@ -45,6 +56,8 @@ body {
 }
 
 .button {
+  display: flex;
+  align-items: center;
   font-size: 16px;
   font-weight: 600;
   text-align: center;

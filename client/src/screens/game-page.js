@@ -1,4 +1,5 @@
 import Navbar from "../components/navbar.js";
+import GameFunctions from "../components/game-functions.js";
 
 const GamePage = () => {
   return (
@@ -6,6 +7,7 @@ const GamePage = () => {
     <section>
     ` +
     Navbar() +
+    GameFunctions() +
     `
     </section>
   `
