@@ -1,5 +1,4 @@
-variable "DB_PASSWORD" {}
-variable "DB_USERNAME" {}
+
 variable "SSH_PRIVATE_KEY" {}
 
 resource "aws_default_vpc" "default_vpc" {
@@ -74,8 +73,8 @@ resource "aws_db_instance" "web-levelup-db" {
   allocated_storage      = 20
   storage_type           = "gp2"
   publicly_accessible    = true
-  username               = var.DB_USERNAME
-  password               = var.DB_PASSWORD
+  username               = "admin"
+  password               = "supersecret"
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.allow_mssql_current.id]
   tags = {
