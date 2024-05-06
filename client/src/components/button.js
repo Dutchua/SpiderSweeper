@@ -14,13 +14,31 @@ export const HighScoreButton = () => {
 };
 
 export const NewGameButton = () => {
-  return `<button class="button" id="start"><img class="icon" src="./public/icons/restart.svg" alt="icon" />Start Game</button>`;
+  return `<button class="button" id="start"><img class="icon" src="./public/icons/restart.svg" alt="icon" />New Game</button>`;
 };
 
-export const RestartGameButton = () => {
-  return `<button class="button" id="restart">Restart Game</button>`;
+export const PlayGameButton = () => {
+  return `<button class="button" id="play"><img class="icon" src="./public/icons/home.svg" alt="icon" />Play Game</button>`;
 };
 
-export const RestartGameButtonMini = () => {
-  return `<button class="button" id="restart-mini">Restart Game</button>`;
+export const HighScoreButtonMini = () => {
+  return `<button class="button mini" id="highscore-mini">
+  <img class="icon" src="./public/icons/star.svg" alt="icon" />
+</button>`;
+};
+
+export const NewGameButtonMini = () => {
+  return `<button class="button mini" id="start-mini">
+  <img class="icon" src="./public/icons/restart.svg" alt="icon" />
+</button>`;
+};
+
+export const PlayGameButtonMini = () => {
+  return `<button class="button mini" id="play-mini"><img class="icon" src="./public/icons/home.svg" alt="icon" /></button>`;
+};
+
+export const BurgerMenuButton = () => {
+  return `<button class="button" id="burger-menu">
+  <img class="icon" src="./public/icons/burger-menu.svg" alt="icon" />
+</button>`;
 };

@@ -82,14 +82,14 @@ label {
   border-radius: 0.25rem;
   border: none;
   height: 2.5rem;
+  background-color: var(--secondary-color);
+  color: var(--primary-text-color);
+  padding: 0.5rem 1rem;
 }
 
 #login {
-  background-color: var(--secondary-color);
-  color: var(--primary-text-color);
   max-width: 20rem;
   min-width: 15rem;
-  padding: 0.5rem 1rem;
 }
 
 /* -------------------------------------------------------------------- */
@@ -115,7 +115,6 @@ nav {
 #logout {
   background-color: var(--primary-color);
   color: var(--secondary-text-color);
-  padding: 0.5rem 1rem;
 }
 
 #highscore {

@@ -1,4 +1,4 @@
-import { NewGameButton } from "./button.js";
+import { NewGameButton, HighScoreButtonMini } from "./button.js";
 import FlagCount from "./flag-count.js";
 import StopWatch from "./stopwatch.js";
 
