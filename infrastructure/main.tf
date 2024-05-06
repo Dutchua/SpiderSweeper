@@ -1,3 +1,14 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "~> 5.48.0"
+    }
+  }
+  required_version = ">= 1.8.2"
+}
+
+
 
 provider "aws" {
   region = "eu-west-1"
@@ -41,11 +52,6 @@ resource "aws_security_group" "allow_mssql_current" {
   }
 }
 
-resource "aws_key_pair" "my_key_pair" {
-  key_name   = "josh-key"
-  public_key = var.ssh_private_key
-}
-
 resource "aws_security_group" "allow_http" {
   name        = "allow_http"
   description = "Allow HTTP inbound traffic"
@@ -84,18 +90,5 @@ resource "aws_db_instance" "web-levelup-db" {
   tags = {
     owner         = "josh@bbd.co.za"
     created-using = "terraform"
-  }
-}
-
-  resource "aws_instance" "web_server" {
-  ami           = "ami-04e2e94de097d3986" 
-  instance_type = "t2.micro"
-  subnet_id     = aws_default_subnet.subnet_az1.id
-  key_name      = aws_key_pair.my_key_pair.key_name 
-
-  security_groups = [aws_security_group.allow_http.id]
-
-  tags = {
-    Name = "Web Server Instance"
   }
 }

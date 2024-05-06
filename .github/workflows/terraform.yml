@@ -14,8 +14,8 @@ jobs:
       TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
       TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
       TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
-      TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      
+      TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.ssh_private_key }}
+
     defaults:
       run:
         working-directory: infrastructure
@@ -46,4 +46,4 @@ jobs:
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.ssh_private_key }}
