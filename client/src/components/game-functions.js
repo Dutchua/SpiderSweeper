@@ -4,7 +4,7 @@ import StopWatch from "./stopwatch.js";
 
 const GameFunctions = () => {
   return (
-    `<section  id="GameBoard" class="space-between background">
+    `<section  id="GameFunctions" class="space-between background">
     <section class="row">` +
     StopWatch() +
     FlagCount({ count: 10 }) +

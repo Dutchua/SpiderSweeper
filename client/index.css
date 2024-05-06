@@ -48,12 +48,12 @@ label {
   align-items: center;
 }
 
-.creepster-regular {
+/* .creepster-regular {
   font-family: "Creepster", system-ui;
   font-weight: 400;
   font-size: 2rem;
   font-style: normal;
-}
+} */
 
 .row {
   display: flex;
@@ -175,7 +175,7 @@ nav {
 
 /* ---------------------------------------------------------------- */
 
-#GameBoard {
+#GameFunctions {
   margin-top: 7%;
   min-width: 37.5rem;
   display: flex;
@@ -185,7 +185,7 @@ nav {
 }
 
 @media (min-width: 800px) {
-  #GameBoard {
+  #GameFunctions {
     width: fit-content;
   }
 }
@@ -201,32 +201,80 @@ nav {
   border-color: var(--secondary-color);
 }
 
-#safe{
+#safe {
   background-color: var(--secondary-text-color);
 }
 
-#number{
+#number {
   background-color: var(--background-color);
   font-family: var(--font-family-body);
   color: var(--primary-text-color);
 }
 
-#newspaper{
+#newspaper {
   background-color: var(--background-color);
-  background-image: url('client\public\icons\newspaper.svg');
+  background-image: url("client\public\icons\newspaper.svg");
 }
 
-#flower{
+#flower {
   background-color: var(--background-color);
-  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\flower.svg');
+  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\flower.svg");
 }
 
-#spider{
+#spider {
   background-color: var(--background-color);
-  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\gameboard_spider.svg');
+  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\gameboard_spider.svg");
 }
 
-#splat{
+#splat {
   background-color: var(--background-color);
-  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\splat.svg');
+  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\splat.svg");
+}
+
+#GameBoard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--primary-text-color) solid 0.1rem;
+}
+/* ------------------------------------------------------------------ */
+
+/* Tiles */
+
+/* ------------------------------------------------------------------ */
+
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  width: clamp(1.25rem, 2.5rem, 3.75rem);
+  height: clamp(1.25rem, 2.5rem, 3.75rem);
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  border-bottom-color: var(--primary-color);
+  border-right-color: var(--primary-color);
+  border-top-color: var(--secondary-color);
+  border-left-color: var(--secondary-color);
+  cursor: pointer;
+}
+
+.closed {
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+}
+
+.open {
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+}
+
+.empty {
+  background-color: var(--secondary-text-color);
+  color: var(--primary-text-color);
+}
+
+.flag {
+  background-color: var(--background-color);
 }
