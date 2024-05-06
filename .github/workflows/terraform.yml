@@ -7,26 +7,33 @@ on:
     branches: [ "main" ]
 
 jobs:
-  terraform:
+  deploy-infrastructure:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        shell: bash
+        working-directory: infrastructure
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.8.2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
-        run: terraform init -chdir ${{ github.workspace }}/infrastructure/
+        id: init
+        run: terraform init
 
-      - name: Apply Terraform
-        run: terraform apply -auto-approve -chdir ${{ github.workspace }}/infrastructure/
+      - name: Generate infrastructure plan
+        id: plan
+        run: terraform plan -out=.tfplan
+
+      - name: Apply infrastructure plan
+        id: apply
+        run: terraform apply .tfplan
 
   upload:
-    needs: terraform
+    needs: deploy-infrastructure
     runs-on: ubuntu-latest
 
     steps:
