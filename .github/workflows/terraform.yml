@@ -7,32 +7,30 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy-infrastructure:
+  terraform:
     runs-on: ubuntu-latest
     env:
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-    defaults:
-      run:
-        shell: bash
-        working-directory: infrastructure
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.8.2
 
       - name: Initialize Terraform
-        run: terraform init -chdir ${{ github.workspace }}/infrastructure/
+        run: terraform init -chdir infrastructure/
 
       - name: Apply Terraform
-        run: terraform apply -auto-approve -chdir ${{ github.workspace }}/infrastructure/
+        run: terraform apply -auto-approve -chdir infrastructure/
 
   upload:
-    needs: deploy-infrastructure
+    needs: terraform
     runs-on: ubuntu-latest
 
     steps:
