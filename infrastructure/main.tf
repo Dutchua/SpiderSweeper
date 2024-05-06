@@ -1,6 +1,9 @@
-variable "db_username" {}
-variable "db_password" {}
-variable "ssh_private_key" {}
+
+provider "aws" {
+  region = "eu-west-1"
+  access_key = var.access_key
+  secret_key = var.secret_key
+}
 
 resource "aws_default_vpc" "default_vpc" {
   tags = {
@@ -83,15 +86,6 @@ resource "aws_db_instance" "web-levelup-db" {
     created-using = "terraform"
   }
 }
-
-  resource "aws_s3_bucket" "static_files_bucket" {
-  bucket = "thisstatic-bucket"
-  acl    = "private"
-
-  tags = {
-    Name = "Static Files Bucket"
-    }
-  }
 
   resource "aws_instance" "web_server" {
   ami           = "ami-04e2e94de097d3986" 
