@@ -190,3 +190,44 @@ nav {
     width: fit-content;
   }
 }
+
+/* Tiles */
+/*-------------------------------------------------------------------------*/
+.tile {
+  max-width: 3.75rem;
+  max-height: 3.75rem;
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  background-color: var(--primary-color);
+  border-color: var(--secondary-color);
+}
+
+#safe{
+  background-color: var(--secondary-text-color);
+}
+
+#number{
+  background-color: var(--background-color);
+  font-family: var(--font-family-body);
+  color: var(--primary-text-color);
+}
+
+#newspaper{
+  background-color: var(--background-color);
+  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\newspaper.svg');
+}
+
+#flower{
+  background-color: var(--background-color);
+  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\flower.svg');
+}
+
+#spider{
+  background-color: var(--background-color);
+  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\gameboard_spider.svg');
+}
+
+#splat{
+  background-color: var(--background-color);
+  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\splat.svg');
+}

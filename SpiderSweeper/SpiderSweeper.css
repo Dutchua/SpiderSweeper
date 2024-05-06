@@ -106,3 +106,42 @@ color: #000;
 background-image: url("Spider.png");
 }
 
+/* Tiles */
+/*-------------------------------------------------------------------------*/
+.tile {
+  max-width: 3.75rem;
+  max-height: 3.75rem;
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  background-color: #FF1F00;
+  border-color: #ff7f11;
+}
+
+#safe{
+  background-color: white;
+}
+
+#number{
+  background-color: #beb7a4;
+  color: black;
+}
+
+#newspaper{
+  background-color: #beb7a4;
+  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\newspaper.svg');
+}
+
+#flower{
+  background-color: #beb7a4;
+  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\flower.svg');
+}
+
+#spider{
+  background-color: #beb7a4;
+  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\gameboard_spider.svg');
+}
+
+#splat{
+  background-color: #beb7a4;
+  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\splat.svg');
+}
