@@ -26,16 +26,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
-        id: init
-        run: terraform init
+        run: terraform init -chdir ${{ github.workspace }}/infrastructure/
 
-      - name: Generate infrastructure plan
-        id: plan
-        run: terraform plan 
-
-      - name: Apply infrastructure plan
-        id: apply
-        run: terraform apply
+      - name: Apply Terraform
+        run: terraform apply -auto-approve -chdir ${{ github.workspace }}/infrastructure/
 
   upload:
     needs: deploy-infrastructure
