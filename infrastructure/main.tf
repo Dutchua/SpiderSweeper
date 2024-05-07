@@ -132,7 +132,6 @@ resource "aws_db_instance" "spidersweeper_sqlserver_ex_rds" {
   engine = "sqlserver-ex"
   identifier = "spidersweeper-sqlserver-ex-db"
 
-  db_name = "spidersweeperDB"
   username = var.db_username
   password = var.db_password
 
