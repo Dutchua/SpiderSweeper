@@ -36,6 +36,13 @@ resource "aws_subnet" "private_subnet" {
   availability_zone = "eu-west-1" # Change this to your desired availability zone
 }
 
+resource "aws_db_subnet_group" "my_subnet_group" {
+  name       = "my-subnet-group"
+  subnet_ids = [
+    aws_subnet.private_subnet.id,
+  ]
+}
+
 # Define Security Group
 resource "aws_security_group" "rds_sg" {
   name        = "rds-sg"
@@ -71,7 +78,7 @@ resource "aws_db_instance" "sql_server" {
   skip_final_snapshot   = true # Change this to false if you want a final snapshot to be created when the instance is deleted
 
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  subnet_group_name      = "my-subnet-group"
+  subnet_group_name      = aws_db_subnet_group.my_subnet_group.name
 
   subnet_ids = [aws_subnet.private_subnet.id]
 }
