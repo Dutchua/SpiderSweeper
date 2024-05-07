@@ -111,12 +111,8 @@ variable "bucket_name" {
   sensitive = true
 }
 
-resource "aws_s3_bucket" "hosting_bucket" {
-    bucket = var.bucket_name
-}
-
 resource "aws_s3_bucket_policy" "hosting_bucket_policy" {
-    bucket = aws_s3_bucket.hosting_bucket.id
+    bucket = backend.s3.id
 
     policy = jsonencode({
         "Version": "2012-10-17",
@@ -132,7 +128,7 @@ resource "aws_s3_bucket_policy" "hosting_bucket_policy" {
 }
 
 resource "aws_s3_bucket_website_configuration" "hosting_bucket_website_configuration" {
-    bucket = aws_s3_bucket.hosting_bucket.id
+    bucket = backend.s3.id
 
     index_document {
       suffix = "index.html"
@@ -140,7 +136,7 @@ resource "aws_s3_bucket_website_configuration" "hosting_bucket_website_configura
 }
 
 resource "aws_s3_object" "hosting_bucket_files" {
-    bucket = aws_s3_bucket.hosting_bucket.id
+    bucket = backend.s3.id
 
     key = "index.html"
     content_type = "text/html"
