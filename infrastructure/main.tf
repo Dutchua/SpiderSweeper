@@ -15,6 +15,13 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
+module "template_files" {
+    source = "hashicorp/dir/template"
+
+    base_dir = "${path.module}/web"
+}
+
+
 provider "aws" {
 }
 
@@ -96,4 +103,46 @@ resource "aws_security_group" "mssql_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_s3_bucket" "hosting_bucket" {
+    bucket = var.bucket_name
+}
+
+resource "aws_s3_bucket_acl" "hosting_bucket_acl" {
+    bucket = aws_s3_bucket.hosting_bucket.id
+    acl = "public-read"
+}
+
+resource "aws_s3_bucket_policy" "hosting_bucket_policy" {
+    bucket = aws_s3_bucket.hosting_bucket.id
+
+    policy = jsonencode({
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::${var.bucket_name}/*"
+            }
+        ]
+    })
+}
+
+resource "aws_s3_bucket_website_configuration" "hosting_bucket_website_configuration" {
+    bucket = aws_s3_bucket.hosting_bucket.id
+
+    index_document {
+      suffix = "index.html"
+    }
+}
+
+resource "aws_s3_object" "hosting_bucket_files" {
+    bucket = aws_s3_bucket.hosting_bucket.id
+
+    key = "index.html"
+    content_type = "text/html"
+
+    source  = "${path.module}/frontend/Views/index.html"
 }
