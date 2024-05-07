@@ -1,54 +1,128 @@
-name: Run Terraform
+name: "Terraform action"
 on:
   push:
-    branches: [ "Josh/Actions" ]
+    branches: [ "Josh/Actions", "main" ]
   pull_request:
-    branches: [ "main" ]
+permissions:
+  id-token: write # This is required for aws oidc connection
+  contents: read # This is required for actions/checkout
+  pull-requests: write # This is required for gh bot to comment PR
+
+env:
+  TF_LOG: INFO
+  AWS_REGION: ${{ secrets.AWS_REGION }}
 
 jobs:
-  terraform:
+  deploy:
     runs-on: ubuntu-latest
-
     defaults:
       run:
-        working-directory: infrastructure
+        shell: bash
+        working-directory: infrastructure/
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Git checkout
+        uses: actions/checkout@v3
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
+      - name: Configure AWS credentials from AWS account
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.8.2
 
-      - name: Initialize Terraform
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
         env:
-          TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
-          TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
-          TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
-          TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
-          TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.ssh_private_key }}
-        run: terraform init
+          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+          TF_VAR_aws_region: ${{ secrets.aws_region }}
+          TF_VAR_access_key: ${{ secrets.access_key }}
+          TF_VAR_secret_key: ${{ secrets.secret_key }}
+          TF_VAR_db_username: ${{ secrets.db_username }}
+          TF_VAR_db_password: ${{ secrets.db_password }}
+          TF_VAR_ssh_private_key: ${{ secrets.ssh_private_key }}
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}" -var 'region=${AWS_REGION}"'
 
-      - name: Apply Terraform
+      - name: Terraform Validate
+        id: validate
         env:
-          TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
-          TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
-          TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
-          TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
-          TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.ssh_private_key }}
-        run: terraform apply -auto-approve
+          TF_VAR_aws_region: ${{ secrets.aws_region }}
+          TF_VAR_access_key: ${{ secrets.access_key }}
+          TF_VAR_secret_key: ${{ secrets.secret_key }}
+          TF_VAR_db_username: ${{ secrets.db_username }}
+          TF_VAR_db_password: ${{ secrets.db_password }}
+          TF_VAR_ssh_private_key: ${{ secrets.ssh_private_key }}
+        run: terraform validate -no-color
 
+      - name: Terraform Plan
+        id: plan
+        env:
+          TF_VAR_access_key: ${{ secrets.access_key }}
+          TF_VAR_secret_key: ${{ secrets.secret_key }}
+          TF_VAR_db_username: ${{ secrets.db_username }}
+          TF_VAR_db_password: ${{ secrets.db_password }}
+          TF_VAR_ssh_private_key: ${{ secrets.ssh_private_key }}
+        run: terraform plan -no-color
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
 
-  upload:
-    needs: terraform
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.5.4
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
-          ssh-private-key: ${{ secrets.ssh_private_key }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+  
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply 
+        if: github.event_name == 'push'
+        env:
+          TF_VAR_access_key: ${{ secrets.access_key }}
+          TF_VAR_secret_key: ${{ secrets.secret_key }}
+          TF_VAR_db_username: ${{ secrets.db_username }}
+          TF_VAR_db_password: ${{ secrets.db_password }}
+          TF_VAR_ssh_private_key: ${{ secrets.ssh_private_key }}
+        run: terraform apply -auto-approve -input=false

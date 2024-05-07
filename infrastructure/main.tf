@@ -8,12 +8,14 @@ terraform {
   required_version = ">= 1.8.2"
 }
 
-
+variable "aws_region" {
+  description = "Region of resources"
+  type = string
+  sensitive = true
+  default = "eu-west-1"
+}
 
 provider "aws" {
-  region = "eu-west-1"
-  access_key = var.access_key
-  secret_key = var.secret_key
 }
 
 resource "aws_default_vpc" "default_vpc" {
