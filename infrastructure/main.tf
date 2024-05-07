@@ -16,7 +16,7 @@ variable "aws_region" {
 }
 
 provider "aws" {
-  region = vars.aws_region
+  region = aws_region
 }
 
 resource "aws_default_vpc" "default_vpc" {
