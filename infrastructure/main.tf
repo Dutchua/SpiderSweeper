@@ -8,11 +8,6 @@ terraform {
   required_version = ">= 1.8.2"
 }
 
-variable "aws_region" {
-    type = string
-    default = "eu-west-1"
-}
-
 provider "aws" {
   region = vars.aws_region
 }
