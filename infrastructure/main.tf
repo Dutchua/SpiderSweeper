@@ -121,7 +121,7 @@ resource "aws_security_group" "spidersweeper_security_group" {
   }
 }
 
-resource "aws_db_instance" "spidersweeper_postgres_rds" {
+resource "aws_db_instance" "spidersweeper_sqlserver_ex_rds" {
   allocated_storage = 5
   instance_class = "db.t3.micro"
 
@@ -133,8 +133,8 @@ resource "aws_db_instance" "spidersweeper_postgres_rds" {
   identifier = "spidersweeper-sqlserver-ex-db"
 
   db_name = "spidersweeperDB"
-  username = var.DB_USERNAME
-  password = var.DB_PASSWORD
+  username = var.db_username
+  password = var.db_password
 
   vpc_security_group_ids = [aws_security_group.spidersweeper_security_group.id]
   db_subnet_group_name = aws_db_subnet_group.spidersweeper_subnet_group.name
