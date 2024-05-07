@@ -77,7 +77,7 @@ resource "aws_db_instance" "mssql" {
 
 resource "aws_db_subnet_group" "spidersweeper_subnet_group" {
   name       = "spidersweeper_subnet_group"
-  subnet_ids = [aws_subnet.spidersweeper_subnet_b.id]
+  subnet_ids = [aws_subnet.spidersweeper_subnet_a.id, aws_subnet.spidersweeper_subnet_b.id]
 }
 
 resource "aws_security_group" "mssql_sg" {
