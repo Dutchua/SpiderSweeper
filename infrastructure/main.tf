@@ -121,24 +121,20 @@ resource "aws_security_group" "spidersweeper_security_group" {
   }
 }
 
-resource "aws_db_instance" "spidersweeper_sqlserver_ex_rds" {
-  allocated_storage = 5
-  instance_class = "db.t3.micro"
-
-  publicly_accessible = true
-  skip_final_snapshot = true
-  multi_az = false
-
-  engine = "sqlserver-ex"
-  identifier = "spidersweeper-sqlserver-ex-db"
-
-  username = var.db_username
-  password = var.db_password
-
+resource "aws_db_instance" "web-levelup-db" {
+  identifier             = "web-levelup-db"
+  engine                 = "sqlserver-ex"
+  engine_version         = "14.00.3465.1.v1"
+  instance_class         = "db.t3.micro"
+  allocated_storage      = 20
+  storage_type           = "gp2"
+  publicly_accessible    = true
+  username               = var.db_username
+  password               = var.db_password
+  skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.spidersweeper_security_group.id]
-  db_subnet_group_name = aws_db_subnet_group.spidersweeper_subnet_group.name
-
   tags = {
-    owner = "josh@bbd.co.za"
+    owner         = "josh@bbd.co.za"
+    created-using = "terraform"
   }
 }
