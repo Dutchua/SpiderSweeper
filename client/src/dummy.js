@@ -722,3 +722,58 @@ export const DummyData = {
     ],
   ],
 };
+
+export const DummyHighScores = {
+  highScores: [
+    {
+      id: 0,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 1,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 2,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 3,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 4,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 5,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 6,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 7,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 8,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 9,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+  ],
+};

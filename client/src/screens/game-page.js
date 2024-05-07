@@ -1,4 +1,4 @@
-import Navbar from "../components/navbar.js";
+import { NavbarGamePage } from "../components/navbar.js";
 import GameFunctions from "../components/game-functions.js";
 import Grid from "../components/grid.js";
 import { DummyData } from "../dummy.js";
@@ -12,7 +12,7 @@ const GamePage = (score) => {
     `
     <section>
     ` +
-    Navbar() +
+    NavbarGamePage() +
     `<section class="cover center"><section class="column">` +
     GameFunctions() +
     Grid(gridHTML) +

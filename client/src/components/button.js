@@ -18,7 +18,7 @@ export const NewGameButton = () => {
 };
 
 export const PlayGameButton = () => {
-  return `<button class="button" id="play"><img class="icon" src="./public/icons/home.svg" alt="icon" />Play Game</button>`;
+  return `<button class="button row" id="play"><img class="icon" src="./public/icons/home.svg" alt="icon" />Play Game</button>`;
 };
 
 export const HighScoreButtonMini = () => {
