@@ -8,12 +8,6 @@ terraform {
   required_version = ">= 1.8.2"
 }
 
-variable "access_key" {}
-variable "secret_key" {}
-variable "db_username" {}
-variable "db_password" {}
-variable "ssh_private_key" {}
-
 provider "aws" {
   region = "eu-west-1"
   access_key = var.access_key
