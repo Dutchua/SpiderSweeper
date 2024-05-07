@@ -18,39 +18,37 @@ variable "aws_region" {
 provider "aws" {
 }
 
-resource "aws_default_vpc" "default_vpc" {
+resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
   enable_dns_support = true
   enable_dns_hostnames = true
   tags = {
-    Name = "default_vpc"
+    Name = "main"
   }
 }
 
-data "aws_availability_zones" "available_zones" {
-  
-}
 
-resource "aws_subnet" "subnet_az1" {
-  vpc_id            = aws_vpc.default_vpc.id
+resource "aws_subnet" "main_a" {
+  vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.4.0/24"
   map_public_ip_on_launch = true
-  availability_zone = data.aws_availability_zones.available_zones.names[0]
+  availability_zone       = "eu-west-1a"
 }
 
-resource "aws_subnet" "subnet_az2" {
-  vpc_id            = aws_vpc.default_vpc.id
-  cidr_block              = "10.0.4.0/24"
+resource "aws_subnet" "main_b" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.5.0/24"
   map_public_ip_on_launch = true
-  availability_zone = data.aws_availability_zones.available_zones.names[1]
+  availability_zone       = "eu-west-1b"
 }
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.default_vpc.id
+  vpc_id = aws_vpc.main.id
 }
 
+
 resource "aws_route_table" "r" {
-  vpc_id = aws_vpc.default_vpc.id
+  vpc_id = aws_vpc.main.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -59,13 +57,31 @@ resource "aws_route_table" "r" {
 }
 
 resource "aws_route_table_association" "a" {
-  subnet_id      = aws_subnet.subnet_az1.id
+  subnet_id      = aws_subnet.main_a.id
   route_table_id = aws_route_table.r.id
 }
 
+resource "aws_db_instance" "mssql" {
+  allocated_storage    = 20
+  storage_type         = "gp3"
+  engine               = "sqlserver-ex"
+  instance_class       = "db.t3.micro" 
+  username               = var.db_username
+  password               = var.db_password
+  db_subnet_group_name = aws_db_subnet_group.main.name
+  publicly_accessible  = true
+  skip_final_snapshot  = true
+  multi_az             = false
+  vpc_security_group_ids = [aws_security_group.mssql_sg.id]
+}
 
-resource "aws_security_group" "allow_mssql_current" {
-  name        = "allow_mssql_current"
+resource "aws_db_subnet_group" "main" {
+  name       = "main"
+  subnet_ids = [aws_subnet.main_a.id, aws_subnet.main_b.id]
+}
+
+resource "aws_security_group" "mssql_sg" {
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 1433
@@ -74,28 +90,10 @@ resource "aws_security_group" "allow_mssql_current" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "allow_mssql_current"
-    owner = "josh@bbd.co.za"
-    created-using = "terraform"
-  }
-}
-
-resource "aws_db_instance" "web-levelup-db" {
-  identifier             = "web-levelup-db"
-  engine                 = "sqlserver-ex"
-  engine_version         = "14.0.3456.2"
-  instance_class         = "db.t3.micro"
-  allocated_storage      = 20
-  storage_type           = "gp2"
-  publicly_accessible    = true
-  multi_az               = false
-  username               = var.db_username
-  password               = var.db_password
-  skip_final_snapshot    = true
-  vpc_security_group_ids = [aws_security_group.allow_mssql_current.id]
-  tags = {
-    owner         = "josh@bbd.co.za"
-    created-using = "terraform"
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
