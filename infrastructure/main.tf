@@ -18,79 +18,128 @@ variable "aws_region" {
 provider "aws" {
 }
 
-resource "aws_default_vpc" "default_vpc" {
+resource "aws_vpc" "spidersweeper_vpc" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_support = true
+  enable_dns_hostnames = true
   tags = {
-    Name = "default_vpc"
+    Name = "spidersweeper_vpc"
   }
 }
 
-data "aws_availability_zones" "available_zones" {
-  
+resource "aws_internet_gateway" "spidersweeper_gateway" {
+  vpc_id = aws_vpc.spidersweeper_vpc.id
+  tags = {
+    owner: "josh@bbd.co.za"
+  }
 }
 
-resource "aws_default_subnet" "subnet_az1" {
-  availability_zone = data.aws_availability_zones.available_zones.names[0]
+resource "aws_subnet" "spidersweeper_subnet_a" {
+  vpc_id                  = aws_vpc.spidersweeper_vpc.id
+  cidr_block              = "10.0.4.0/24"
+  map_public_ip_on_launch = true
+  availability_zone       = "eu-west-1a"
+  tags = {
+    owner: "josh@bbd.co.za"
+  }
 }
 
-resource "aws_default_subnet" "subnet_az2" {
-  availability_zone = data.aws_availability_zones.available_zones.names[1]
+resource "aws_route_table" "spidersweeper_route_table_a" {
+  vpc_id = aws_vpc.spidersweeper_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.spidersweeper_gateway.id
+  }
+
+  tags = {
+    owner: "josh@bbd.co.za"
+  }
 }
 
+resource "aws_route_table_association" "spidersweeper_association_a" {
+  subnet_id      = aws_subnet.spidersweeper_subnet_a.id
+  route_table_id = aws_route_table.spidersweeper_route_table_a.id
+}
 
-resource "aws_security_group" "allow_mssql_current" {
-  name        = "allow_mssql_current"
+resource "aws_subnet" "spidersweeper_subnet_b" {
+  vpc_id                  = aws_vpc.spidersweeper_vpc.id
+  cidr_block              = "10.0.5.0/24"
+  map_public_ip_on_launch = true
+  availability_zone       = "eu-west-1b"
+  tags = {
+    owner: "josh@bbd.co.za"
+  }
+}
+
+resource "aws_route_table" "spidersweeper_route_table_b" {
+  vpc_id = aws_vpc.spidersweeper_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.spidersweeper_gateway.id
+  }
+
+  tags = {
+    owner: "josh@bbd.co.za"
+  }
+}
+
+resource "aws_route_table_association" "spidersweeper_association_b" {
+  subnet_id      = aws_subnet.spidersweeper_subnet_b.id
+  route_table_id = aws_route_table.spidersweeper_route_table_b.id
+}
+
+resource "aws_db_subnet_group" "spidersweeper_subnet_group" {
+  name       = "spidersweeper_subnet_group"
+  subnet_ids = [aws_subnet.spidersweeper_subnet_a.id, aws_subnet.spidersweeper_subnet_b.id]
+
+  tags = {
+    owner: "josh@bbd.co.za"
+  }
+}
+
+resource "aws_security_group" "spidersweeper_security_group" {
+  vpc_id = aws_vpc.spidersweeper_vpc.id
 
   ingress {
-    from_port   = 1433
-    to_port     = 1433
+    from_port   = 5432
+    to_port     = 5432
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = {
-    Name = "allow_mssql_current"
-    owner = "josh@bbd.co.za"
-    created-using = "terraform"
+    owner: "josh@bbd.co.za"
   }
 }
 
-resource "aws_security_group" "allow_http" {
-  name        = "allow_http"
-  description = "Allow HTTP inbound traffic"
-  
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-    ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_db_instance" "spidersweeper_postgres_rds" {
+  allocated_storage = 5
+  instance_class = "db.t3.micro"
+
+  publicly_accessible = true
+  skip_final_snapshot = true
+  multi_az = false
+
+  engine = "sqlserver-ex"
+  identifier = "spidersweeper-sqlserver-ex-db"
+
+  db_name = "spidersweeperDB"
+  username = var.DB_USERNAME
+  password = var.DB_PASSWORD
+
+  vpc_security_group_ids = [aws_security_group.spidersweeper_security_group.id]
+  db_subnet_group_name = aws_db_subnet_group.spidersweeper_subnet_group.name
 
   tags = {
-    Name = "Allow HTTP"
     owner = "josh@bbd.co.za"
-  }
-}
-
-resource "aws_db_instance" "web-levelup-db" {
-  identifier             = "web-levelup-db"
-  engine                 = "sqlserver-ex"
-  engine_version         = "14.00.3465.1.v1"
-  instance_class         = "db.t3.micro"
-  allocated_storage      = 20
-  storage_type           = "gp2"
-  publicly_accessible    = true
-  username               = var.db_username
-  password               = var.db_password
-  skip_final_snapshot    = true
-  vpc_security_group_ids = [aws_security_group.allow_mssql_current.id]
-  tags = {
-    owner         = "josh@bbd.co.za"
-    created-using = "terraform"
   }
 }
