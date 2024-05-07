@@ -3,87 +3,102 @@ const express = require('express');
 const app = express();
 const port = 8080;
 const sql = require('mssql');
-// app.use(cors)
-const client_id = "119f107716cbc4eb4191";
-const client_secret = "8aeceab1d0035d9ba0746f5278f694bb45f47098";
+const numRows = 8;
+const numCols = 8;
+let numMines = 10;
+const toWin = numRows * numCols - 10;
 
+let boards = [];
 app.use(express.json());
+app.use(cors())
 
-const connection = {
+var corsOptions = {
+    origin: '*',
+}
+
+const config = {
     user: 'admin',
-    password: 'secret_password',
-    server: 'web-levelup-db.cex3uty77nu9.eu-west-1.rds.amazonaws.com', // This should be the name or IP address of your SQL Server instance
-    database: 'web-levelup-db',
+    password: 'supersecretpassword',
+    server: 'terraform-20240507114400697600000001.cex3uty77nu9.eu-west-1.rds.amazonaws.com', // This should be the name or IP address of your SQL Server instance
+    port: 1433,
+    database: 'SpiderSweeper',
+    options: {
+        encrypt: true,
+        trustServerCertificate: true, // Set this to true for self-signed certificates
+    },
 };
 
+// Create a connection pool with the specified configuration
+// const pool = new sql.ConnectionPool(config);
+
 // Define a route for the '/hello' endpoint
-app.get('/hello', (req, res) => {
+app.get('/hello', cors(corsOptions), (req, res) => {
     console.log("Hello start");
+    res.setHeader('Access-Control-Allow-Origin', '*')
     return res.send({ message: "Hello, server alive" }).status(200)
 });
 
-app.get('/callback', async (req, res) => {
-    const access_code = req.query.code
-    let access_token = ''
-    let options = {
-        hostname: 'github.com',
-        path: '/login/oauth/access_token',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }, body: JSON.stringify({
-            code: access_code, // Replace {port} with your actual port
-        })
-    };
-    let tokenString = `https://github.com/login/oauth/access_token?code=${access_code}&client_id=${client_id}&client_secret=${client_secret}`;
-    console.log("code: " + access_code);
-    await fetch(tokenString, options).then(res => {
-        console.log("start git")
-        if (res.ok) {
-            return res.json();
-        }
-        console.log("end git")
-    }).then(data => {
-        console.log("handle data");
-        console.log(data);
-        access_token = data.access_token
-    });
-    res.send({ token: access_token }).status(200);
-
+app.get('/sql', async (req, res) => {
+    try {
+        let pool = await sql.connect(config);
+        let resp = await pool.request()
+            .input('username', sql.VarChar, 'test')
+            .query(`select * from users where username=@username`);
+        // await request.query(query);
+        console.log('Data inserted successfully.');
+        res.send({ 'message': 'SUCCEESS' }).status(200)
+    } catch (error) {
+        console.log(error);
+        res.send({ 'error': error }).status(500)
+    } finally {
+        sql.close();
+    }
+    return
 })
+
+//
 app.get('/sign-in', async (req, res) => {
-    let username = "";
-    let options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${req.headers.authorization}` // Set the Content-Type header if needed
-        }
-    };
-    await fetch("https://api.github.com/user", options).then(res => {
-        console.log("start rec")
-        if (res.ok) {
-            return res.json();
-        }
-        console.log("end rec")
-    }).then(data => {
-        console.log("handle data");
-        console.log(data.login, data.id, data.name);
-        username = data.name;
-    });
-    res.send({ username: username }).status(200);
+    console.log('SIGN IN API');
+    let oauthResponse = await verifyToken(req.headers.authorization);
+    if (!oauthResponse['success']) {
+        return { message: 'ERROR: Invalid OAuth Token' }
+    }
+    let username = oauthResponse['name'];
+    let board = initializeBoard();
+    console.log('finished initialise board');
+    console.log('init board dimension ', board.length, board[0].length);
+    boards[`${username}`] = board
+    // try {
+    try {
+        let pool = await sql.connect(config);
+        const query =
+            `IF NOT EXISTS (select * from users where username = '${username}')
+                BEGIN
+                    insert into Users(username) values ('${username}')
+                END;`;
+        let resp = await pool.request().query(query)
+        pool.close();
+        console.log('Data inserted successfully.');
+    } catch (err) {
+        console.error('Error inserting data:', err);
+        res.status(500).send({ message: 'Error inserting data.', error: err });
+    } finally {
+        sql.close();
+    }
+    // } catch (error) {
+    //     console.log(error);
+    //     return res.send({ message: error }).status(420);
+    // }
+    return res.send({ username: username }).status(200);
 });
 
-app.get('/manual', async (req, res) => {
-    clickSignIn()
-})
-
 app.post('/highscores', async (req, res) => {
-    console.log("game body: " + req.body);
-
+    console.log("POST Highscore game body: " + req.body);
+    let oauthResponse = verifyToken(req.headers.authorization);
+    if (!oauthResponse['success']) {
+        return { message: 'ERROR: Invalid OAuth Token' }
+    }
     try {
-        const email = req.body.email;
         const userID = req.body.userID;
         const score = req.body.highscore;
         const date = Date.now();
@@ -112,30 +127,90 @@ app.post('/highscores', async (req, res) => {
 });
 
 app.get('/highscores', async (req, res) => {
+    console.log('GET HIGHSCORE');
+    let oauthResponse = verifyToken(req.headers.authorization);
+    if (!oauthResponse['success']) {
+        return { message: 'ERROR: Invalid OAuth Token' }
+    }
     try {
-        const { userID } = req.params;
         try {
-            await sql.connect(connection);
-
+            let pool = await sql.connect(config);
             const request = new sql.Request();
-            const query = `SELECT * FROM HighScore WHERE userID = @userID`;
-            // Bind parameter to the query
-            request.input('userID', sql.Int, userID);
+            const query = `SELECT Score, tmstamp FROM HighScore h inner join users u on u.userID = h.userID WHERE u.username = @username`;
+            let resp = await pool.request()
+                .input('username', sql.VarChar, username)
+                .query(query);
 
             const result = await request.query(query);
-            console.log('Data retrieved successfully.');
+            console.log('HIighScores retrieved successfully.');
             res.status(200).json(result.recordset); // Send the retrieved data as JSON response
         } catch (err) {
             console.error('Error retrieving data:', err);
-            res.status(500).send('Error retrieving data.');
-            throw err;
+            res.status(500).send({ 'error': 'Error retrieving data.' });
+            // throw err;
         } finally {
             sql.close();
         }
     } catch (error) {
         console.log(error);
+        res.status(401).send({ 'error': error })
     }
 });
+
+app.get('/game', async (req, res) => {
+    let oauthResponse = await verifyToken(req.headers.authorization);
+    if (!await oauthResponse['success']) {
+        res.status(403).send({ message: 'ERROR: Invalid OAuth Token' });
+        return;
+    }
+    let username = oauthResponse['name'];
+    let board = boards[username];
+    console.log(boards);
+    console.log('LENGTH ', boards.length, username);
+    try {
+        if (board != undefined)
+            console.log('THE BOARD IS NOT EMPTY ', board[0][0]);
+        let cells =[]
+        let row = 5;
+        let col = 4;
+        revealCell(board, row, col, cells);
+        console.log('count', cells);
+    } catch (error) {
+        console.log(error);
+        res.send(error).status(400);
+        return
+    }
+    res.send({ message: 'simple' }).status(200)
+})
+
+async function verifyToken(accessToken) {
+    let data = await fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken
+            // Add any additional headers if needed
+        }
+    }).then(response => {
+        if (response.ok) {
+            console.log('Success!');
+        }
+        return response.json();
+    }).then(data => {
+        console.log(data);
+        if (data['error']) {
+            console.log('ERROR: ' + data['error']['message']);
+            return { success: false, message: data['error']['message'] };
+        } else {
+            console.log('DATA HARVEST');
+            return { success: true, name: data['name'] }
+        }
+    })
+    console.log(data);
+    console.log('emnd');
+    return data;
+}
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
@@ -143,53 +218,82 @@ app.listen(port, () => {
 
 
 
-const backend = 'http://localhost:' + '5050';
-const redirect_uri = backend + '/apis/signin.html';
-async function clickSignIn() {
-    console.log('start second');
-    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}&scope=user&redirect_uri=${redirect_uri}`;
-    const device_flow = `https://github.com/login/device/code?client_id=${client_id}&scope=user`
-    let options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': 'http://localhost:5500',
-            'Access-Control-Request-Method': 'POST',
-            'Access-Control-Request-Headers': 'origin, x-requested-with, accept',
-            'Origin': 'http://127.0.0.1:5500'
 
-        },
-        credentials: 'same-origin',
-    };
-    let post_options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': 'http://127.0.0.1:5500',
-            'Access-Control-Request-Method': 'POST',
-            'Access-Control-Request-Headers': 'origin, x-requested-with, accept',
-            'Origin': 'http://127.0.0.1:5500'
 
-        },
-        credentials: 'same-origin',
-    };
-    await fetch(device_flow, post_options).then(res => {
-        console.log("start click")
-        console.log(res);
-        if (res.ok) {
-            return res.json();
-        } else {
-            console.log(res.body);
-            console.log(res.data);
-            console.log(res.query);
-            return res.json();
+function initializeBoard() {
+    let board = []
+    console.log('start init');
+    for (let i = 0; i < numRows; i++) {
+        board[i] = [];
+        for (let j = 0; j < numCols; j++) {
+            board[i][j] = {
+                isMine: false,
+                revealed: false,
+                count: 0,
+            };
         }
-        console.log("end click")
-    }).then(data => {
-        console.log("handle click data");
-        console.log(data);
-    });
-    console.log("how " + device_flow);
+    }
+
+    while (numMines > 0) {
+        const row = Math.floor(Math.random() * numRows);
+        const col = Math.floor(Math.random() * numCols);
+        if (!board[row][col].isMine) {
+            board[row][col].isMine = true;
+            numMines--;
+        }
+    }
+    console.log('finish random');
+    // Calculate counts
+    for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+            if (!board[i][j].isMine) {
+                let count = 0;
+                for (let dx = -1; dx <= 1; dx++) {
+                    for (let dy = -1; dy <= 1; dy++) {
+                        const ni = i + dx;
+                        const nj = j + dy;
+                        if (checkBounds(ni, nj) && board[ni][nj].isMine) {
+                            count++;
+                        }
+                    }
+                }
+                board[i][j].count = count;
+            }
+        }
+    }
+    console.log('finish init');
+    board[0][0]['cells'] = toWin;
+    console.log(board[0][0]);
+    return board;
+}
+function checkBounds(i, j) {
+    return i >= 0 && i < numRows && j >= 0 && j < numCols
+}
+
+function revealCell(board, row, col, cells) {
+    if (!checkBounds(row, col) || board[row][col].revealed) {
+        return;
+    }
+    console.log('revealcell', board[row][col]);
+    board[row][col].revealed = true;
+    board[0][0]['cells']--;
+    let position = `${row},${col}`
+    cells[position] = board[row][col];
+    console.log(cells.length);
+    if (board[row][col].isMine) {
+        // Handle game over
+        console.log('BOMB');
+        return ("Game Over! You stepped on a mine.");
+    } else if (board[0][0]['cells'] <= 0) {
+        console.log('WIN');
+        return ("CONGRATS! YOU WON!");
+    } else if (board[row][col].count === 0) {
+        // If cell has no mines nearby,
+        // Reveal adjacent cells
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                revealCell(board, row + dx, col + dy, cells);
+            }
+        }
+    }
 }
