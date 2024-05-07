@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "aws" {
-  region = var.AWS_REGION
+  region = var.aws_region
 }
 
 resource "aws_default_vpc" "default_vpc" {
