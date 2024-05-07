@@ -65,8 +65,8 @@ resource "aws_db_instance" "mssql" {
   storage_type         = "gp3"
   engine               = "sqlserver-ex"
   instance_class       = "db.t3.micro"  # Updated to micro instance
-  username             = "admin"
-  password             = "your_secure_password"  # Consider using a secrets manager
+  username             = var.db_username
+  password             = var.db_password
   db_subnet_group_name = aws_db_subnet_group.main.name
   publicly_accessible  = true
   skip_final_snapshot  = true
