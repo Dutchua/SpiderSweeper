@@ -278,3 +278,32 @@ nav {
 .flag {
   background-color: var(--background-color);
 }
+
+/*-------------------------------------------------------------------------*/
+
+/* Table */
+
+/*-------------------------------------------------------------------------*/
+table, td {
+  text-align: center;
+}
+
+.HighScoreText {text-align: left;}
+
+table {
+  margin-left: 25%;
+  width: 50%;
+  min-width: 18rem;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 2%;
+  border-bottom: 0.0625rem solid var(--primary-color);
+  border-top:  0.0625rem solid var(--primary-color);
+}
+
+tr:hover {
+  background-color: var(--secondary-color);
+  color: var(--secondary-text-color);
+}
