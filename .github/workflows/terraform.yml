@@ -45,7 +45,7 @@ jobs:
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
-        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}" -var "access_key=${ACCESS_KEY}" -var secret_key=${SECRET_KEY}" -var db_username=${DB_USERNAME}" -var db_password=${DB_PASSWORD}" -var ssh_private_key=${SSH_PRIVATE_KEY}"
 
       - name: Terraform Validate
         id: validate
@@ -101,65 +101,3 @@ jobs:
       - name: Terraform Apply
         if: github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
-
-  terraform:
-    needs: deploy
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: infrastructure/
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Configure AWS credentials from AWS account
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: GitHub-OIDC-TERRAFORM
-
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.8.2
-
-      - name: Initialize Terraform
-        env:
-          TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
-          TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
-          TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
-          TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
-          TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.ssh_private_key }}
-        run: terraform init
-
-      - name: Apply Terraform
-        env:
-          TF_VAR_ACCESS_KEY: ${{ secrets.access_key }}
-          TF_VAR_SECRET_KEY: ${{ secrets.secret_key }}
-          TF_VAR_DB_USERNAME: ${{ secrets.db_username }}
-          TF_VAR_DB_PASSWORD: ${{ secrets.db_password }}
-          TF_VAR_SSH_PRIVATE_KEY: ${{ secrets.ssh_private_key }}
-        run: terraform apply -auto-approve
-
-
-  upload:
-    needs: terraform
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Configure AWS credentials from AWS account
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: GitHub-OIDC-TERRAFORM
-
-      - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.ssh_private_key }}
