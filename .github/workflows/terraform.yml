@@ -3,10 +3,6 @@ on:
   push:
     branches: [ "Josh/Actions", "main" ]
   pull_request:
-permissions:
-  id-token: write # This is required for aws oidc connection
-  contents: read # This is required for actions/checkout
-  pull-requests: write # This is required for gh bot to comment PR
 
 env:
   TF_LOG: INFO
@@ -14,6 +10,10 @@ env:
 
 jobs:
   deploy:
+    permissions:
+      id-token: write # This is required for aws oidc connection
+      contents: read # This is required for actions/checkout
+      pull-requests: write # This is required for gh bot to comment PR
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,7 +28,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: GitHub-OIDC-TERRAFORM
+
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
