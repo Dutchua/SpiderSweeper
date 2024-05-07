@@ -27,7 +27,6 @@ resource "aws_vpc" "main" {
   }
 }
 
-
 resource "aws_subnet" "main_a" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.4.0/24"
@@ -65,9 +64,9 @@ resource "aws_db_instance" "mssql" {
   allocated_storage    = 20
   storage_type         = "gp3"
   engine               = "sqlserver-ex"
-  instance_class       = "db.t3.micro" 
-  username               = var.db_username
-  password               = var.db_password
+  instance_class       = "db.t3.micro"  # Updated to micro instance
+  username             = "admin"
+  password             = "your_secure_password"  # Consider using a secrets manager
   db_subnet_group_name = aws_db_subnet_group.main.name
   publicly_accessible  = true
   skip_final_snapshot  = true
