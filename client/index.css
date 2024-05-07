@@ -1,5 +1,8 @@
 /* Imports */
-/* @import url("https://fonts.googleapis.com/css2?family=Creepster&display=swap"); */
+@font-face {
+  font-family: "Creepster";
+  src: url("./public/assets/fonts/Creepster-Regular.woff");
+}
 
 /* Root Variables */
 :root {
@@ -48,12 +51,12 @@ label {
   align-items: center;
 }
 
-/* .creepster-regular {
-  font-family: "Creepster", system-ui;
+.creepster-regular {
+  font-family: "Creepster";
   font-weight: 400;
   font-size: 2rem;
   font-style: normal;
-} */
+}
 
 .row {
   display: flex;
@@ -242,11 +245,19 @@ nav {
 /* Table */
 
 /*-------------------------------------------------------------------------*/
-table, td {
+table,
+td {
   text-align: center;
 }
 
-.HighScoreText {text-align: left;}
+#HighScoreTable {
+  margin-top: 7%;
+  background-color: var(--background-color);
+}
+
+.HighScoreText {
+  text-align: left;
+}
 
 table {
   margin-left: 25%;
@@ -258,7 +269,7 @@ table {
 td {
   padding: 2%;
   border-bottom: 0.0625rem solid var(--primary-color);
-  border-top:  0.0625rem solid var(--primary-color);
+  border-top: 0.0625rem solid var(--primary-color);
 }
 
 tr:hover {

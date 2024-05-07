@@ -1,41 +1,43 @@
 import LogIn from "./src/screens/logIn.js";
 import GamePage from "./src/screens/game-page.js";
 import Timer from "./src/utils/Timer.js";
+import HighScorePage from "./src/screens/high-score-page.js";
 
 const root = document.getElementById("root");
-root.innerHTML = GamePage("01:32");
+// root.innerHTML = GamePage("01:32");
+root.innerHTML = HighScorePage();
 
-const timer = new Timer();
-timer.start();
+// const timer = new Timer();
+// timer.start();
 
-let winningCondition = false;
-let losingCondition = false;
+// let winningCondition = false;
+// let losingCondition = false;
 
-const newGameButton = document.getElementById("start");
-const stopGameButton = document.getElementById("logout");
-newGameButton.addEventListener("click", () => {
-  timer.reset();
-  timer.start();
-});
+// const newGameButton = document.getElementById("start");
+// const stopGameButton = document.getElementById("logout");
+// newGameButton.addEventListener("click", () => {
+//   timer.reset();
+//   timer.start();
+// });
 
-stopGameButton.addEventListener("click", () => {
-  winningCondition = true;
-  losingCondition = true;
-});
+// stopGameButton.addEventListener("click", () => {
+//   winningCondition = true;
+//   losingCondition = true;
+// });
 
-function checkWinningCondition() {
-  if (winningCondition) {
-    timer.stop();
-  }
-}
+// function checkWinningCondition() {
+//   if (winningCondition) {
+//     timer.stop();
+//   }
+// }
 
-function checkLosingCondition() {
-  if (losingCondition) {
-    timer.stop();
-  }
-}
+// function checkLosingCondition() {
+//   if (losingCondition) {
+//     timer.stop();
+//   }
+// }
 
-setInterval(() => {
-  checkWinningCondition();
-  checkLosingCondition();
-}, 1000);
+// setInterval(() => {
+//   checkWinningCondition();
+//   checkLosingCondition();
+// }, 1000);
