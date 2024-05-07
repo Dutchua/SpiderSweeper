@@ -111,38 +111,39 @@ variable "bucket_name" {
   sensitive = true
 }
 
-data "aws_s3_bucket" "existing_bucket" {
-  bucket = var.bucket_name
-}
-
-resource "aws_s3_bucket_acl" "hosting_bucket_acl" {
-  bucket = data.aws_s3_bucket.existing_bucket.id
-  acl    = "public-read"
+resource "aws_s3_bucket" "hosting_bucket" {
+    bucket = var.bucket_name
 }
 
 resource "aws_s3_bucket_policy" "hosting_bucket_policy" {
-  bucket = data.aws_s3_bucket.existing_bucket.id
+    bucket = aws_s3_bucket.hosting_bucket.id
 
-  policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": "*",
-        "Action": "s3:GetObject",
-        "Resource": "arn:aws:s3:::${data.aws_s3_bucket.existing_bucket.bucket}/*"
-      }
-    ]
-  })
+    policy = jsonencode({
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::${var.bucket_name}/*"
+            }
+        ]
+    })
 }
 
 resource "aws_s3_bucket_website_configuration" "hosting_bucket_website_configuration" {
-  bucket = data.aws_s3_bucket.existing_bucket.id
+    bucket = aws_s3_bucket.hosting_bucket.id
+
+    index_document {
+      suffix = "index.html"
+    }
 }
 
 resource "aws_s3_object" "hosting_bucket_files" {
-  bucket       = data.aws_s3_bucket.existing_bucket.id
-  key          = "index.html"
-  content_type = "text/html"
-  source       = "${path.module}/frontend/Views/index.html"
+    bucket = aws_s3_bucket.hosting_bucket.id
+
+    key = "index.html"
+    content_type = "text/html"
+
+    source  = "${path.module}/frontend/Views/index.html"
 }
