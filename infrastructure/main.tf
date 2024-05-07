@@ -19,6 +19,9 @@ provider "aws" {
 }
 
 resource "aws_default_vpc" "default_vpc" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_support = true
+  enable_dns_hostnames = true
   tags = {
     Name = "default_vpc"
   }
@@ -28,11 +31,11 @@ data "aws_availability_zones" "available_zones" {
   
 }
 
-resource "aws_default_subnet" "subnet_az1" {
+resource "aws_subnet" "subnet_az1" {
   availability_zone = data.aws_availability_zones.available_zones.names[0]
 }
 
-resource "aws_default_subnet" "subnet_az2" {
+resource "aws_subnet" "subnet_az2" {
   availability_zone = data.aws_availability_zones.available_zones.names[1]
 }
 
@@ -57,7 +60,7 @@ resource "aws_security_group" "allow_mssql_current" {
 resource "aws_db_instance" "web-levelup-db" {
   identifier             = "web-levelup-db"
   engine                 = "sqlserver-ex"
-  engine_version         = "14.00.3465.1.v1"
+  engine_version         = "14.0.3456.2"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   storage_type           = "gp2"
