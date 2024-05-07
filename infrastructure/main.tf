@@ -143,5 +143,5 @@ resource "aws_s3_object" "hosting_bucket_files" {
   bucket       = data.aws_s3_bucket.existing_bucket.id
   key          = "index.html"
   content_type = "text/html"
-  source       = "${path.module}/frontend/Views/index.html"
+  source       = "../frontend/Views/index.html"
 }
