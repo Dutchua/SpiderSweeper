@@ -32,10 +32,12 @@ data "aws_availability_zones" "available_zones" {
 }
 
 resource "aws_subnet" "subnet_az1" {
+  vpc_id            = aws_vpc.default_vpc.id
   availability_zone = data.aws_availability_zones.available_zones.names[0]
 }
 
 resource "aws_subnet" "subnet_az2" {
+  vpc_id            = aws_vpc.default_vpc.id
   availability_zone = data.aws_availability_zones.available_zones.names[1]
 }
 
