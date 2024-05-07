@@ -105,6 +105,12 @@ resource "aws_security_group" "mssql_sg" {
   }
 }
 
+variable "bucket_name" {
+  description = "Name of the bucket"
+  type = string
+  sensitive = true
+}
+
 resource "aws_s3_bucket" "hosting_bucket" {
     bucket = var.bucket_name
 }
