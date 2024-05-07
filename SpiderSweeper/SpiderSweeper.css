@@ -4,9 +4,13 @@ body {
   background-color: #BEB7A4;
 }
 
-/* Table */
 /*-------------------------------------------------------------------------*/
-table, th, td {text-align: center;}
+
+/* Table */
+
+/*-------------------------------------------------------------------------*/
+table, td {text-align: center;}
+.HighScoreText {text-align: left;}
 
 table {
   margin-left: 25%;
@@ -14,12 +18,11 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+td {
   padding: 2%;
-  border-bottom: 1px solid #FF3F00;
+  border-bottom: 0.0625rem solid #FF3F00;
+  border-top:  0.0625rem solid #FF3F00;
 }
-
-th {height: 40px;}
 
 tr:hover {background-color: coral;}
 
