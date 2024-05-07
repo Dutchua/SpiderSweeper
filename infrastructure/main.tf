@@ -23,7 +23,7 @@ resource "aws_vpc" "spidersweeper_vpc" {
   enable_dns_support = true
   enable_dns_hostnames = true
   tags = {
-    Name = "main"
+    Name = "spidersweeper_vpc"
   }
 }
 
