@@ -18,75 +18,35 @@ variable "aws_region" {
 provider "aws" {
 }
 
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
-  enable_dns_support = true
-  enable_dns_hostnames = true
-  tags = {
-    Name = "main"
-  }
+# Define VPC
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16" # Change this to your desired CIDR block
 }
 
-resource "aws_subnet" "main_a" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.4.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "eu-west-1a"
+# Define Subnets
+resource "aws_subnet" "public_subnet" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.1.0/24" # Change this to your desired CIDR block
+  availability_zone = "eu-west-1" # Change this to your desired availability zone
 }
 
-resource "aws_subnet" "main_b" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.5.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "eu-west-1b"
+resource "aws_subnet" "private_subnet" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.2.0/24" # Change this to your desired CIDR block
+  availability_zone = "eu-west-1" # Change this to your desired availability zone
 }
 
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
-}
-
-
-resource "aws_route_table" "r" {
-  vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.gw.id
-  }
-}
-
-resource "aws_route_table_association" "a" {
-  subnet_id      = aws_subnet.main_a.id
-  route_table_id = aws_route_table.r.id
-}
-
-resource "aws_db_instance" "mssql" {
-  allocated_storage    = 20
-  storage_type         = "gp3"
-  engine               = "sqlserver-ex"
-  instance_class       = "db.t3.micro"  # Updated to micro instance
-  username             = var.db_username
-  password             = var.db_password
-  db_subnet_group_name = aws_db_subnet_group.main.name
-  publicly_accessible  = true
-  skip_final_snapshot  = true
-  multi_az             = false
-  vpc_security_group_ids = [aws_security_group.mssql_sg.id]
-}
-
-resource "aws_db_subnet_group" "main" {
-  name       = "main"
-  subnet_ids = [aws_subnet.main_a.id, aws_subnet.main_b.id]
-}
-
-resource "aws_security_group" "mssql_sg" {
-  vpc_id = aws_vpc.main.id
+# Define Security Group
+resource "aws_security_group" "rds_sg" {
+  name        = "rds-sg"
+  description = "Allow traffic to RDS SQL Server"
+  vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     from_port   = 1433
     to_port     = 1433
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] # Restrict this to specific IP ranges for security
   }
 
   egress {
@@ -95,4 +55,23 @@ resource "aws_security_group" "mssql_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+# Define the RDS SQL Server instance
+resource "aws_db_instance" "sql_server" {
+  identifier            = "my-sql-server" # Change this to your desired identifier
+  engine                = "sqlserver-se"
+  engine_version        = "15.00.2000.05.v1"
+  instance_class        = "db.t3.micro" # Change this to your desired instance class
+  allocated_storage     = 20 # Change this to your desired storage size in GB
+  storage_type          = "gp2" # Change this to your desired storage type
+  username              = var.db_username
+  password              = var.db_password
+  publicly_accessible   = false # Change this to true if you want the instance to be publicly accessible
+  skip_final_snapshot   = true # Change this to false if you want a final snapshot to be created when the instance is deleted
+
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  subnet_group_name      = "my-subnet-group"
+
+  subnet_ids = [aws_subnet.private_subnet.id]
 }
