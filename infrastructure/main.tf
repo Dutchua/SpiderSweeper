@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "aws" {
-  region = eu-west-1
+  region = vars.aws_region
 }
 
 resource "aws_default_vpc" "default_vpc" {
