@@ -70,7 +70,7 @@ jobs:
           TF_VAR_db_username: ${{ secrets.db_username }}
           TF_VAR_db_password: ${{ secrets.db_password }}
           TF_VAR_ssh_private_key: ${{ secrets.ssh_private_key }}
-        run: terraform plan -no-color -var
+        run: terraform plan -no-color
         if: github.event_name == 'pull_request'
         continue-on-error: true
 
