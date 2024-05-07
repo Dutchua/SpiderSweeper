@@ -49,7 +49,7 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: terraform validate -no-color -var "access_key=${ACCESS_KEY}" -var secret_key=${SECRET_KEY}" -var db_username=${DB_USERNAME}" -var db_password=${DB_PASSWORD}" -var ssh_private_key=${SSH_PRIVATE_KEY}"
 
       - name: Terraform Plan
         id: plan
