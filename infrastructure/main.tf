@@ -54,12 +54,16 @@ resource "aws_s3_bucket_policy" "existing_bucket_policy" {
   })
 }
 
-
 # Upload files to S3 bucket
 resource "aws_s3_object" "existing_bucket_files" {
   for_each     = fileset("../frontend/Views/", "*")
   bucket       = data.aws_s3_bucket.existing_bucket.id
   key          = each.value
   source       = "../frontend/Views/${each.value}"
-  content_type = "text/html"
+  content_type = (
+    each.value == "text/html" ? "text/html" :
+    each.value == "text/css" ? "text/css" :
+    each.value == "application/javascript" ? "application/javascript" :
+    "application/octet-stream"
+  )
 }
