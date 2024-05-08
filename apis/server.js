@@ -19,19 +19,16 @@ var corsOptions = {
 const config = {
     user: 'admin',
     password: 'supersecretpassword',
-    server: 'terraform-20240507114400697600000001.cex3uty77nu9.eu-west-1.rds.amazonaws.com', // This should be the name or IP address of your SQL Server instance
+    server: 'terraform-20240507114400697600000001.cex3uty77nu9.eu-west-1.rds.amazonaws.com',
     port: 1433,
     database: 'SpiderSweeper',
     options: {
         encrypt: true,
-        trustServerCertificate: true, // Set this to true for self-signed certificates
+        trustServerCertificate: true, 
     },
 };
 
-// Create a connection pool with the specified configuration
-// const pool = new sql.ConnectionPool(config);
 
-// Define a route for the '/hello' endpoint
 app.get('/hello', cors(corsOptions), (req, res) => {
     console.log("Hello start");
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -44,7 +41,6 @@ app.get('/sql', async (req, res) => {
         let resp = await pool.request()
             .input('username', sql.VarChar, 'test')
             .query(`select * from users where username=@username`);
-        // await request.query(query);
         console.log('Data inserted successfully.');
         res.send({ 'message': 'SUCCEESS' }).status(200)
     } catch (error) {
@@ -85,11 +81,8 @@ app.get('/sign-in', async (req, res) => {
     } finally {
         sql.close();
     }
-    // } catch (error) {
-    //     console.log(error);
-    //     return res.send({ message: error }).status(420);
-    // }
-    return res.send({ username: username }).status(200);
+
+    return res.send({ message: 'signed in'}).status(200);
 });
 
 app.post('/highscores', async (req, res) => {
@@ -104,15 +97,15 @@ app.post('/highscores', async (req, res) => {
         const date = Date.now();
 
         try {
-            await sql.connect(connection);
+            let pool = await sql.connect(config);
 
-            const request = new sql.Request();
             const query = `INSERT INTO HighScore (userID, Score, Date) VALUES (@userID, @score, @date)`;
+            let resp = await pool.request()
+            .input('userID', sql.Int, userID)
+            .input('score', sql.Int, score)
+            .input('date', sql.DateTime, date)
+            .query(query)
 
-            request.input('userID', sql.Int, userID);
-            request.input('score', sql.Int, score);
-            request.input('date', sql.DateTime, date);
-            await request.query(query);
             console.log('Data inserted successfully.');
             res.status(200).send('Data inserted successfully.');
         } catch (err) {
@@ -141,9 +134,8 @@ app.get('/highscores', async (req, res) => {
                 .input('username', sql.VarChar, username)
                 .query(query);
 
-            const result = await request.query(query);
             console.log('HIighScores retrieved successfully.');
-            res.status(200).json(result.recordset); // Send the retrieved data as JSON response
+            res.status(200).send({scores: resp.recordset, message: 'success'}); // Send the retrieved data as JSON response
         } catch (err) {
             console.error('Error retrieving data:', err);
             res.status(500).send({ 'error': 'Error retrieving data.' });
@@ -175,12 +167,13 @@ app.get('/game', async (req, res) => {
         let col = 4;
         revealCell(board, row, col, cells);
         console.log('count', cells);
+        res.send({ message: 'success', cells: cells }).status(200);
+        return
     } catch (error) {
         console.log(error);
         res.send(error).status(400);
         return
     }
-    res.send({ message: 'simple' }).status(200)
 })
 
 async function verifyToken(accessToken) {
