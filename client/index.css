@@ -1,0 +1,149 @@
+/* Imports */
+@import url("https://fonts.googleapis.com/css2?family=Creepster&display=swap");
+
+/* Root Variables */
+:root {
+  --primary-color: #ff3f00;
+  --secondary-color: #ff7f11;
+  --background-color: #beb7a4;
+  --primary-text-color: #000000;
+  --secondary-text-color: #ffffff;
+  --font-family-body: "Roboto", sans-serif;
+}
+
+body {
+  font-family: var(--font-family-body);
+  background-color: var(--background-color);
+  font-size: 16px;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.creepster-regular {
+  font-family: "Creepster", system-ui;
+  font-weight: 400;
+  font-size: 2rem;
+  font-style: normal;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  gap: 1rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.button {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: none;
+  height: 2.5rem;
+}
+
+#login {
+  background-color: var(--secondary-color);
+  color: var(--primary-text-color);
+  max-width: 20rem;
+  min-width: 15rem;
+  padding: 0.5rem 1rem;
+}
+
+/* -------------------------------------------------------------------- */
+
+/* Navigation Bar */
+
+/* -------------------------------------------------------------------- */
+nav {
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  background-color: var(--background-color);
+  padding: 0.25rem 1rem;
+  height: 3rem;
+}
+.icon {
+  height: 1.3rem;
+}
+
+#Icon {
+  height: 3rem;
+}
+
+#logout {
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color);
+  padding: 0.5rem 1rem;
+}
+
+#highscore {
+  background-color: var(--secondary-color);
+  color: var(--primary-text-color);
+  padding: 0.5rem 1rem;
+}
+
+/* ---------------------------------------------------------------- */
+
+/* Background  images */
+
+/* ---------------------------------------------------------------- */
+#top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+#top-right {
+  position: absolute;
+  top: 0;
+  right: -1%;
+  z-index: -1;
+}
+
+#bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+#bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: -1%;
+  z-index: -1;
+}
+
+#center {
+  position: absolute;
+  top: 0;
+  left: calc(
+    50% - (374px / 2)
+  ); /* Width of the image, divided by 2 to place it in the perfect center */
+  z-index: -1;
+}
+
+@media (max-width: 800px) {
+  #top-right,
+  #bottom-left,
+  #center {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------- */
