@@ -74,5 +74,5 @@ resource "aws_s3_object" "existing_bucket_files" {
   content_type = lookup(local.mime_types, regex("\\.[^.]+$", each.value), null)
   etag = filemd5("${"../frontend/Views/"}/${each.value}")
 
-  content_disposition = ""
+  content_disposition = null
 }
