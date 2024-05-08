@@ -72,17 +72,33 @@ resource "aws_route_table_association" "a" {
   route_table_id = aws_route_table.r.id
 }
 
+# Check if DB subnet group already exists
 data "aws_db_subnet_group" "existing_subnet_group" {
   name = "spidersweeper_subnet_group"
 }
 
 # Create DB subnet group only if it doesn't already exist
 resource "aws_db_subnet_group" "spidersweeper_subnet_group" {
-  count = length(data.aws_db_subnet_group.existing_subnet_group.ids) == 0 ? 1 : 0
+  count = length(data.aws_db_subnet_group.existing_subnet_group.id) == 0 ? 1 : 0
 
   name       = "spidersweeper_subnet_group"
   subnet_ids = [aws_subnet.spidersweeper_subnet_a.id, aws_subnet.spidersweeper_subnet_b.id]
 }
+
+# Reference the specific instance of aws_db_subnet_group for the condition
+locals {
+  subnet_group_exists = length(aws_db_subnet_group.spidersweeper_subnet_group) > 0
+}
+
+# Use locals to create DB subnet group conditionally
+resource "aws_db_subnet_group" "spidersweeper_subnet_group_new" {
+  count = local.subnet_group_exists ? 0 : 1
+
+  name       = "spidersweeper_subnet_group"
+  subnet_ids = [aws_subnet.spidersweeper_subnet_a.id, aws_subnet.spidersweeper_subnet_b.id]
+}
+
+
 
 # Check if security group exists, if not, create it
 resource "aws_security_group" "mssql_sg" {
@@ -110,7 +126,7 @@ resource "aws_db_instance" "mssql" {
   instance_class       = "db.t3.micro"  # Updated to micro instance
   username             = var.db_username
   password             = var.db_password
-  db_subnet_group_name = aws_db_subnet_group.spidersweeper_subnet_group.name
+  db_subnet_group_name = length(aws_db_subnet_group.spidersweeper_subnet_group) > 0 ? aws_db_subnet_group.spidersweeper_subnet_group[0].name : null
   publicly_accessible  = true
   skip_final_snapshot  = true
   multi_az             = false
