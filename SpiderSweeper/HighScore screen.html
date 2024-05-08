@@ -1,44 +1,46 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>My High Scores</title>
-    <link rel="stylesheet" href="C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\index.css">
+    <link
+      rel="stylesheet"
+      href="C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\index.css"
+    />
   </head>
   <body>
-    
     <!--Navigation Bar-->
     <section class="topnav">
+      <a>
+        <section id="UserInfo">
+          <img id="Icon" src="ProfileIcon.png" alt="User" />
+          <span id="Username">Username</span>
+        </section>
+      </a>
+      <section class="topnav-right">
         <a>
-            <section id="UserInfo">
-                <img id="Icon" src="ProfileIcon.png" alt="User">
-                <span id="Username">Username</span>
-            </section>
+          <button id="PlayGame">Play Game</button>
         </a>
-        <section class="topnav-right">
-            <a>
-                <button id="PlayGame">Play Game</button>
-            </a>
-            <a>
-                <button id="Logout">Logout</button>
-            </a>
-        </section>        
+        <a>
+          <button id="Logout">Logout</button>
+        </a>
+      </section>
     </section>
 
     <!--High Scores-->
     <section>
-        <table id="HighScoreTable">
-            <tr>
-                <td class="HighScoreText">High Score 1:</td>
-                <td>01:15</td>
-                <td>2024/05/07</td>
-            </tr>
-            <tr>
-                <td class="HighScoreText">High Score 2:</td>
-                <td>--</td>
-                <td>--</td>
-            </tr>
-        </table>
+      <table id="HighScoreTable">
+        <tr>
+          <td class="HighScoreText">High Score 1:</td>
+          <td>01:15</td>
+          <td>2024/05/07</td>
+        </tr>
+        <tr>
+          <td class="HighScoreText">High Score 2:</td>
+          <td>--</td>
+          <td>--</td>
+        </tr>
+      </table>
     </section>
   </body>
 </html>
