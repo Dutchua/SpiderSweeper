@@ -87,10 +87,6 @@ variable "service_description" {
   default = "My awesome nodeJs App"
 }
 
-provider "aws" {
-  region = var.aws_region
-}
-
 resource "aws_elastic_beanstalk_application" "eb_app" {
   name        = var.service_name
   description = var.service_description
