@@ -72,8 +72,14 @@ resource "aws_route_table_association" "a" {
   route_table_id = aws_route_table.r.id
 }
 
-# Check if DB subnet group exists, if not, create it
+data "aws_db_subnet_group" "existing_subnet_group" {
+  name = "spidersweeper_subnet_group"
+}
+
+# Create DB subnet group only if it doesn't already exist
 resource "aws_db_subnet_group" "spidersweeper_subnet_group" {
+  count = length(data.aws_db_subnet_group.existing_subnet_group.ids) == 0 ? 1 : 0
+
   name       = "spidersweeper_subnet_group"
   subnet_ids = [aws_subnet.spidersweeper_subnet_a.id, aws_subnet.spidersweeper_subnet_b.id]
 }
