@@ -4,7 +4,7 @@ CREATE TABLE Users (
   Username varchar(50),
   PRIMARY KEY (UserID)
 );
-go;
+
 CREATE TABLE HighScore (
   HighScoreID int IDENTITY(1, 1),
   UserID int,
