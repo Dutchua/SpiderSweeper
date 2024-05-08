@@ -1,12 +1,3 @@
-use master;
-drop database SpiderSweeper;
-go
-
-CREATE DATABASE SpiderSweeper;
-go
-
-use SpiderSweeper;
-go
 
 CREATE TABLE Users (
   UserID int IDENTITY(1, 1),
