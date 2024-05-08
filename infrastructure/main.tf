@@ -103,7 +103,7 @@ resource "aws_db_instance" "mssql" {
   instance_class       = "db.t3.micro"  # Updated to micro instance
   username             = var.db_username
   password             = var.db_password
-  db_subnet_group_name = aws_db_subnet_group.spidersweeper_subnet_group
+  db_subnet_group_name = aws_db_subnet_group.spidersweeper_subnet_group.name
   publicly_accessible  = true
   skip_final_snapshot  = true
   multi_az             = false
