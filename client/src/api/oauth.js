@@ -103,7 +103,7 @@ async function handleRedirect(resp) {
 //MEANWHILE it sends to our backend/api with nothing
 
 console.log(location.hash);
-if (location.hash) {
+if (location.hash.includes("state")) {
   console.log("TIME to cook");
   handleRedirect();
 }

@@ -54,11 +54,6 @@ const handleInitialLoad = () => {
 };
 
 window.addEventListener("hashchange", () => {
-  if (window.location.hash === "#game") {
-    timer.reset();
-    timer.start();
-    return;
-  }
   navigateTo(window.location.hash);
 });
 

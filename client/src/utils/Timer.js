@@ -6,10 +6,10 @@ class Timer {
   }
 
   start() {
-    const minutesLabel = document.getElementById("minutes");
-    const secondsLabel = document.getElementById("seconds");
     this.startTime = new Date();
     this.intervalId = setInterval(() => {
+      const minutesLabel = document.getElementById("minutes");
+      const secondsLabel = document.getElementById("seconds");
       const currentTime = new Date();
       const elapsedTime = Math.floor((currentTime - this.startTime) / 1000);
       const minutes = Math.floor(elapsedTime / 60);
