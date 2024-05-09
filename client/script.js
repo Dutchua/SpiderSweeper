@@ -77,6 +77,8 @@ const addButtonEvent = (button, hash) => {
       return;
     } else if (hash === "#game") {
       navigateTo("#game");
+      timer.reset();
+      timer.start();
     } else if (hash === "__start__") {
       timer.reset();
       timer.start();
