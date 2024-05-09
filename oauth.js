@@ -56,7 +56,8 @@ async function handleRedirect(resp) {
     let fragmentParams = new URLSearchParams(hash);
     accessToken = fragmentParams.get('access_token');
     console.log('token ', accessToken);
-
+    
+    history.replaceState(null, null, window.location.href.split('#')[0]);
     // POPULATES DB AND RETURNS USERNAME
     let s = `${server}/sign-in`
     console.log(s);
