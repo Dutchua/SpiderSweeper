@@ -49,7 +49,7 @@ export async function oauthSignIn() {
   return true;
 }
 
-async function handleRedirect(resp) {
+export async function handleRedirect(resp) {
   let hash = location.hash.substring(1);
   let fragmentParams = new URLSearchParams(hash);
   accessToken = fragmentParams.get("access_token");
@@ -101,9 +101,3 @@ async function handleRedirect(resp) {
 //IDEALLY grab token, send to API
 //REALITY, since oauth redirects, it goes somehwere, comes back and THEN it add the token to url
 //MEANWHILE it sends to our backend/api with nothing
-
-console.log(location.hash);
-if (location.hash.includes("state")) {
-  console.log("TIME to cook");
-  handleRedirect();
-}

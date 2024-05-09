@@ -3,7 +3,7 @@ export const LoginButton = () => {
 };
 
 export const LogoutButton = () => {
-  return `<button class="button logout row" id="logout">
+  return `<button class="button logout row" id="logout" onclick='logout'>
   <img class="icon nav-icon" src="./public/icons/logout-icon.svg" alt="icon" />
   <p class="button-text">Log Out<p>
   </button>`;
@@ -34,23 +34,17 @@ export const GameRuleButton = () => {
   return `<button class="button row" id="rule">
   <img class="icon" src="./public/icons/howto-icon.svg" alt="icon" />
   <p class="button-text">Game Rules<p>
-  </button>`
-}
+  </button>`;
+};
 
 export const CloseRuleDiaglog = () => {
-  return (
-    `<button autofocus class="close-dialog-button" id="close-rule-dialog">Close</button>`
-  )
-}
+  return `<button autofocus class="close-dialog-button" id="close-rule-dialog">Close</button>`;
+};
 
 export const CloseWinDiaglog = () => {
-  return (
-    `<button autofocus class="close-dialog-button" id="close-win-dialog">Close</button>`
-  )
-}
+  return `<button autofocus class="close-dialog-button" id="close-win-dialog">Close</button>`;
+};
 
 export const CloseLoseDiaglog = () => {
-  return (
-    `<button autofocus class="close-dialog-button" id="close-lose-dialog">Close</button>`
-  )
-}
+  return `<button autofocus class="close-dialog-button" id="close-lose-dialog">Close</button>`;
+};

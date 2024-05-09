@@ -15,6 +15,8 @@ const GamePage = (grid, score, loading = false) => {
       `<section class="cover center"><section class="column">
       ` +
       Loader() +
+      GameWonDialog() +
+      GameLostDialog() +
       `</section>
       </section>
       </section>`
@@ -36,8 +38,7 @@ const GamePage = (grid, score, loading = false) => {
     highScoresHTML +
     GameWonDialog() +
     GameLostDialog() +
-    `<label id="Score">High Score: ${score}</label>
-    </section>
+    `</section>
     </section>
     </section>`
   );

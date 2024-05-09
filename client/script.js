@@ -2,8 +2,13 @@ import LogIn from "./src/screens/logIn.js";
 import GamePage from "./src/screens/game-page.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 import Timer from "./src/utils/Timer.js";
-import { oauthSignIn } from "./src/api/oauth.js";
-import { getHighScores, makeMove, startGame } from "./src/api/interface.js";
+import { handleRedirect, oauthSignIn } from "./src/api/oauth.js";
+import {
+  getHighScores,
+  makeMove,
+  postHighScore,
+  startGame,
+} from "./src/api/interface.js";
 import { Loader } from "./src/components/tiles.js";
 
 const root = document.querySelector("main");
@@ -23,11 +28,26 @@ window.handleTileClick = async (row, col) => {
 
     if (condition === "won") {
       const timeTaken = timer.stop();
-
-      // TODO: Show a winning message to the user
+      await postHighScore(timeTaken);
+      render(GamePage([], undefined));
+      const winDialog = document.getElementById("winner-dialog");
+      winDialog.showModal();
+      const closeWinDiaglog = document.getElementById("close-win-dialog");
+      closeWinDiaglog.addEventListener("click", () => {
+        winDialog.close();
+        handleInitialLoad();
+      });
 
       return;
     } else if (condition === "lost") {
+      render(GamePage([], undefined));
+      const loseDialog = document.getElementById("loser-dialog");
+      loseDialog.showModal();
+      const closeLoseDiaglog = document.getElementById("close-lose-dialog");
+      closeLoseDiaglog.addEventListener("click", () => {
+        loseDialog.close();
+        handleInitialLoad();
+      });
       timer.stop();
       return;
     }
@@ -56,8 +76,18 @@ const renderGamePage = async (grid) => {
   try {
     render(GamePage(grid, undefined, true));
     const highScores = await getHighScores();
+    const highScore = highScores.reduce((acc, score) => {
+      if (score < acc) {
+        return score;
+      }
 
-    render(GamePage(grid, highScores));
+      return acc;
+    }, Number.MAX_VALUE);
+
+    const showScore = highScore !== Number.MAX_VALUE;
+    const visibleHighScore = showScore ? highScore : undefined;
+
+    render(GamePage(grid, visibleHighScore));
   } catch (error) {
     render(`<h3>${error.message}</h3>`);
   }
@@ -78,14 +108,7 @@ const navigateTo = async (hash) => {
   const screenComponent = routes[hash] || LogIn;
   const screenHTML = await screenComponent();
 
-  const wrapper = document.createElement("section");
-  wrapper.replaceChildren("beforeend", screenHTML);
-
-  while (wrapper.firstChild) {
-    root.appendChild(wrapper.firstChild);
-  }
-
-  addEventListenersToDynamicElements();
+  render(screenHTML);
 };
 
 const handleInitialLoad = async () => {
@@ -103,10 +126,6 @@ const handleInitialLoad = async () => {
   const initialHash = window.location.hash || "#login-page";
   navigateTo(initialHash);
 };
-
-window.addEventListener("hashchange", () => {
-  navigateTo(window.location.hash);
-});
 
 document.addEventListener("DOMContentLoaded", handleInitialLoad);
 
@@ -129,6 +148,10 @@ const addButtonEvent = (button, hash) => {
       timer.reset();
       timer.start();
       return;
+    } else if (button.id === "logout") {
+      sessionStorage.clear();
+      window.location.hash = "#login-page";
+      navigateTo("#login-page");
     } else {
       navigateTo(hash);
     }
@@ -182,40 +205,7 @@ const createButtons = () => {
   }
 };
 
-// const stopGameButton = document.getElementById("logout");
-
-// stopGameButton.addEventListener("click", () => {
-//   winningCondition = true;
-//   losingCondition = true;
-// });
-// const winDialog = document.getElementById("winner-dialog");
-// const closeWinDiaglog = document.getElementById("close-win-dialog");
-
-// function checkWinningCondition() {
-//   if (winningCondition == true && losingCondition == false) {
-//     timer.stop();
-//     winDialog.showModal();
-//   }
-// }
-
-// const loseDialog = document.getElementById("loser-dialog");
-// const closeLoseDiaglog = document.getElementById("close-lose-dialog");
-
-// if (closeWinDiaglog) {
-//   closeWinDiaglog.addEventListener("click", () => {
-//     winDialog.close();
-//   });
-// }
-
-// function checkLosingCondition() {
-//   if (winningCondition == false && losingCondition == true) {
-//     timer.stop();
-//     loseDialog.showModal();
-// }
-// }
-
-// if (closeLoseDiaglog) {
-//   closeLoseDiaglog.addEventListener("click", () => {
-//   loseDialog.close();
-// });
-// }
+if (location.hash.includes("state")) {
+  await handleRedirect();
+  await handleInitialLoad();
+}
