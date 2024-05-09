@@ -80,6 +80,22 @@ const createButtons = () => {
   const miniPlayButton = document.getElementById("play-mini");
   const miniHighScoreButton = document.getElementById("highscore-mini");
   const miniLogoutButton = document.getElementById("login-mini");
+  const gameRuleButton = document.getElementById("rule");
+  const dialog = document.getElementById("dialog");
+  const closeDialogButton = document.getElementById("close-dialog-button");
+
+  if (gameRuleButton){
+    gameRuleButton.addEventListener("click", () => {
+      console.log('button clicked')
+      dialog.showModal();
+  });
+  }
+
+  if (closeDialogButton) {
+    closeDialogButton.addEventListener("click", () => {
+      dialog.close();
+  });
+  }
 
   if (loginButton) {
     addButtonEvent(loginButton, "#game");

@@ -184,26 +184,6 @@ nav {
   }
 }
 
-@container (width< 25rem)
-{
-  .button-text{
-    display: flex;
-  }
-
-  #UserInfo{
-    display: none;
-  }
-
-  .button-text-New-Game{
-    display: none;
-  }
-
-  .nav-icon{
-    padding-left: 0%;
-  }
-}
-
-
 /* -------------------------------------------------------------------- */
 /*BACKGROUND IMAGES*/
 /* -------------------------------------------------------------------- */
@@ -351,4 +331,39 @@ td {
 tr:hover {
   background-color: var(--secondary-color);
   color: var(--secondary-text-color);
+}
+
+/* -------------------------------------------------------------------- */
+/*HOW TO PLAY DIALOG*/
+/* -------------------------------------------------------------------- */
+
+#dialog-header {
+  color: var(--primary-color);
+  text-align: center;
+}
+
+#close-dialog-button{
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: none;
+  height: 2.5rem;
+  background-color: var(--secondary-color);
+  align-self: center;
+}
+
+dialog{
+  background-color: var(--secondary-text-color);  
+}
+
+.dialogbuttoncontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
