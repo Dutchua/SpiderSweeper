@@ -134,7 +134,10 @@ const addEventListenersToDynamicElements = () => {
 };
 
 const addButtonEvent = (button, hash) => {
-  button.addEventListener("click", () => {
+  button.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    if (e.which === 1) console.log("left click");
+    if (e.which === 2) console.log("scroll click");
     if (button.id === "login") {
       oauthSignIn();
       timer.reset();
