@@ -79,7 +79,7 @@ resource "aws_s3_object" "existing_bucket_files" {
 
 variable "service_name" {
   type    = string
-  default = "nodejs-app-this-will-probs"
+  default = "nodejs-app"
 }
 
 variable "service_description" {
