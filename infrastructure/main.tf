@@ -262,8 +262,8 @@ resource "aws_s3_bucket" "beanstalk_bucket" {
 # add jar to bucket
 resource "aws_s3_object" "app_nodejs" {
   bucket = aws_s3_bucket.beanstalk_bucket.id
-  key    = "../apis.zip"
-  source = "release/"
+  key    = "apis.zip"
+  source = "release/apis.zip"
   etag = filemd5("release/apis.zip")
   depends_on = [aws_s3_bucket.beanstalk_bucket]
 }
@@ -323,13 +323,13 @@ resource "aws_elastic_beanstalk_environment" "production_environment" {
 
   setting {
     namespace   = "aws:elasticbeanstalk:application:environment"
-    name        = "DB_USERNAME"
+    name        = "db_username"
     value       = var.db_username
   }
 
   setting {
     namespace   = "aws:elasticbeanstalk:application:environment"
-    name        = "DB_PASSWORD"
+    name        = "db_password"
     value       = var.db_password
   }
 }
