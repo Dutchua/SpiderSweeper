@@ -52,6 +52,10 @@ const createButtons = () => {
   const highScoreButton = document.getElementById("highscore");
   const startButton = document.getElementById("start");
   const playButton = document.getElementById("play");
+  const miniStartButton = document.getElementById("start-mini");
+  const miniPlayButton = document.getElementById("play-mini");
+  const miniHighScoreButton = document.getElementById("highscore-mini");
+  const miniLogoutButton = document.getElementById("login-mini");
 
   if (loginButton) {
     addButtonEvent(loginButton, "#game");
@@ -68,4 +72,21 @@ const createButtons = () => {
   if (playButton) {
     addButtonEvent(playButton, "#game");
   }
+
+  if (miniStartButton) {
+
+  }
+
+  if (miniPlayButton) {
+    addButtonEvent(miniPlayButton, "#game");
+  }
+
+  if (miniHighScoreButton) {
+    addButtonEvent(miniHighScoreButton, "#highscores");
+  }
+
+  if (miniLogoutButton) {
+    addButtonEvent(miniLogoutButton, "#login-page");
+  }    
+
 };
