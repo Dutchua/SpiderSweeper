@@ -15,7 +15,7 @@ export async function oauthSignIn() {
     client_id:
       "389577083888-tuvvlhaf0ka80p9tqrs8vmrfp106e2nq.apps.googleusercontent.com",
     redirect_uri:
-      "http://github-oidc-terraform-aws-tfstates-bucket.s3-website-eu-west-1.amazonaws.com",
+      "http://127.0.0.1:5500/client/index.html",
     response_type: "token",
     scope: "https://www.googleapis.com/auth/userinfo.profile",
     include_granted_scopes: "true",
@@ -68,7 +68,7 @@ async function handleRedirect(resp) {
     return;
   }
   try {
-    let user = await fetch("http://localhost:8080/sign-in", {
+    let user = await fetch(server+"sign-in", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
