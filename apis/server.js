@@ -170,7 +170,7 @@ app.get("/new-game", cors(corsOptions), async (req, res) => {
   return;
 });
 
-app.get("/game", cors(corsOptions), async (req, res) => {
+app.post("/game", cors(corsOptions), async (req, res) => {
   let oauthResponse = await verifyToken(req.headers.authorization);
   if (!(await oauthResponse["success"])) {
     res.status(403).send({ message: "ERROR: Invalid OAuth Token" });
