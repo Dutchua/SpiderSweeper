@@ -106,7 +106,7 @@ app.post("/new-score", cors(corsOptions), async (req, res) => {
       let resp = await pool
         .request()
         .input("userID", sql.Int, userID)
-        .input("score", sql.Int, score)
+        .input("score", sql.VarChar, score)
         .input("date", sql.DateTime, date)
         .query(query);
 
