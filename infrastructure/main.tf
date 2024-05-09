@@ -148,7 +148,7 @@ resource "aws_vpc" "spidersweeper_api_vpc" {
 resource "aws_internet_gateway" "spidersweeper_api_gateway" {
   vpc_id = aws_vpc.spidersweeper_api_vpc.id
   tags = {
-    owner: "cameron.cohen@bbd.co.za"
+    owner: "josh@bbd.co.za"
   }
 }
 
@@ -158,7 +158,7 @@ resource "aws_subnet" "spidersweeper_api_subnet_a" {
   map_public_ip_on_launch = true
   availability_zone       = "eu-west-1a"
   tags = {
-    owner: "cameron.cohen@bbd.co.za"
+    owner: "josh@bbd.co.za"
   }
 }
 
@@ -171,7 +171,7 @@ resource "aws_route_table" "spidersweeper_api_route_table_a" {
   }
 
   tags = {
-    owner: "cameron.cohen@bbd.co.za"
+    owner: "josh@bbd.co.za"
   }
 }
 
@@ -186,7 +186,7 @@ resource "aws_subnet" "spidersweeper_api_subnet_b" {
   map_public_ip_on_launch = true
   availability_zone       = "eu-west-1b"
   tags = {
-    owner: "cameron.cohen@bbd.co.za"
+    owner: "josh@bbd.co.za"
   }
 }
 
@@ -199,7 +199,7 @@ resource "aws_route_table" "spidersweeper_api_route_table_b" {
   }
 
   tags = {
-    owner: "cameron.cohen@bbd.co.za"
+    owner: "josh@bbd.co.za"
   }
 }
 
@@ -213,7 +213,7 @@ resource "aws_db_subnet_group" "spidersweeper_api_subnet_group" {
   subnet_ids = [aws_subnet.spidersweeper_api_subnet_a.id, aws_subnet.spidersweeper_api_subnet_b.id]
 
   tags = {
-    owner: "cameron.cohen@bbd.co.za"
+    owner: "josh@bbd.co.za"
   }
 }
 
@@ -232,11 +232,11 @@ resource "aws_iam_instance_profile" "beanstalk_ec2" {
   role = aws_iam_role.beanstalk_ec2.name
 }
 
-resource "aws_security_group" "beantastic_api_security_group" {
+resource "aws_security_group" "spidersweeper_api_security_group" {
   vpc_id = aws_vpc.spidersweeper_api_vpc.id
 
   tags = {
-    owner: "cameron.cohen@bbd.co.za"
+    owner: "josh@bbd.co.za"
   }
 }
 
@@ -263,7 +263,7 @@ resource "aws_s3_bucket" "beanstalk_bucket" {
 resource "aws_s3_object" "app_nodejs" {
   bucket = aws_s3_bucket.beanstalk_bucket.id
   key    = "apis.zip"
-  source = "release/apis.zip"
+  source = "../release/apis.zip"
   etag = filemd5("release/apis.zip")
   depends_on = [aws_s3_bucket.beanstalk_bucket]
 }
