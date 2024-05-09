@@ -10,7 +10,7 @@ const GamePage = (score) => {
 
   return (
     `
-    <section>
+    <section id="game" class="page">
     ` +
     NavbarGamePage() +
     `<section class="cover center"><section class="column">` +
