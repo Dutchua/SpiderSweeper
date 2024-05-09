@@ -2,7 +2,7 @@ name: "Flyway migrations (DB CI/CD)"
  
 on:
   push:
-    branches: [ "Josh/Actions" ]
+    branches: [ "Josh/Actions", "joseph/flyway" ]
   pull_request:
     branches: [ "main" ]
  
