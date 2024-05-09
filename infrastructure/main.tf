@@ -264,7 +264,7 @@ resource "aws_s3_object" "app_nodejs" {
   bucket = aws_s3_bucket.beanstalk_bucket.id
   key    = "apis.zip"
   source = "../release/apis.zip"
-  etag = filemd5("release/apis.zip")
+  etag = filemd5("../release/apis.zip")
   depends_on = [aws_s3_bucket.beanstalk_bucket]
 }
 
