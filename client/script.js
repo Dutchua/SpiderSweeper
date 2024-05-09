@@ -3,6 +3,8 @@ import GamePage from "./src/screens/game-page.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 import Timer from "./src/utils/Timer.js";
 import { oauthSignIn } from "./src/api/oauth.js";
+import { getHighScores, makeMove, startGame } from "./src/api/interface.js";
+import { Loader } from "./src/components/tiles.js";
 
 const root = document.querySelector("main");
 
@@ -14,11 +16,55 @@ const routes = {
 
 const timer = new Timer();
 
+window.handleTileClick = async (row, col) => {
+  try {
+    render(GamePage(undefined, undefined, true));
+    const { board, condition } = await makeMove(row, col);
+
+    if (condition === "won") {
+      const timeTaken = timer.stop();
+
+      // TODO: Show a winning message to the user
+
+      return;
+    } else if (condition === "lost") {
+      timer.stop();
+      return;
+    }
+
+    // continue, thus update the grid
+    await renderGamePage(board);
+  } catch (error) {
+    // TODO: Show an error message to the user
+    console.error(error);
+  }
+};
+
+const render = (html) => {
+  const wrapper = document.createElement("section");
+  wrapper.insertAdjacentHTML("beforeend", html);
+
+  while (wrapper.firstChild) {
+    root.replaceChildren();
+    root.appendChild(wrapper.firstChild);
+  }
+
+  addEventListenersToDynamicElements();
+};
+
+const renderGamePage = async (grid) => {
+  try {
+    render(GamePage(grid, undefined, true));
+    const highScores = await getHighScores();
+
+    render(GamePage(grid, highScores));
+  } catch (error) {
+    render(`<h3>${error.message}</h3>`);
+  }
+};
+
 const navigateTo = async (hash) => {
   switch (hash) {
-    case "#game":
-      timer.start();
-      break;
     case "#login-page":
       timer.reset();
       break;
@@ -33,7 +79,7 @@ const navigateTo = async (hash) => {
   const screenHTML = await screenComponent();
 
   const wrapper = document.createElement("section");
-  wrapper.insertAdjacentHTML("beforeend", screenHTML);
+  wrapper.replaceChildren("beforeend", screenHTML);
 
   while (wrapper.firstChild) {
     root.appendChild(wrapper.firstChild);
@@ -42,13 +88,17 @@ const navigateTo = async (hash) => {
   addEventListenersToDynamicElements();
 };
 
-const handleInitialLoad = () => {
+const handleInitialLoad = async () => {
   const username = sessionStorage.getItem("username");
   console.log(username);
   if (username) {
     window.location.hash = "#game";
+    render(Loader());
+    const grid = await startGame();
+    await renderGamePage(grid);
     timer.reset();
     timer.start();
+    return;
   }
   const initialHash = window.location.hash || "#login-page";
   navigateTo(initialHash);
@@ -130,29 +180,9 @@ const createButtons = () => {
   }
 };
 
-let winningCondition = false;
-let losingCondition = false;
-
 // const stopGameButton = document.getElementById("logout");
 
 // stopGameButton.addEventListener("click", () => {
 //   winningCondition = true;
 //   losingCondition = true;
 // });
-
-function checkWinningCondition() {
-  if (winningCondition) {
-    timer.stop();
-  }
-}
-
-function checkLosingCondition() {
-  if (losingCondition) {
-    timer.stop();
-  }
-}
-
-setInterval(() => {
-  checkWinningCondition();
-  checkLosingCondition();
-}, 1000);

@@ -60,17 +60,36 @@ export async function startGame() {
 
   const result = await response.json();
 
-  return result;
+  if (!Array.isArray(result.board)) {
+    throw new Error("Failed to start a new game");
+  }
+
+  return result.board;
 }
 
-export const getGame = async (user) => {
+export const makeMove = async (row, col) => {
   const response = await fetch(`${API_BASE_URL}/game`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `${sessionStorage.getItem("token")}`,
     },
-    body: JSON.stringify(user),
+    body: JSON.stringify({ row, col }),
   });
-  return response.json();
+
+  if (!response.ok) {
+    throw new Error("Failed to make a move");
+  }
+
+  const result = await response.json();
+
+  if (!Array.isArray(result.board)) {
+    throw new Error("Failed to make a move - invalid board returned");
+  }
+
+  if (!result.condition) {
+    throw new Error("Failed to make a move - invalid condition returned");
+  }
+
+  return result;
 };

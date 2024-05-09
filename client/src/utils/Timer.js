@@ -26,6 +26,7 @@ class Timer {
     clearInterval(this.intervalId);
     this.endTime = new Date();
     const elapsedTime = Math.floor((this.endTime - this.startTime) / 1000);
+    return elapsedTime;
     // console.log(`Total time: ${elapsedTime} seconds`);
   }
 
