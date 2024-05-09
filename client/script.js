@@ -4,40 +4,38 @@ import Timer from "./src/utils/Timer.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 
 const root = document.getElementById("root");
+
+// create Element Login and append to root
+
+root.appendChild(LogIn());
 // root.innerHTML = GamePage("01:32");
-root.innerHTML = HighScorePage();
+// root.innerHTML = HighScorePage();
 
-// const timer = new Timer();
-// timer.start();
+document.addEventListener("DOMContentLoaded", function () {
+  // Check if authenticated
 
-// let winningCondition = false;
-// let losingCondition = false;
+  const navigateTo = (hash) => {
+    document.querySelectorAll(".page").forEach((page) => {
+      page.classList.remove("active");
+    });
 
-// const newGameButton = document.getElementById("start");
-// const stopGameButton = document.getElementById("logout");
-// newGameButton.addEventListener("click", () => {
-//   timer.reset();
-//   timer.start();
-// });
+    const targetPage = document.querySelector(hash);
+    if (targetPage) {
+      targetPage.classList.add("active");
+    } else {
+      document.querySelector("#login").classList.add("active");
+    }
+  };
 
-// stopGameButton.addEventListener("click", () => {
-//   winningCondition = true;
-//   losingCondition = true;
-// });
+  const handleInitialLoad = () => {
+    const initialHash = window.location.hash || "#login";
+    console.log(initialHash);
+    navigateTo(initialHash);
+  };
 
-// function checkWinningCondition() {
-//   if (winningCondition) {
-//     timer.stop();
-//   }
-// }
+  window.addEventListener("hashchange", function () {
+    navigateTo(window.location.hash);
+  });
 
-// function checkLosingCondition() {
-//   if (losingCondition) {
-//     timer.stop();
-//   }
-// }
-
-// setInterval(() => {
-//   checkWinningCondition();
-//   checkLosingCondition();
-// }, 1000);
+  handleInitialLoad();
+});

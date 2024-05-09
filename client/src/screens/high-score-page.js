@@ -7,7 +7,7 @@ import { DummyHighScores } from "../dummy.js";
 
 const HighScorePage = () => {
   return (
-    `<section>` +
+    `<section id="highscores" class="page">` +
     NavbarHighScorePage() +
     NavbarHighScorePageMini() +
     HighScoreTable(DummyHighScores.highScores) +
