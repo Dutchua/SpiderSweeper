@@ -6,7 +6,7 @@ const sql = require("mssql");
 const numRows = 10;
 const numCols = 10;
 const numMines = 10;
-const toWin = 54;
+const toWin = 90;
 
 let boards = [];
 app.use(express.json());
@@ -20,6 +20,9 @@ const config = {
   user: process.env.db_username,
   password: process.env.db_password,
   server: process.env.db_instance_name,
+  // user: "admin",
+  // password: "supersecretpassword",
+  // server: "terraform-20240508195349442000000003.cex3uty77nu9.eu-west-1.rds.amazonaws.com",
   port: 1433,
   database: "SpiderSweeper",
   options: {
@@ -96,18 +99,12 @@ app.post("/new-score", cors(corsOptions), async (req, res) => {
   try {
     const score = req.body["highscore"];
     const date = Date.now();
-
     try {
       let pool = await sql.connect(config);
-      let userID = await pool
-        .request()
-        .query(`select userID from users where username = '${username}'`);
-      const query = `INSERT INTO HighScore (userID, Score, Date) VALUES (@userID, @score, @date)`;
+      const query = `INSERT INTO HighScore (userID, Score, tmstamp) VALUES ((select userID from Users where Username = '${username}'), '${score}', GETDATE())`;
+      console.log(query);
       let resp = await pool
         .request()
-        .input("userID", sql.Int, userID)
-        .input("score", sql.VarChar, score)
-        .input("date", sql.DateTime, date)
         .query(query);
 
       console.log("Data inserted successfully.");
