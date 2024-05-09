@@ -101,7 +101,7 @@ app.post("/new-score", cors(corsOptions), async (req, res) => {
       let pool = await sql.connect(config);
       let userID = await pool
         .request()
-        .query(`select userID from users where username = ${username}`);
+        .query(`select userID from users where username = '${username}'`);
       const query = `INSERT INTO HighScore (userID, Score, Date) VALUES (@userID, @score, @date)`;
       let resp = await pool
         .request()
