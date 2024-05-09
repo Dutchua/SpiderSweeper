@@ -104,7 +104,7 @@ resource "aws_elastic_beanstalk_application_version" "app_version" {
 resource "aws_elastic_beanstalk_environment" "eb_env" {
   name                = "${var.service_name}-env"
   application         = aws_elastic_beanstalk_application.eb_app.name
-  solution_stack_name = "64bit Amazon Linux 2 v3.2.0 running Node.js 14"
+  solution_stack_name = "64bit Amazon Linux 2023 v6.1.4 running Node.js 20"
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
