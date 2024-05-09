@@ -3,48 +3,54 @@ export const LoginButton = () => {
 };
 
 export const LogoutButton = () => {
-  return `<button class="button logout" id="logout">Log Out</button>`;
+  return `<button class="button logout row" id="logout">
+  <img class="icon nav-icon" src="./public/icons/logout-icon.svg" alt="icon" />
+  <p class="button-text">Log Out<p>
+  </button>`;
 };
 
 export const HighScoreButton = () => {
   return `<button class="button row" id="highscore">
-  <img class="icon" src="./public/icons/star.svg" alt="icon" />
-  High Scores
+  <img class="icon nav-icon" src="./public/icons/star.svg" alt="icon" />
+  <p class="button-text">High Scores<p>
 </button>`;
 };
 
 export const NewGameButton = () => {
-  return `<button class="button max-nav" id="start"><img class="icon" src="./public/icons/restart.svg" alt="icon" />New Game</button>`;
+  return `<button class="button max-nav" id="start">
+  <img class="icon" src="./public/icons/restart.svg" alt="icon" />
+  <p class="button-text-New-Game">New Game<p>
+  </button>`;
 };
 
 export const PlayGameButton = () => {
-  return `<button class="button row" id="play"><img class="icon" src="./public/icons/home.svg" alt="icon" />Play Game</button>`;
-};
-
-export const HighScoreButtonMini = () => {
-  return `<button class="button" id="highscore-mini">
-  <img class="icon" src="./public/icons/star.svg" alt="icon" />
-</button>`;
-};
-
-export const NewGameButtonMini = () => {
-  return `<button class="button mini-nav" id="start-mini">
-  <img class="icon" src="./public/icons/restart.svg" alt="icon" />
-</button>`;
-};
-
-export const PlayGameButtonMini = () => {
-  return `<button class="button" id="play-mini"><img class="icon" src="./public/icons/home.svg" alt="icon" /></button>`;
-};
-
-export const BurgerMenuButton = () => {
-  return `<button class="button" id="burger-menu">
-  <img class="icon" src="./public/icons/burger-menu.svg" alt="icon" />
-</button>`;
-};
-
-export const LogoutButtonMini = () => {
-  return `<button class="button logout" id="login-mini">
-  <img class="icon" src="./public/icons/logout-icon.svg" alt="icon" />
+  return `<button class="button row" id="play">
+  <img class="icon" src="./public/icons/home.svg" alt="icon" />
+  <p class="button-text">Play Game<p>
   </button>`;
 };
+
+export const GameRuleButton = () => {
+  return `<button class="button row" id="rule">
+  <img class="icon" src="./public/icons/howto-icon.svg" alt="icon" />
+  <p class="button-text">Game Rules<p>
+  </button>`
+}
+
+export const CloseRuleDiaglog = () => {
+  return (
+    `<button autofocus class="close-dialog-button" id="close-rule-dialog">Close</button>`
+  )
+}
+
+export const CloseWinDiaglog = () => {
+  return (
+    `<button autofocus class="close-dialog-button" id="close-win-dialog">Close</button>`
+  )
+}
+
+export const CloseLoseDiaglog = () => {
+  return (
+    `<button autofocus class="close-dialog-button" id="close-lose-dialog">Close</button>`
+  )
+}
