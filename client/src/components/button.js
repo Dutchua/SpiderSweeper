@@ -3,7 +3,7 @@ export const LoginButton = () => {
 };
 
 export const LogoutButton = () => {
-  return `<button class="button logout">Log Out</button>`;
+  return `<button class="button logout" id="logout">Log Out</button>`;
 };
 
 export const HighScoreButton = () => {

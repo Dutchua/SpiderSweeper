@@ -1,41 +1,71 @@
 import LogIn from "./src/screens/logIn.js";
 import GamePage from "./src/screens/game-page.js";
-import Timer from "./src/utils/Timer.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 
-const root = document.getElementById("root");
+const root = document.querySelector("main");
 
-// create Element Login and append to root
+const routes = {
+  "#login-page": LogIn,
+  "#highscores": HighScorePage,
+  "#game": GamePage,
+};
 
-//root.appendChild(LogIn());
- root.innerHTML = GamePage("01:32");
-// root.innerHTML = HighScorePage();
+// Check if authenticated
+const navigateTo = (hash) => {
+  root.textContent = "";
+  const screenComponent = routes[hash] || LogIn;
+  const screenHTML = screenComponent();
+  const wrapper = document.createElement("section");
+  wrapper.insertAdjacentHTML("beforeend", screenHTML);
 
-// document.addEventListener("DOMContentLoaded", function () {
-//   // Check if authenticated
+  while (wrapper.firstChild) {
+    root.appendChild(wrapper.firstChild);
+  }
 
-//   const navigateTo = (hash) => {
-//     document.querySelectorAll(".page").forEach((page) => {
-//       page.classList.remove("active");
-//     });
+  addEventListenersToDynamicElements();
+};
 
-//     const targetPage = document.querySelector(hash);
-//     if (targetPage) {
-//       targetPage.classList.add("active");
-//     } else {
-//       document.querySelector("#login").classList.add("active");
-//     }
-//   };
+const handleInitialLoad = () => {
+  const initialHash = window.location.hash || "#login-page";
+  navigateTo(initialHash);
+};
 
-//   const handleInitialLoad = () => {
-//     const initialHash = window.location.hash || "#login";
-//     console.log(initialHash);
-//     navigateTo(initialHash);
-//   };
+window.addEventListener("hashchange", () => {
+  navigateTo(window.location.hash);
+});
 
-//   window.addEventListener("hashchange", function () {
-//     navigateTo(window.location.hash);
-//   });
+document.addEventListener("DOMContentLoaded", handleInitialLoad);
 
-//   handleInitialLoad();
-// });
+const addEventListenersToDynamicElements = () => {
+  createButtons();
+};
+
+const addButtonEvent = (button, hash) => {
+  button.addEventListener("click", () => {
+    navigateTo(hash);
+  });
+};
+
+const createButtons = () => {
+  const loginButton = document.getElementById("login");
+  const logoutButton = document.getElementById("logout");
+  const highScoreButton = document.getElementById("highscore");
+  const startButton = document.getElementById("start");
+  const playButton = document.getElementById("play");
+
+  if (loginButton) {
+    addButtonEvent(loginButton, "#game");
+  }
+
+  if (logoutButton) {
+    addButtonEvent(logoutButton, "#login-page");
+  }
+
+  if (highScoreButton) {
+    addButtonEvent(highScoreButton, "#highscores");
+  }
+
+  if (playButton) {
+    addButtonEvent(playButton, "#game");
+  }
+};
