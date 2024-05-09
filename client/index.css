@@ -78,7 +78,7 @@ body {
 .button {
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
   text-align: center;
   text-decoration: none;
@@ -111,14 +111,6 @@ label {
 .cover {
   width: 100%;
   height: 100%;
-}
-
-/* -------------------------------------------------------------------- */
-/* LOGIN PAGE */
-/* -------------------------------------------------------------------- */
-
-#spider{
-  align-items: center;
 }
 
 /* -------------------------------------------------------------------- */
@@ -156,6 +148,23 @@ nav {
   min-width: 15rem;
 }
 
+/* -------------------------------------------------------------------- */
+/*NAVIGATION BAR -- DISPLAYS*/
+/* -------------------------------------------------------------------- */
+
+.mini-nav {
+  display: none;
+}
+
+.tiny {
+  display: none;
+}
+
+.max-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
 #UserInfo {
   display: flex;
 }
@@ -164,23 +173,29 @@ nav {
 /*NAVIGATION BAR -- RESPONSIVNESS*/
 /* -------------------------------------------------------------------- */
 
-@container (width< 61.875rem) {
+@container (max-width: 800px) {
   #top-right,
   #bottom-left,
-  #center  {
+  #center,
+  .max-nav {
     display: none;
   }
 
-  .nav-icon{
-    padding-left: 50%;
-  }
+  .mini-nav {
+    display: flex;
+    justify-content: space-between;
+  } 
+}
 
-  .button-text{
+@container (max-width: 400px) {
+  #UserInfo {
     display: none;
   }
-
-  .button-text-New-Game{
+  .mini-nav{
     display: none;
+  }
+  .tiny {
+    display: flex;
   }
 }
 
@@ -220,7 +235,7 @@ nav {
   position: absolute;
   top: 0;
   left: calc(
-    50% - (24.25rem / 2)
+    50% - (374px / 2)
   ); /* Width of the image, divided by 2 to place it in the perfect center */
   z-index: -1;
 }
@@ -331,41 +346,4 @@ td {
 tr:hover {
   background-color: var(--secondary-color);
   color: var(--secondary-text-color);
-}
-
-/* -------------------------------------------------------------------- */
-/*HOW TO PLAY DIALOG*/
-/* -------------------------------------------------------------------- */
-
-#dialog-header {
-  color: var(--primary-color);
-  text-align: center;
-  font-size: 2rem;
-}
-
-.close-dialog-button{
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 0.25rem;
-  border: none;
-  height: 2.5rem;
-  background-color: var(--secondary-color);
-  align-self: center;
-}
-
-dialog{
-  background-color: var(--secondary-text-color);  
-  width: 60%;
-}
-
-.dialogbuttoncontainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }

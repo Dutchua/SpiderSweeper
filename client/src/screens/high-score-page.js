@@ -1,16 +1,18 @@
 import HighScoreTable from "../components/highscoretable.js";
 import {
-  NavbarHighScorePage
+  NavbarHighScorePage,
+  NavbarHighScorePageMini,
+  SmallNavbar
 } from "../components/navbar.js";
 import { DummyHighScores } from "../dummy.js";
-import { HowToPlayDialog } from "../components/howtoplay.js";
 
 const HighScorePage = () => {
   return (
     `<section id="highscores" class="page">
     ` +
     NavbarHighScorePage() +
-    HowToPlayDialog() +
+    NavbarHighScorePageMini() +
+    SmallNavbar() +
     HighScoreTable(DummyHighScores.highScores) +
     `
     </section>`
@@ -18,4 +20,3 @@ const HighScorePage = () => {
 };
 
 export default HighScorePage;
-

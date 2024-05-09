@@ -1,4 +1,4 @@
-import { NewGameButton } from "./button.js";
+import { NewGameButton, NewGameButtonMini } from "./button.js";
 import FlagCount from "./flag-count.js";
 import StopWatch from "./stopwatch.js";
 
@@ -10,6 +10,7 @@ const GameFunctions = () => {
     FlagCount({ count: 10 }) +
     `</section>` +
     NewGameButton() +
+    NewGameButtonMini() +
     `
 </section>`
   );

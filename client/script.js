@@ -2,6 +2,7 @@ import LogIn from "./src/screens/logIn.js";
 import GamePage from "./src/screens/game-page.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 import Timer from "./src/utils/Timer.js";
+import { sendHello } from "./src/api/interface.js";
 import { oauthSignIn } from "./src/api/oauth.js";
 
 const root = document.querySelector("main");
@@ -42,23 +43,13 @@ const navigateTo = (hash) => {
 };
 
 const handleInitialLoad = () => {
-  const username = sessionStorage.getItem("username");
-  console.log(username);
-  if (username) {
-    window.location.hash = "#game";
-    timer.reset();
-    timer.start();
-  }
+  const response = sendHello();
+  console.log(response);
   const initialHash = window.location.hash || "#login-page";
   navigateTo(initialHash);
 };
 
 window.addEventListener("hashchange", () => {
-  if (window.location.hash === "#game") {
-    timer.reset();
-    timer.start();
-    return;
-  }
   navigateTo(window.location.hash);
 });
 
@@ -69,22 +60,19 @@ const addEventListenersToDynamicElements = () => {
 };
 
 const addButtonEvent = (button, hash) => {
-  button.addEventListener("click", () => {
-    if (button.id === "login") {
+  if (button.id === "login" && (hash === "__start__" || hash === "#game")) {
+    button.addEventListener("click", () => {
       oauthSignIn();
-      timer.reset();
-      timer.start();
-      return;
-    } else if (hash === "#game") {
       navigateTo("#game");
-    } else if (hash === "__start__") {
       timer.reset();
       timer.start();
-      return;
-    } else {
+    });
+    return;
+  } else {
+    button.addEventListener("click", () => {
       navigateTo(hash);
-    }
-  });
+    });
+  }
 };
 
 const createButtons = () => {
@@ -93,24 +81,10 @@ const createButtons = () => {
   const highScoreButton = document.getElementById("highscore");
   const startButton = document.getElementById("start");
   const playButton = document.getElementById("play");
-  const gameRuleButton = document.getElementById("rule");
-  const ruleDialog = document.getElementById("rule-dialog");
-  const closeRuleDialogButton = document.getElementById("close-rule-dialog");
-
-  if (gameRuleButton) {
-    gameRuleButton.addEventListener("click", () => {
-      console.log("button clicked");
-      timer.pause();
-      ruleDialog.showModal();
-    });
-  }
-
-  if (closeRuleDialogButton) {
-    closeRuleDialogButton.addEventListener("click", () => {
-      timer.resume();
-      ruleDialog.close();
-    });
-  }
+  const miniStartButton = document.getElementById("start-mini");
+  const miniPlayButton = document.getElementById("play-mini");
+  const miniHighScoreButton = document.getElementById("highscore-mini");
+  const miniLogoutButton = document.getElementById("login-mini");
 
   if (loginButton) {
     addButtonEvent(loginButton, "#game");
@@ -125,8 +99,22 @@ const createButtons = () => {
   }
 
   if (playButton) {
-    console.log(playButton);
     addButtonEvent(playButton, "#game");
+  }
+
+  if (miniStartButton) {
+  }
+
+  if (miniPlayButton) {
+    addButtonEvent(miniPlayButton, "#game");
+  }
+
+  if (miniHighScoreButton) {
+    addButtonEvent(miniHighScoreButton, "#highscores");
+  }
+
+  if (miniLogoutButton) {
+    addButtonEvent(miniLogoutButton, "#login-page");
   }
 
   if (startButton) {
@@ -143,36 +131,17 @@ let losingCondition = false;
 //   winningCondition = true;
 //   losingCondition = true;
 // });
-const winDialog = document.getElementById("winner-dialog");
-const closeWinDiaglog = document.getElementById("close-win-dialog");
 
 function checkWinningCondition() {
-  if (winningCondition == true && losingCondition == false) {
+  if (winningCondition) {
     timer.stop();
-    winDialog.showModal();
   }
 }
 
-const loseDialog = document.getElementById("loser-dialog");
-const closeLoseDiaglog = document.getElementById("close-lose-dialog");
-
-if (closeWinDiaglog) {
-  closeWinDiaglog.addEventListener("click", () => {
-    winDialog.close();
-  });
-}
-
 function checkLosingCondition() {
-  if (winningCondition == false && losingCondition == true) {
+  if (losingCondition) {
     timer.stop();
-    loseDialog.showModal();
-}
-}
-
-if (closeLoseDiaglog) {
-  closeLoseDiaglog.addEventListener("click", () => {
-  loseDialog.close();
-});
+  }
 }
 
 setInterval(() => {

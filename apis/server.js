@@ -182,20 +182,15 @@ app.get("/game", async (req, res) => {
   console.log(boards);
   console.log("LENGTH ", boards.length, username);
   try {
-    let row = parseInt(req.body["row"]);
-    let col = parseInt(req.body["col"]);
-    console.log("coords", row, col);
-    let row = parseInt(req.body["row"]);
-    let col = parseInt(req.body["col"]);
-    console.log("coords", row, col);
+    let row = parseInt(req.body['row']);
+    let col = parseInt(req.body['col']);
+    console.log('coords', row, col);
     if (board != undefined) console.log("THE BOARD IS NOT EMPTY ", board[0][0]);
     let cells = [];
     let condition = revealCell(board, row, col, cells);
     console.log("count", cells);
     //condition: won lost continue
-    res
-      .send({ message: "success", cells: cells, condition: condition })
-      .status(200);
+    res.send({ message: "success", cells: cells, condition: condition }).status(200);
     return;
   } catch (error) {
     console.log(error);
@@ -319,5 +314,5 @@ function revealCell(board, row, col, cells) {
       }
     }
   }
-  return "continue";
+  return 'continue';
 }
