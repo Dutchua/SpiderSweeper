@@ -115,7 +115,7 @@ app.post('/highscores', async (req, res) => {
             res.status(500).send({ message: 'Error inserting data.', error: err });
         } finally {
             sql.close();
-        }   
+        }
     } catch (error) {
         console.log(error);
     }
@@ -128,6 +128,7 @@ app.get('/highscores', async (req, res) => {
         return { message: 'ERROR: Invalid OAuth Token' }
     }
     try {
+        let username = oauthResponse['name'];
         console.log('await sql connection');
         let pool = await sql.connect(config);
         console.log('past connect');
@@ -138,6 +139,25 @@ app.get('/highscores', async (req, res) => {
 
         console.log('HIighScores retrieved successfully.');
         res.status(200).send({ scores: resp.recordset, message: 'success' }); // Send the retrieved data as JSON response
+    } catch (err) {
+        console.error('Error retrieving data:', err);
+        res.status(500).send({ 'error': 'Error retrieving data.' });
+        // throw err;
+    } finally {
+        sql.close();
+    }
+    return
+});
+app.get('/new-game', async (req, res) => {
+    let oauthResponse = await verifyToken(req.headers.authorization);
+    if (!oauthResponse['success']) {
+        return { message: 'ERROR: Invalid OAuth Token' }
+    }
+    try {
+        let username = oauthResponse['name'];
+        boards[username] = initializeBoard();
+        console.log('reset game'); 
+        res.status(200).send({ message: 'success' }); // Send the retrieved data as JSON response
     } catch (err) {
         console.error('Error retrieving data:', err);
         res.status(500).send({ 'error': 'Error retrieving data.' });
@@ -189,7 +209,6 @@ async function verifyToken(accessToken) {
         }
         return response.json();
     }).then(data => {
-        console.log(data);
         if (data['error']) {
             console.log('ERROR: ' + data['error']['message']);
             return { success: false, message: data['error']['message'] };
