@@ -10,7 +10,7 @@ const HighScorePage = async () => {
     ` +
     NavbarHighScorePage() +
     HowToPlayDialog() +
-    (await HighScoreTable(await fetchhighscores())) +
+    HighScoreTable(await fetchhighscores()) +
     `
     </section>`
   );
