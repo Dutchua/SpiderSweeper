@@ -14,7 +14,7 @@ const routes = {
 
 const timer = new Timer();
 
-const navigateTo = (hash) => {
+const navigateTo = async (hash) => {
   switch (hash) {
     case "#game":
       timer.start();
@@ -30,7 +30,8 @@ const navigateTo = (hash) => {
   }
   root.textContent = "";
   const screenComponent = routes[hash] || LogIn;
-  const screenHTML = screenComponent();
+  const screenHTML = await screenComponent();
+
   const wrapper = document.createElement("section");
   wrapper.insertAdjacentHTML("beforeend", screenHTML);
 
