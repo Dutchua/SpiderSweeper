@@ -3,6 +3,13 @@ export const getHighScores = async () => {
   return response.json();
 };
 
+export const sendHello = async () => {
+  const response = await fetch(
+    "http://spidersweeperapp-env.eba-jpuqcsfx.eu-west-1.elasticbeanstalk.com/hello"
+  );
+  return response.json();
+};
+
 export const postHighScore = async (highScore) => {
   const response = await fetch("http://localhost:8080/highscores", {
     method: "POST",

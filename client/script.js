@@ -2,6 +2,7 @@ import LogIn from "./src/screens/logIn.js";
 import GamePage from "./src/screens/game-page.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 import Timer from "./src/utils/Timer.js";
+import { sendHello } from "./src/api/interface.js";
 
 const root = document.querySelector("main");
 
@@ -41,6 +42,8 @@ const navigateTo = (hash) => {
 };
 
 const handleInitialLoad = () => {
+  const response = sendHello();
+  console.log(response);
   const initialHash = window.location.hash || "#login-page";
   navigateTo(initialHash);
 };
