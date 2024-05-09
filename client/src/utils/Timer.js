@@ -14,8 +14,11 @@ class Timer {
       const elapsedTime = Math.floor((currentTime - this.startTime) / 1000);
       const minutes = Math.floor(elapsedTime / 60);
       const seconds = elapsedTime % 60;
-      minutesLabel.innerHTML = minutes < 10 ? `0${minutes}` : minutes;
-      secondsLabel.innerHTML = seconds < 10 ? `0${seconds}` : seconds;
+      console.log(`${minutes}:${seconds}`, minutesLabel, secondsLabel);
+      if (minutesLabel && secondsLabel) {
+        minutesLabel.innerHTML = minutes < 10 ? `0${minutes}` : minutes;
+        secondsLabel.innerHTML = seconds < 10 ? `0${seconds}` : seconds;
+      }
     }, 1000);
   }
 
@@ -32,8 +35,11 @@ class Timer {
     this.endTime = null;
     const minutesLabel = document.getElementById("minutes");
     const secondsLabel = document.getElementById("seconds");
-    minutesLabel.innerHTML = "00";
-    secondsLabel.innerHTML = "00";
+
+    if (minutesLabel && secondsLabel) {
+      minutesLabel.innerHTML = "00";
+      secondsLabel.innerHTML = "00";
+    }
   }
 }
 
