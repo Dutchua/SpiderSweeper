@@ -1,10 +1,11 @@
+
 const server = 'http://localhost:8080'
 
 
 let username = '';
 let accessToken = '';
 
-function oauthSignIn() {
+async function oauthSignIn() {
     var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
     var form = document.createElement('form');
@@ -30,35 +31,41 @@ function oauthSignIn() {
 
     // Add form to page and submit it to open the OAuth 2.0 endpoint.
     document.body.appendChild(form);
-    form.submit();
-    handleRedirect
+    let ans = await form.submit();
+    await new Promise(resolve => {
+        console.log('hewo');
+        setTimeout(() => {
+            console.log('hewo again');
+            resolve('jank');
+        }, 1000);
+    });
+    //url has the token
+
+    //need to grab the token
+
+    //THEN send to api
+
+    await ans
+    console.log('COTNINUE');
+    return true
 }
 
 
-async function handleRedirect() {
-    var urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams);
+async function handleRedirect(resp) {
     let hash = location.hash.substring(1);
     let fragmentParams = new URLSearchParams(hash);
     accessToken = fragmentParams.get('access_token');
-    let email;
-
-    // Fetch user info using the access token
-    await fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + accessToken)
-        .then(response => response.json())
-        .then(data => {
-            email = data.email;
-            console.log(data);
-            username = data['name']
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    console.log("User: " + username);
+    console.log('token ', accessToken);
 
     // POPULATES DB AND RETURNS USERNAME
     let s = `${server}/sign-in`
     console.log(s);
+    if (accessToken == undefined || accessToken == null) {
+        console.log('empty');
+        urlParams = new URLSearchParams(window.location.search);
+        console.log(urlParams);
+        return
+    }
     try {
         let user = await fetch('http://localhost:8080/sign-in', {
             method: 'GET',
@@ -77,35 +84,20 @@ async function handleRedirect() {
             console.error('There was a problem with the fetch operation:', error);
         });
     } catch (error) {
-        console.log('cant connect ',error);
+        console.log('cant connect ', error);
     }
+    return true
+}
+//do bunch of oatuh shandez
+//returns token url
+//IDEALLY grab token, send to API
+//REALITY, since oauth redirects, it goes somehwere, comes back and THEN it add the token to url
+//MEANWHILE it sends to our backend/api with nothing
+
+console.log(location.hash);
+if (location.hash) {
+    console.log('TIME to cook');
+    handleRedirect();
 }
 
-async function query() {
-    return await fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + accessToken
-            // Add any additional headers if needed
-        }
-    }).then(response => {
-        if (response.ok) {
-            console.log('Success!');
-        }
-        return response.json();
-    }).then(data => {
-        console.log(data);
-        if (data['error']) {
-            console.log('ERROR: ' + data['error']['message']);
-            return false;
-        } else {
-            return { success: true, name: data['name'] }
-        }
-    })
-}
 document.getElementById("loginButton").addEventListener("click", oauthSignIn);
-document.getElementById("grabButton").addEventListener("click", handleRedirect);
-document.getElementById("queryButton").addEventListener("click", query);
-
-
