@@ -3,6 +3,8 @@ import GameFunctions from "../components/game-functions.js";
 import Grid from "../components/grid.js";
 import { HowToPlayDialog } from "../components/howtoplay.js";
 import { Loader } from "../components/tiles.js";
+import { GameWonDialog } from "../components/gamewon.js";
+import { GameLostDialog } from "../components/gamelost.js";
 
 const GamePage = (grid, score, loading = false) => {
   if (loading) {
@@ -32,7 +34,10 @@ const GamePage = (grid, score, loading = false) => {
     HowToPlayDialog() +
     Grid(grid) +
     highScoresHTML +
-    `</section>
+    GameWonDialog() +
+    GameLostDialog() +
+    `<label id="Score">High Score: ${score}</label>
+    </section>
     </section>
     </section>`
   );
