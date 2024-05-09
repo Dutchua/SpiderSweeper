@@ -1,6 +1,6 @@
 const server =
   "http://spidersweeperapp-env.eba-jpuqcsfx.eu-west-1.elasticbeanstalk.com/";
-
+const frontend_url = "http://127.0.0.1:5500/client/";
 let username = "";
 let accessToken = "";
 
@@ -14,8 +14,7 @@ export async function oauthSignIn() {
   var params = {
     client_id:
       "389577083888-tuvvlhaf0ka80p9tqrs8vmrfp106e2nq.apps.googleusercontent.com",
-    redirect_uri:
-      "http://127.0.0.1:5500/client/index.html",
+    redirect_uri: frontend_url + "index.html",
     response_type: "token",
     scope: "https://www.googleapis.com/auth/userinfo.profile",
     include_granted_scopes: "true",
@@ -36,7 +35,6 @@ export async function oauthSignIn() {
   await new Promise((resolve) => {
     console.log("hewo");
     setTimeout(() => {
-      console.log("hewo again");
       resolve("jank");
     }, 1000);
   });
@@ -68,7 +66,7 @@ async function handleRedirect(resp) {
     return;
   }
   try {
-    let user = await fetch(server+"sign-in", {
+    let user = await fetch(server + "sign-in", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
