@@ -2,7 +2,6 @@ import LogIn from "./src/screens/logIn.js";
 import GamePage from "./src/screens/game-page.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 import Timer from "./src/utils/Timer.js";
-import { sendHello } from "./src/api/interface.js";
 import { oauthSignIn } from "./src/api/oauth.js";
 
 const root = document.querySelector("main");
@@ -43,13 +42,23 @@ const navigateTo = (hash) => {
 };
 
 const handleInitialLoad = () => {
-  const response = sendHello();
-  console.log(response);
+  const username = sessionStorage.getItem("username");
+  console.log(username);
+  if (username) {
+    window.location.hash = "#game";
+    timer.reset();
+    timer.start();
+  }
   const initialHash = window.location.hash || "#login-page";
   navigateTo(initialHash);
 };
 
 window.addEventListener("hashchange", () => {
+  if (window.location.hash === "#game") {
+    timer.reset();
+    timer.start();
+    return;
+  }
   navigateTo(window.location.hash);
 });
 
@@ -60,10 +69,9 @@ const addEventListenersToDynamicElements = () => {
 };
 
 const addButtonEvent = (button, hash) => {
-  if (button.id === "login" && (hash === "__start__" || hash === "#game")) {
+  if (button.id === "login") {
     button.addEventListener("click", () => {
       oauthSignIn();
-      navigateTo("#game");
       timer.reset();
       timer.start();
     });
@@ -81,10 +89,6 @@ const createButtons = () => {
   const highScoreButton = document.getElementById("highscore");
   const startButton = document.getElementById("start");
   const playButton = document.getElementById("play");
-  const miniStartButton = document.getElementById("start-mini");
-  const miniPlayButton = document.getElementById("play-mini");
-  const miniHighScoreButton = document.getElementById("highscore-mini");
-  const miniLogoutButton = document.getElementById("login-mini");
 
   if (loginButton) {
     addButtonEvent(loginButton, "#game");

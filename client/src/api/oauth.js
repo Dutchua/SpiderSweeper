@@ -93,6 +93,7 @@ async function handleRedirect(resp) {
   } catch (error) {
     console.log("cant connect ", error);
   }
+  window.location.hash = "#game";
   return true;
 }
 //do bunch of oatuh shandez
