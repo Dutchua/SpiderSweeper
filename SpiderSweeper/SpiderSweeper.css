@@ -1,7 +1,6 @@
-
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: #BEB7A4;
+  background-color: #beb7a4;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -9,8 +8,13 @@ body {
 /* Table */
 
 /*-------------------------------------------------------------------------*/
-table, td {text-align: center;}
-.HighScoreText {text-align: left;}
+table,
+td {
+  text-align: center;
+}
+.HighScoreText {
+  text-align: left;
+}
 
 table {
   margin-left: 25%;
@@ -20,15 +24,17 @@ table {
 
 td {
   padding: 2%;
-  border-bottom: 0.0625rem solid #FF3F00;
-  border-top:  0.0625rem solid #FF3F00;
+  border-bottom: 0.0625rem solid #ff3f00;
+  border-top: 0.0625rem solid #ff3f00;
 }
 
-tr:hover {background-color: coral;}
+tr:hover {
+  background-color: coral;
+}
 
 /* Navigation Bar */
 .topnav {
-  background-color: #BEB7A4;
+  background-color: #beb7a4;
   overflow: hidden;
 }
 
@@ -38,75 +44,74 @@ tr:hover {background-color: coral;}
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;    
+  font-size: 17px;
 }
 
 .topnav-right {
   float: right;
 }
 
-#Logout{
-  background-color: #FF3F00;
+#Logout {
+  background-color: #ff3f00;
   color: white;
   padding: 20%;
   border: none;
 }
 
-#PlayGame{
-  background-color: #FF7F11;
+#PlayGame {
+  background-color: #ff7f11;
   color: black;
   padding: 2%;
   border: none;
   width: 100px;
 }
 
-.Icon{
-height: 2em;
-border-radius: 50px;
+.Icon {
+  height: 2em;
+  border-radius: 50px;
 }
 
-#Username{
-margin: auto;
+#Username {
+  margin: auto;
 }
-
 
 /* Gameboard */
 /*-------------------------------------------------------------------------*/
-#gameboard{
-margin-left: 25%;
+#gameboard {
+  margin-left: 25%;
 }
 
 .board {
-display: inline-block;
-margin: 20px;
+  display: inline-block;
+  margin: 20px;
 }
 
 .cell {
-width: 2em;
-height: 2em;
-border: 1px solid #ccc;
-display: inline-block;
-text-align: center;
-vertical-align: middle;
-font-size: 2em;
-cursor: pointer;
+  width: 2em;
+  height: 2em;
+  border: 1px solid #ccc;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 2em;
+  cursor: pointer;
 
-/* Default color for unrevealed tiles */
-background-color: #FF1F00;
+  /* Default color for unrevealed tiles */
+  background-color: #ff1f00;
 
-/* Default color for unrevealed tile text */
-color: #333;
+  /* Default color for unrevealed tile text */
+  color: #333;
 }
 .revealed {
-/* Color for revealed tiles */
-background-color: #BEB7A4;
+  /* Color for revealed tiles */
+  background-color: #beb7a4;
 
-/* Color for revealed tile text */
-color: #000;
+  /* Color for revealed tile text */
+  color: #000;
 }
 .mine {
-/* Color for mines */
-background-image: url("Spider.png");
+  /* Color for mines */
+  background-image: url("Spider.png");
 }
 
 /* Tiles */
@@ -116,35 +121,35 @@ background-image: url("Spider.png");
   max-height: 3.75rem;
   min-width: 1.25rem;
   min-height: 1.25rem;
-  background-color: #FF1F00;
+  background-color: #ff1f00;
   border-color: #ff7f11;
 }
 
-#safe{
+#safe {
   background-color: white;
 }
 
-#number{
+#number {
   background-color: #beb7a4;
   color: black;
 }
 
-#newspaper{
+#newspaper {
   background-color: #beb7a4;
-  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\newspaper.svg');
+  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\newspaper.svg");
 }
 
-#flower{
+#flower {
   background-color: #beb7a4;
-  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\flower.svg');
+  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\flower.svg");
 }
 
-#spider{
+#spider {
   background-color: #beb7a4;
-  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\gameboard_spider.svg');
+  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\gameboard_spider.svg");
 }
 
-#splat{
+#splat {
   background-color: #beb7a4;
-  background-image: url('C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\splat.svg');
+  background-image: url("C:\Users\bbdnet3055\Desktop\Grad Programme\Html & css\SpiderSweeper\client\public\icons\splat.svg");
 }

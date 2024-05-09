@@ -146,16 +146,23 @@ export const DummyData = {
     ],
     [
       {
-        isOpen: false,
+        isOpen: true,
         isMine: true,
         isFlagged: false,
         isExploded: true,
         value: 0,
       },
       {
-        isOpen: false,
+        isOpen: true,
         isMine: false,
-        isFlagged: false,
+        isFlagged: true,
+        isExploded: false,
+        value: 1,
+      },
+      {
+        isOpen: true,
+        isMine: true,
+        isFlagged: true,
         isExploded: false,
         value: 1,
       },
@@ -195,17 +202,10 @@ export const DummyData = {
         value: 1,
       },
       {
-        isOpen: false,
-        isMine: false,
-        isFlagged: false,
-        isExploded: false,
-        value: 1,
-      },
-      {
-        isOpen: false,
-        isMine: false,
-        isFlagged: false,
-        isExploded: false,
+        isOpen: true,
+        isMine: true,
+        isFlagged: true,
+        isExploded: true,
         value: 1,
       },
       {
@@ -655,27 +655,6 @@ export const DummyData = {
         isFlagged: false,
         isExploded: true,
         value: 0,
-      },
-      {
-        isOpen: false,
-        isMine: false,
-        isFlagged: false,
-        isExploded: false,
-        value: 1,
-      },
-      {
-        isOpen: false,
-        isMine: false,
-        isFlagged: false,
-        isExploded: false,
-        value: 1,
-      },
-      {
-        isOpen: false,
-        isMine: false,
-        isFlagged: false,
-        isExploded: false,
-        value: 1,
       },
       {
         isOpen: false,
@@ -717,8 +696,84 @@ export const DummyData = {
         isMine: false,
         isFlagged: false,
         isExploded: false,
+        value: 0,
+      },
+      {
+        isOpen: false,
+        isMine: false,
+        isFlagged: false,
+        isExploded: false,
+        value: 1,
+      },
+      {
+        isOpen: false,
+        isMine: false,
+        isFlagged: false,
+        isExploded: false,
+        value: 1,
+      },
+      {
+        isOpen: true,
+        isMine: false,
+        isFlagged: false,
+        isExploded: false,
         value: 4,
       },
     ],
+  ],
+};
+
+export const DummyHighScores = {
+  highScores: [
+    {
+      id: 0,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 1,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 2,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 3,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 4,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 5,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 6,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 7,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 8,
+      score: "01:32",
+      date: "2021/07/01",
+    },
+    {
+      id: 9,
+      score: "01:32",
+      date: "2021/07/01",
+    },
   ],
 };
