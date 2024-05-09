@@ -89,6 +89,7 @@ body {
   background-color: var(--secondary-color);
   color: var(--primary-text-color);
   padding: 0.5rem 1rem;
+  justify-content: center;
 }
 
 label {
