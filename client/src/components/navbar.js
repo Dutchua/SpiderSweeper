@@ -1,10 +1,7 @@
 import {
   LogoutButton,
-  LogoutButtonMini,
   HighScoreButton,
-  HighScoreButtonMini,
-  PlayGameButton,
-  PlayGameButtonMini,
+  PlayGameButton
 } from "./button.js";
 
 import UserInfo from "./user-info.js";
@@ -25,33 +22,6 @@ export const NavbarGamePage = () => {
   );
 };
 
-export const NavbarGamePageMini = () => {
-  return (
-    `<nav class="space-between mini-nav row">
-    ` +
-    UserInfo() +
-    `
-    <section class="row">
-      ` +
-    HighScoreButtonMini() +
-    LogoutButtonMini() +
-    `
-    </section>
-  </nav>`
-  );
-};
-
-export const SmallNavbar = () => {
-  return(
-    `<nav class="space-between tiny row">
-    ` +
-    HighScoreButton() +
-    LogoutButton() +
-    `
-    </nav>`
-  )
-}
-
 export const NavbarHighScorePage = () => {
   return (
     `<nav class="space-between max-nav row">
@@ -68,18 +38,3 @@ export const NavbarHighScorePage = () => {
   );
 };
 
-export const NavbarHighScorePageMini = () => {
-  return (
-    `<nav class="space-between mini-nav row">
-    ` +
-    UserInfo() +
-    `
-  <section class="row">
-    ` +
-    PlayGameButtonMini() +
-    LogoutButtonMini() +
-    `
-  </section>
-</nav>`
-  );
-};
