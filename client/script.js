@@ -3,6 +3,7 @@ import GamePage from "./src/screens/game-page.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 import Timer from "./src/utils/Timer.js";
 import { sendHello } from "./src/api/interface.js";
+import { oauthSignIn } from "./src/api/oauth.js";
 
 const root = document.querySelector("main");
 
@@ -59,8 +60,9 @@ const addEventListenersToDynamicElements = () => {
 };
 
 const addButtonEvent = (button, hash) => {
-  if (hash === "__start__" || hash === "#game") {
+  if (button.id === "login" && (hash === "__start__" || hash === "#game")) {
     button.addEventListener("click", () => {
+      oauthSignIn();
       navigateTo("#game");
       timer.reset();
       timer.start();
