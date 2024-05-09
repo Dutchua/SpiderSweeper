@@ -77,65 +77,6 @@ resource "aws_s3_object" "existing_bucket_files" {
   content_disposition = null
 }
 
-variable "service_name" {
-  type    = string
-  default = "nodejs-app"
-}
-
-variable "service_description" {
-  type    = string
-  default = "My awesome nodeJs App"
-}
-
-resource "aws_elastic_beanstalk_application" "eb_app" {
-  name        = var.service_name
-  description = var.service_description
-}
-
-resource "aws_elastic_beanstalk_application_version" "app_version" {
-  name                = "v1.0.0"  # Name of your application version
-  application         = aws_elastic_beanstalk_application.eb_app.name
-  description         = "First version of my application"
-  bucket              =  data.aws_s3_bucket.existing_bucket.bucket # Bucket where your application code is stored
-  key                 = "apis.zip"  # Path to your application code package
-  force_delete        = true  # Optional: Forces deletion of the application version if it's already deployed
-}
-
-resource "aws_elastic_beanstalk_environment" "eb_env" {
-  name                = "${var.service_name}-env"
-  application         = aws_elastic_beanstalk_application.eb_app.name
-  solution_stack_name = "64bit Amazon Linux 2023 v6.1.4 running Node.js 20"
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "IamInstanceProfile"
-    value     = var.aws_role
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "db_username"
-    value     = var.db_username
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "db_password"
-    value     = var.db_password
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "db_instance_name"
-    value     = var.db_instance_name
-  }
-
-  depends_on = [aws_elastic_beanstalk_application_version.app_version]
-}
-
-
-#################################################################################
-
 resource "aws_vpc" "spidersweeper_api_vpc" {
   cidr_block = "10.0.0.0/16"
   enable_dns_support = true
@@ -256,7 +197,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
 
 # S3 bucket to store jar
 resource "aws_s3_bucket" "beanstalk_bucket" {
-  bucket = "github-oidc-terraform-aws-tfstates-bucket"
+  bucket = "spider-sweeper-beanstalk"
 }
 
 # add jar to bucket
