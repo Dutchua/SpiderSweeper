@@ -28,9 +28,9 @@ const Grid = ({ grid }) => {
       }
       return ClosedTile();
     });
-    return `<section class="row">${rowHTML.join("")}</section>`;
+    return `<section class="gridrow">${rowHTML.join("")}</section>`;
   });
-  return `<section id="GameBoard" class="background">${gridHTML.join(
+  return `<section id="GameBoard" class="background gridcolumn">${gridHTML.join(
     ""
   )}</section>`;
 };
