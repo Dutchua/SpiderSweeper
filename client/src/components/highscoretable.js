@@ -6,7 +6,9 @@ const HighScoreTable = (highScores) => {
     <td>${score.date}</td>
     </tr>`;
   });
-  return `<table id="HighScoreTable">${scores.join("")}</table>`;
+  return `<section class="cover column"><table id="HighScoreTable">${scores.join(
+    ""
+  )}</table></section>`;
 };
 
 export default HighScoreTable;
