@@ -3,9 +3,9 @@ const express = require("express");
 const app = express();
 const port = 8080;
 const sql = require("mssql");
-const numRows = 8;
-const numCols = 8;
-let numMines = 10;
+const numRows = 10;
+const numCols = 10;
+const numMines = 10;
 const toWin = 54;
 
 let boards = [];
@@ -160,11 +160,10 @@ app.get("/new-game", async (req, res) => {
     let username = oauthResponse["name"];
     boards[username] = initializeBoard();
     console.log("reset game");
-    res.status(200).send({ message: "success" }); // Send the retrieved data as JSON response
+    res.status(200).send({ message: "success", board: boards[username] }); // Send the retrieved data as JSON response
   } catch (err) {
     console.error("Error retrieving data:", err);
     res.status(500).send({ error: "Error retrieving data." });
-    // throw err;
   } finally {
     sql.close();
   }
@@ -182,9 +181,6 @@ app.get("/game", async (req, res) => {
   console.log(boards);
   console.log("LENGTH ", boards.length, username);
   try {
-    let row = parseInt(req.body["row"]);
-    let col = parseInt(req.body["col"]);
-    console.log("coords", row, col);
     let row = parseInt(req.body["row"]);
     let col = parseInt(req.body["col"]);
     console.log("coords", row, col);
@@ -244,6 +240,7 @@ app.listen(port, () => {
 function initializeBoard() {
   let board = [];
   console.log("start init");
+  let _mines = numMines;
   for (let i = 0; i < numRows; i++) {
     board[i] = [];
     for (let j = 0; j < numCols; j++) {
@@ -255,12 +252,12 @@ function initializeBoard() {
     }
   }
 
-  while (numMines > 0) {
+  while (_mines > 0) {
     const row = Math.floor(Math.random() * numRows);
     const col = Math.floor(Math.random() * numCols);
     if (!board[row][col].isMine) {
       board[row][col].isMine = true;
-      numMines--;
+      _mines--;
     }
   }
 
