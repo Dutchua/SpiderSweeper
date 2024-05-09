@@ -123,7 +123,7 @@ app.post("/new-score", cors(corsOptions), async (req, res) => {
   }
 });
 
-app.get("/highscores", async (req, res) => {
+app.get("/highscores", cors(corsOptions), async (req, res) => {
   console.log("GET HIGHSCORE");
   let oauthResponse = await verifyToken(req.headers.authorization);
   if (!oauthResponse["success"]) {
@@ -151,7 +151,7 @@ app.get("/highscores", async (req, res) => {
   }
   return;
 });
-app.get("/new-game", async (req, res) => {
+app.get("/new-game", cors(corsOptions), async (req, res) => {
   let oauthResponse = await verifyToken(req.headers.authorization);
   if (!oauthResponse["success"]) {
     return { message: "ERROR: Invalid OAuth Token" };
@@ -170,7 +170,7 @@ app.get("/new-game", async (req, res) => {
   return;
 });
 
-app.get("/game", async (req, res) => {
+app.get("/game", cors(corsOptions), async (req, res) => {
   let oauthResponse = await verifyToken(req.headers.authorization);
   if (!(await oauthResponse["success"])) {
     res.status(403).send({ message: "ERROR: Invalid OAuth Token" });
@@ -186,7 +186,15 @@ app.get("/game", async (req, res) => {
     console.log("coords", row, col);
     if (board != undefined) console.log("THE BOARD IS NOT EMPTY ", board[0][0]);
     let cells = [];
-    let condition = revealCell(board, row, col, cells);
+    let condition = ''
+    if (req.body['flag'] == true) {
+      board[row][col] = !board[row][col];
+      cells[row + ',' + col] = board[row][col];
+      condition = 'continue';
+    } else {
+      condition = revealCell(board, row, col, cells);
+    }
+    boards[username] = board;
     console.log("count", cells);
     //condition: won lost continue
     res
@@ -246,6 +254,7 @@ function initializeBoard() {
     for (let j = 0; j < numCols; j++) {
       board[i][j] = {
         isMine: false,
+        isFlag: false,
         revealed: false,
         count: 0,
       };
