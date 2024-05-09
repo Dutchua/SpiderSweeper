@@ -11,8 +11,11 @@
   --background-color: #beb7a4;
   --primary-text-color: #000000;
   --secondary-text-color: #ffffff;
-  --font-family-body: "Roboto", sans-serif;
-  
+  --font-family-body: "Roboto", sans-serif;  
+}
+
+html {
+  height: 100%;
 }
 
 body {
@@ -23,6 +26,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;  
+  container-type: inline-size;
 }
 
 label {
