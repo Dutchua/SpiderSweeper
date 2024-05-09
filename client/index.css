@@ -340,9 +340,10 @@ tr:hover {
 #dialog-header {
   color: var(--primary-color);
   text-align: center;
+  font-size: 2rem;
 }
 
-#close-dialog-button{
+.close-dialog-button{
   display: flex;
   align-items: center;
   font-size: 1rem;
@@ -359,6 +360,7 @@ tr:hover {
 
 dialog{
   background-color: var(--secondary-text-color);  
+  width: 60%;
 }
 
 .dialogbuttoncontainer {
