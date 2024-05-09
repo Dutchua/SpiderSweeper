@@ -29,3 +29,16 @@ export const PlayGameButton = () => {
   <p class="button-text">Play Game<p>
   </button>`;
 };
+
+export const GameRuleButton = () => {
+  return `<button class="button row" id="rule">
+  <img class="icon" src="./public/icons/howto-icon.svg" alt="icon" />
+  <p class="button-text">Game Rules<p>
+  </button>`
+}
+
+export const CloseDiaglog = () => {
+  return (
+    `<button autofocus id="close-dialog-button">Close</button>`
+  )
+}

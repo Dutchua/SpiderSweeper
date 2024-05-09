@@ -2,6 +2,7 @@ import { NavbarGamePage} from "../components/navbar.js";
 import GameFunctions from "../components/game-functions.js";
 import Grid from "../components/grid.js";
 import { DummyData } from "../dummy.js";
+import { HowToPlayDialog } from "../components/howtoplay.js";
 
 const GamePage = (score) => {
   const gridHTML = {
@@ -15,6 +16,7 @@ const GamePage = (score) => {
     NavbarGamePage() +
     `<section class="cover center"><section class="column">` +
     GameFunctions() +
+    HowToPlayDialog() +
     Grid(gridHTML) +
     `<label id="Score">High Score: ${score}</label>
     </section>

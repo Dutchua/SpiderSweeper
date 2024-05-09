@@ -1,8 +1,10 @@
 import {
   LogoutButton,
   HighScoreButton,
+  GameRuleButton,
   PlayGameButton
 } from "./button.js";
+import { HowToPlayDialog } from "./howtoplay.js";
 
 import UserInfo from "./user-info.js";
 
@@ -14,6 +16,7 @@ export const NavbarGamePage = () => {
     `
   <section class="row">
     ` +
+    GameRuleButton() +
     HighScoreButton() +
     LogoutButton() +
     `
@@ -30,6 +33,7 @@ export const NavbarHighScorePage = () => {
     `
   <section class="row">
     ` +
+    GameRuleButton() +
     PlayGameButton() +
     LogoutButton() +
     `
