@@ -1,6 +1,7 @@
 import LogIn from "./src/screens/logIn.js";
 import GamePage from "./src/screens/game-page.js";
 import HighScorePage from "./src/screens/high-score-page.js";
+import Timer from "./src/utils/Timer.js";
 
 const root = document.querySelector("main");
 
@@ -10,8 +11,22 @@ const routes = {
   "#game": GamePage,
 };
 
-// Check if authenticated
+const timer = new Timer();
+
 const navigateTo = (hash) => {
+  switch (hash) {
+    case "#game":
+      timer.start();
+      break;
+    case "#login-page":
+      timer.reset();
+      break;
+    case "#highscores":
+      timer.reset();
+      break;
+    default:
+      break;
+  }
   root.textContent = "";
   const screenComponent = routes[hash] || LogIn;
   const screenHTML = screenComponent();
@@ -41,9 +56,18 @@ const addEventListenersToDynamicElements = () => {
 };
 
 const addButtonEvent = (button, hash) => {
-  button.addEventListener("click", () => {
-    navigateTo(hash);
-  });
+  if (hash === "__start__" || hash === "#game") {
+    button.addEventListener("click", () => {
+      navigateTo("#game");
+      timer.reset();
+      timer.start();
+    });
+    return;
+  } else {
+    button.addEventListener("click", () => {
+      navigateTo(hash);
+    });
+  }
 };
 
 const createButtons = () => {
@@ -68,4 +92,35 @@ const createButtons = () => {
   if (playButton) {
     addButtonEvent(playButton, "#game");
   }
+
+  if (startButton) {
+    addButtonEvent(startButton, "__start__");
+  }
 };
+
+let winningCondition = false;
+let losingCondition = false;
+
+// const stopGameButton = document.getElementById("logout");
+
+// stopGameButton.addEventListener("click", () => {
+//   winningCondition = true;
+//   losingCondition = true;
+// });
+
+function checkWinningCondition() {
+  if (winningCondition) {
+    timer.stop();
+  }
+}
+
+function checkLosingCondition() {
+  if (losingCondition) {
+    timer.stop();
+  }
+}
+
+setInterval(() => {
+  checkWinningCondition();
+  checkLosingCondition();
+}, 1000);
