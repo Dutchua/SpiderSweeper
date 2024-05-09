@@ -97,21 +97,6 @@ const createButtons = () => {
     addButtonEvent(playButton, "#game");
   }
 
-  if (miniStartButton) {
-  }
-
-  if (miniPlayButton) {
-    addButtonEvent(miniPlayButton, "#game");
-  }
-
-  if (miniHighScoreButton) {
-    addButtonEvent(miniHighScoreButton, "#highscores");
-  }
-
-  if (miniLogoutButton) {
-    addButtonEvent(miniLogoutButton, "#login-page");
-  }
-
   if (startButton) {
     addButtonEvent(startButton, "__start__");
   }

@@ -181,34 +181,37 @@ nav {
 /*NAVIGATION BAR -- RESPONSIVNESS*/
 /* -------------------------------------------------------------------- */
 
-@container (max-width: 800px) {
+@container (width< 61.875rem) {
   #top-right,
   #bottom-left,
-  #center,
-  .max-nav {
+  #center  {
     display: none;
   }
 
-  .mini-nav {
-    display: flex;
-    justify-content: space-between;
-  } 
+  .button-text{
+    display: none;
+  }
+
+  .button-text-New-Game{
+    display: none;
+  }
 }
 
-@container (max-width: 400px) {
-  #UserInfo {
-    display: none;
-  }
-  .mini-nav{
-    display: none;
-  }
-  .tiny {
+@container (width< 25rem)
+{
+  .button-text{
     display: flex;
   }
-  #start-mini{
-    display: flex;
+
+  #UserInfo{
+    display: none;
+  }
+
+  .button-text-New-Game{
+    display: none;
   }
 }
+
 
 /* -------------------------------------------------------------------- */
 /*BACKGROUND IMAGES*/
