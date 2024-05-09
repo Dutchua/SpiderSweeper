@@ -1,16 +1,11 @@
 import { LoginButton } from "../components/button.js";
 
 const LogIn = () => {
-  const loginButton = LoginButton();
-  return (
-    `<section class="column">
+  return `<section id="login-page" class="column page">
       <img id="spider" src="./public/assets/hanging-logo.png" alt="spider" />
       <h1 class="creepster-regular">Welcome To Spider Sweeper</h1>
-      ` +
-    loginButton +
-    `
-    </section>`
-  );
+      ${LoginButton()} 
+    </section>`;
 };
 
 export default LogIn;

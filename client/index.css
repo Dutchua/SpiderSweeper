@@ -1,14 +1,29 @@
-/* Imports */
-@import url("https://fonts.googleapis.com/css2?family=Creepster&display=swap");
+/* IMPORTS */
+/* -------------------------------------------------------------------- */
+@font-face {
+  font-family: "Creepster";
+  src: url("./public/assets/fonts/Creepster-Regular.woff");
+}
 
-/* Root Variables */
+/* -------------------------------------------------------------------- */
+/* ROOT VARIABLES */
+/* -------------------------------------------------------------------- */
+
 :root {
   --primary-color: #ff3f00;
   --secondary-color: #ff7f11;
   --background-color: #beb7a4;
   --primary-text-color: #000000;
   --secondary-text-color: #ffffff;
-  --font-family-body: "Roboto", sans-serif;
+  --font-family-body: "Roboto", sans-serif;  
+}
+
+/* -------------------------------------------------------------------- */
+/*BODY*/
+/* -------------------------------------------------------------------- */
+
+html {
+  height: 100%;
 }
 
 body {
@@ -18,15 +33,30 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: hidden;  
+  container-type: inline-size;
 }
 
+/* -------------------------------------------------------------------- */
+/* TEXT */
+/* -------------------------------------------------------------------- */
+
 .creepster-regular {
-  font-family: "Creepster", system-ui;
+  font-family: "Creepster";
   font-weight: 400;
   font-size: 2rem;
   font-style: normal;
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* -------------------------------------------------------------------- */
+/* GENERAL COMPONENTS */
+/* -------------------------------------------------------------------- */
 
 .row {
   display: flex;
@@ -41,10 +71,13 @@ body {
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100%;
+  gap: 1rem;
+  margin: auto;
 }
 
 .button {
+  display: flex;
+  align-items: center;
   font-size: 16px;
   font-weight: 600;
   text-align: center;
@@ -53,41 +86,55 @@ body {
   border-radius: 0.25rem;
   border: none;
   height: 2.5rem;
-}
-
-#login {
   background-color: var(--secondary-color);
   color: var(--primary-text-color);
-  max-width: 20rem;
-  min-width: 15rem;
   padding: 0.5rem 1rem;
+  justify-content: center;
+}
+
+label {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--primary-text-color);
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.background {
+  background-color: var(--background-color);
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
 }
 
 /* -------------------------------------------------------------------- */
-
-/* Navigation Bar */
-
+/* NAVIGATION BAR */
 /* -------------------------------------------------------------------- */
+
 nav {
-  display: flex;
-  justify-content: space-between;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   background-color: var(--background-color);
   padding: 0.25rem 1rem;
   height: 3rem;
 }
+
 .icon {
-  height: 1.3rem;
+  height: 1.5rem;
 }
 
 #Icon {
   height: 3rem;
 }
 
-#logout {
+.logout {
   background-color: var(--primary-color);
   color: var(--secondary-text-color);
-  padding: 0.5rem 1rem;
 }
 
 #highscore {
@@ -96,11 +143,66 @@ nav {
   padding: 0.5rem 1rem;
 }
 
-/* ---------------------------------------------------------------- */
+#login {
+  max-width: 20rem;
+  min-width: 15rem;
+}
 
-/* Background  images */
+/* -------------------------------------------------------------------- */
+/*NAVIGATION BAR -- DISPLAYS*/
+/* -------------------------------------------------------------------- */
 
-/* ---------------------------------------------------------------- */
+.mini-nav {
+  display: none;
+}
+
+.tiny {
+  display: none;
+}
+
+.max-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+#UserInfo {
+  display: flex;
+}
+
+/* -------------------------------------------------------------------- */
+/*NAVIGATION BAR -- RESPONSIVNESS*/
+/* -------------------------------------------------------------------- */
+
+@container (max-width: 800px) {
+  #top-right,
+  #bottom-left,
+  #center,
+  .max-nav {
+    display: none;
+  }
+
+  .mini-nav {
+    display: flex;
+    justify-content: space-between;
+  } 
+}
+
+@container (max-width: 400px) {
+  #UserInfo {
+    display: none;
+  }
+  .mini-nav{
+    display: none;
+  }
+  .tiny {
+    display: flex;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/*BACKGROUND IMAGES*/
+/* -------------------------------------------------------------------- */
+
 #top-left {
   position: absolute;
   top: 0;
@@ -138,12 +240,110 @@ nav {
   z-index: -1;
 }
 
-@media (max-width: 800px) {
-  #top-right,
-  #bottom-left,
-  #center {
-    display: none;
-  }
+/* -------------------------------------------------------------------- */
+/*GAMEBOARD*/
+/* -------------------------------------------------------------------- */
+
+#GameFunctions {
+  margin-top: 20%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  background-color: var(--background-color);
 }
 
-/* ---------------------------------------------------------------- */
+#GameBoard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--primary-text-color) solid 0.1rem;
+}
+
+.gridrow{
+  display: flex;
+  align-items: center;
+  height: fit-content;
+}
+
+.gridcolumn{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+#Score {
+  align-self: flex-start;
+}
+
+/* -------------------------------------------------------------------- */
+/*GAMEBOARD - TILES*/
+/* -------------------------------------------------------------------- */
+
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  width: clamp(1rem, 2rem, 3.75rem);
+  height: clamp(1rem, 2rem, 3.75rem);
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+  border-bottom-color: var(--primary-color);
+  border-right-color: var(--primary-color);
+  border-top-color: var(--secondary-color);
+  border-left-color: var(--secondary-color);
+  cursor: pointer;
+}
+
+.closed {
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+}
+
+.open {
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+}
+
+.empty {
+  background-color: var(--secondary-text-color);
+}
+
+/* -------------------------------------------------------------------- */
+/*HIGHSCORE TABLE*/
+/* -------------------------------------------------------------------- */
+
+table,
+td {
+  text-align: center;
+}
+
+#HighScoreTable {
+  margin-top: 7%;
+  background-color: var(--background-color);
+}
+
+.HighScoreText {
+  text-align: left;
+}
+
+table {
+  width: 50%;
+  min-width: 18rem;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 2%;
+  border-bottom: 0.0625rem solid var(--primary-color);
+  border-top: 0.0625rem solid var(--primary-color);
+}
+
+tr:hover {
+  background-color: var(--secondary-color);
+  color: var(--secondary-text-color);
+}
