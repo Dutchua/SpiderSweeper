@@ -4,7 +4,7 @@ const HighScoreTable = () => {
     return (
       `<section  id="GameFunctions" class="space-between background">
       <section class="row">` +
-      StopWatch() +
+      StopWatch() +l
       FlagCount({ count: 10 }) +
       `</section>` +
       NewGameButton() +
