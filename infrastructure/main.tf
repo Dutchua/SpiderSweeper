@@ -96,7 +96,7 @@ resource "aws_elastic_beanstalk_application_version" "app_version" {
   name                = "v1.0.0"  # Name of your application version
   application         = aws_elastic_beanstalk_application.eb_app.name
   description         = "First version of my application"
-  bucket              =  data.aws_s3_bucket.existing_bucket.name # Bucket where your application code is stored
+  bucket              =  data.aws_s3_bucket.existing_bucket.arn # Bucket where your application code is stored
   key                 = "apis.zip"  # Path to your application code package
   force_delete        = true  # Optional: Forces deletion of the application version if it's already deployed
 }
