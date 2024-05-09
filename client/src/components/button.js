@@ -4,14 +4,14 @@ export const LoginButton = () => {
 
 export const LogoutButton = () => {
   return `<button class="button logout row" id="logout">
-  <img class="icon" src="./public/icons/logout-icon.svg" alt="icon" />
+  <img class="icon nav-icon" src="./public/icons/logout-icon.svg" alt="icon" />
   <p class="button-text">Log Out<p>
   </button>`;
 };
 
 export const HighScoreButton = () => {
   return `<button class="button row" id="highscore">
-  <img class="icon" src="./public/icons/star.svg" alt="icon" />
+  <img class="icon nav-icon" src="./public/icons/star.svg" alt="icon" />
   <p class="button-text">High Scores<p>
 </button>`;
 };

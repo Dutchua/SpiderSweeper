@@ -78,7 +78,7 @@ body {
 .button {
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   text-align: center;
   text-decoration: none;
@@ -156,23 +156,6 @@ nav {
   min-width: 15rem;
 }
 
-/* -------------------------------------------------------------------- */
-/*NAVIGATION BAR -- DISPLAYS*/
-/* -------------------------------------------------------------------- */
-
-.mini-nav {
-  display: none;
-}
-
-.tiny {
-  display: none;
-}
-
-.max-nav {
-  display: flex;
-  justify-content: space-between;
-}
-
 #UserInfo {
   display: flex;
 }
@@ -186,6 +169,10 @@ nav {
   #bottom-left,
   #center  {
     display: none;
+  }
+
+  .nav-icon{
+    padding-left: 50%;
   }
 
   .button-text{
@@ -209,6 +196,10 @@ nav {
 
   .button-text-New-Game{
     display: none;
+  }
+
+  .nav-icon{
+    padding-left: 0%;
   }
 }
 
