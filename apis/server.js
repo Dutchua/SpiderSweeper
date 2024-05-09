@@ -198,7 +198,7 @@ app.get("/game", cors(corsOptions), async (req, res) => {
     console.log("count", cells);
     //condition: won lost continue
     res
-      .send({ message: "success", cells: cells, condition: condition })
+      .send({ message: "success", board: board, condition: condition })
       .status(200);
     return;
   } catch (error) {
