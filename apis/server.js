@@ -182,10 +182,11 @@ app.get("/game", async (req, res) => {
   console.log(boards);
   console.log("LENGTH ", boards.length, username);
   try {
+    let row = parseInt(req.body['row']);
+    let col = parseInt(req.body['col']);
+    console.log('coords', row, col);
     if (board != undefined) console.log("THE BOARD IS NOT EMPTY ", board[0][0]);
     let cells = [];
-    let row = 5;
-    let col = 4;
     revealCell(board, row, col, cells);
     console.log("count", cells);
     res.send({ message: "success", cells: cells }).status(200);
@@ -256,6 +257,7 @@ function initializeBoard() {
       numMines--;
     }
   }
+  
   console.log("finish random");
   // Calculate counts
   for (let i = 0; i < numRows; i++) {
@@ -280,6 +282,7 @@ function initializeBoard() {
   console.log(board[0][0]);
   return board;
 }
+
 function checkBounds(i, j) {
   return i >= 0 && i < numRows && j >= 0 && j < numCols;
 }
