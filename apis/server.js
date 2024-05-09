@@ -17,9 +17,9 @@ var corsOptions = {
 }
 
 const config = {
-    user: 'admin',
-    password: 'supersecretpassword',
-    server: 'terraform-20240507114400697600000001.cex3uty77nu9.eu-west-1.rds.amazonaws.com',
+    user: process.env.db_username,
+    password: process.env.db_password,
+    server: process.env.db_instance_name,
     port: 1433,
     database: 'SpiderSweeper',
     options: {
