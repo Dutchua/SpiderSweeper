@@ -78,12 +78,13 @@ async function handleRedirect(resp) {
           throw new Error(response["message"]);
         }
         return response.json();
-      }).then((data) => {
-        console.log('response', data);
-        
-        if (data['message'] == "signed in") {
-          sessionStorage.setItem('username', data['username']);
-          sessionStorage.setItem('token', accessToken);
+      })
+      .then((data) => {
+        console.log("response", data);
+
+        if (data["message"] == "signed in") {
+          sessionStorage.setItem("username", data["username"]);
+          sessionStorage.setItem("token", accessToken);
         }
       })
       .catch((error) => {
@@ -92,6 +93,7 @@ async function handleRedirect(resp) {
   } catch (error) {
     console.log("cant connect ", error);
   }
+  window.location.hash = "#game";
   return true;
 }
 //do bunch of oatuh shandez
