@@ -69,18 +69,22 @@ const addEventListenersToDynamicElements = () => {
 };
 
 const addButtonEvent = (button, hash) => {
-  if (button.id === "login") {
-    button.addEventListener("click", () => {
+  button.addEventListener("click", () => {
+    if (button.id === "login") {
       oauthSignIn();
       timer.reset();
       timer.start();
-    });
-    return;
-  } else {
-    button.addEventListener("click", () => {
+      return;
+    } else if (hash === "#game") {
+      navigateTo("#game");
+    } else if (hash === "__start__") {
+      timer.reset();
+      timer.start();
+      return;
+    } else {
       navigateTo(hash);
-    });
-  }
+    }
+  });
 };
 
 const createButtons = () => {
@@ -96,12 +100,14 @@ const createButtons = () => {
   if (gameRuleButton) {
     gameRuleButton.addEventListener("click", () => {
       console.log("button clicked");
+      timer.pause();
       dialog.showModal();
     });
   }
 
   if (closeDialogButton) {
     closeDialogButton.addEventListener("click", () => {
+      timer.resume();
       dialog.close();
     });
   }
@@ -119,6 +125,7 @@ const createButtons = () => {
   }
 
   if (playButton) {
+    console.log(playButton);
     addButtonEvent(playButton, "#game");
   }
 

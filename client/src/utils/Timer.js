@@ -41,6 +41,14 @@ class Timer {
       secondsLabel.innerHTML = "00";
     }
   }
+
+  pause() {
+    clearInterval(this.intervalId);
+  }
+
+  resume() {
+    this.start();
+  }
 }
 
 export default Timer;
