@@ -57,8 +57,6 @@ async function handleRedirect(resp) {
 
   history.replaceState(null, null, window.location.href.split("#")[0]);
   // POPULATES DB AND RETURNS USERNAME
-  let s = `${server}/sign-in`;
-  console.log(s);
   if (accessToken == undefined || accessToken == null) {
     console.log("empty");
     urlParams = new URLSearchParams(window.location.search);
@@ -80,6 +78,14 @@ async function handleRedirect(resp) {
           throw new Error(response["message"]);
         }
         return response.json();
+      })
+      .then((data) => {
+        console.log("response", data);
+
+        if (data["message"] == "signed in") {
+          sessionStorage.setItem("username", data["username"]);
+          sessionStorage.setItem("token", accessToken);
+        }
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);

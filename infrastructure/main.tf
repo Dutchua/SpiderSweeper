@@ -68,11 +68,11 @@ locals {
 
 resource "aws_s3_object" "existing_bucket_files" {
   bucket = data.aws_s3_bucket.existing_bucket.id
-  for_each = fileset("../frontend/Views/", "**")
+  for_each = fileset("../client/", "**")
   key = each.value
-  source = "${"../frontend/Views/"}/${each.value}"
+  source = "${"../client/"}/${each.value}"
   content_type = lookup(local.mime_types, regex("\\.[^.]+$", each.value), null)
-  etag = filemd5("${"../frontend/Views/"}/${each.value}")
+  etag = filemd5("${"../client/"}/${each.value}")
 
   content_disposition = null
 }

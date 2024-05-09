@@ -6,7 +6,7 @@ const sql = require("mssql");
 const numRows = 8;
 const numCols = 8;
 let numMines = 10;
-const toWin = numRows * numCols - 10;
+const toWin = 54;
 
 let boards = [];
 app.use(express.json());
@@ -74,7 +74,7 @@ app.get("/sign-in", cors(corsOptions), async (req, res) => {
     let resp = await pool.request().query(query);
     pool.close();
     console.log("Data inserted successfully.");
-    res.send({ message: "signed in" }).status(200);
+    res.send({ message: "signed in", username: username }).status(200);
   } catch (err) {
     console.error("Error inserting data:", err);
     res.status(500).send({ message: "Error inserting data.", error: err });
@@ -134,7 +134,7 @@ app.get("/highscores", async (req, res) => {
     console.log("await sql connection");
     let pool = await sql.connect(config);
     console.log("past connect");
-    const query = `SELECT Score, tmstamp FROM HighScore h inner join users u on u.userID = h.userID WHERE u.username = @username`;
+    const query = `SELECT Score, tmstamp FROM HighScore h inner join users u on u.userID = h.userID WHERE u.username = @username order by Score`;
     let resp = await pool
       .request()
       .input("username", sql.VarChar, username)
@@ -182,14 +182,20 @@ app.get("/game", async (req, res) => {
   console.log(boards);
   console.log("LENGTH ", boards.length, username);
   try {
-    let row = parseInt(req.body['row']);
-    let col = parseInt(req.body['col']);
-    console.log('coords', row, col);
+    let row = parseInt(req.body["row"]);
+    let col = parseInt(req.body["col"]);
+    console.log("coords", row, col);
+    let row = parseInt(req.body["row"]);
+    let col = parseInt(req.body["col"]);
+    console.log("coords", row, col);
     if (board != undefined) console.log("THE BOARD IS NOT EMPTY ", board[0][0]);
     let cells = [];
-    revealCell(board, row, col, cells);
+    let condition = revealCell(board, row, col, cells);
     console.log("count", cells);
-    res.send({ message: "success", cells: cells }).status(200);
+    //condition: won lost continue
+    res
+      .send({ message: "success", cells: cells, condition: condition })
+      .status(200);
     return;
   } catch (error) {
     console.log(error);
@@ -257,7 +263,7 @@ function initializeBoard() {
       numMines--;
     }
   }
-  
+
   console.log("finish random");
   // Calculate counts
   for (let i = 0; i < numRows; i++) {
@@ -300,10 +306,10 @@ function revealCell(board, row, col, cells) {
   if (board[row][col].isMine) {
     // Handle game over
     console.log("BOMB");
-    return "Game Over! You stepped on a mine.";
+    return "lost";
   } else if (board[0][0]["cells"] <= 0) {
     console.log("WIN");
-    return "CONGRATS! YOU WON!";
+    return "won";
   } else if (board[row][col].count === 0) {
     // If cell has no mines nearby,
     // Reveal adjacent cells
@@ -313,4 +319,5 @@ function revealCell(board, row, col, cells) {
       }
     }
   }
+  return "continue";
 }
