@@ -41,6 +41,17 @@ export const NavbarGamePageMini = () => {
   );
 };
 
+export const SmallNavbar = () => {
+  return(
+    `<nav class="space-between tiny row">
+    ` +
+    HighScoreButton() +
+    LogoutButton() +
+    `
+    </nav>`
+  )
+}
+
 export const NavbarHighScorePage = () => {
   return (
     `<nav class="space-between max-nav row">

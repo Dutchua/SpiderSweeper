@@ -22,6 +22,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  
 }
 
 label {
@@ -281,6 +282,10 @@ tr:hover {
   display: flex;
 }
 
+.tiny {
+  display: none;
+}
+
 @media (max-width: 800px) {
   #top-right,
   #bottom-left,
@@ -292,11 +297,19 @@ tr:hover {
   .mini-nav {
     display: flex;
     justify-content: space-between;
-  }
+  } 
 }
 
-@media (max-width: 350px) {
+
+
+@media (max-width: 400px) {
   #UserInfo {
     display: none;
+  }
+  .mini-nav{
+    display: none;
+  }
+  .tiny {
+    display: flex;
   }
 }
