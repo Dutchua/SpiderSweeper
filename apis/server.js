@@ -24,7 +24,7 @@ const config = {
     database: 'SpiderSweeper',
     options: {
         encrypt: true,
-        trustServerCertificate: true, 
+        trustServerCertificate: true,
     },
 };
 
@@ -75,6 +75,7 @@ app.get('/sign-in', async (req, res) => {
         let resp = await pool.request().query(query)
         pool.close();
         console.log('Data inserted successfully.');
+        res.send({ message: 'signed in' }).status(200);
     } catch (err) {
         console.error('Error inserting data:', err);
         res.status(500).send({ message: 'Error inserting data.', error: err });
@@ -82,32 +83,33 @@ app.get('/sign-in', async (req, res) => {
         sql.close();
     }
 
-    return res.send({ message: 'signed in'}).status(200);
+    return
 });
 
 app.post('/highscores', async (req, res) => {
-    console.log("POST Highscore game body: " + req.body);
-    let oauthResponse = verifyToken(req.headers.authorization);
+    let oauthResponse = await verifyToken(req.headers.authorization);
+    console.log(req.body['highscore']);
     if (!oauthResponse['success']) {
         return { message: 'ERROR: Invalid OAuth Token' }
     }
+    let username = oauthResponse['name'];
     try {
-        const userID = req.body.userID;
-        const score = req.body.highscore;
+        const score = req.body['highscore'];
         const date = Date.now();
 
         try {
             let pool = await sql.connect(config);
-
+            let userID = await pool.request()
+                .query(`select userID from users where username = ${username}`)
             const query = `INSERT INTO HighScore (userID, Score, Date) VALUES (@userID, @score, @date)`;
             let resp = await pool.request()
-            .input('userID', sql.Int, userID)
-            .input('score', sql.Int, score)
-            .input('date', sql.DateTime, date)
-            .query(query)
+                .input('userID', sql.Int, userID)
+                .input('score', sql.Int, score)
+                .input('date', sql.DateTime, date)
+                .query(query)
 
             console.log('Data inserted successfully.');
-            res.status(200).send('Data inserted successfully.');
+            res.status(200).send({ message: 'Data inserted successfully.' });
         } catch (err) {
             console.error('Error inserting data:', err);
             res.status(500).send({ message: 'Error inserting data.', error: err });
@@ -121,32 +123,49 @@ app.post('/highscores', async (req, res) => {
 
 app.get('/highscores', async (req, res) => {
     console.log('GET HIGHSCORE');
-    let oauthResponse = verifyToken(req.headers.authorization);
+    let oauthResponse = await verifyToken(req.headers.authorization);
     if (!oauthResponse['success']) {
         return { message: 'ERROR: Invalid OAuth Token' }
     }
     try {
-        try {
-            let pool = await sql.connect(config);
-            const request = new sql.Request();
-            const query = `SELECT Score, tmstamp FROM HighScore h inner join users u on u.userID = h.userID WHERE u.username = @username`;
-            let resp = await pool.request()
-                .input('username', sql.VarChar, username)
-                .query(query);
+        let username = oauthResponse['name'];
+        console.log('await sql connection');
+        let pool = await sql.connect(config);
+        console.log('past connect');
+        const query = `SELECT Score, tmstamp FROM HighScore h inner join users u on u.userID = h.userID WHERE u.username = @username`;
+        let resp = await pool.request()
+            .input('username', sql.VarChar, username)
+            .query(query);
 
-            console.log('HIighScores retrieved successfully.');
-            res.status(200).send({scores: resp.recordset, message: 'success'}); // Send the retrieved data as JSON response
-        } catch (err) {
-            console.error('Error retrieving data:', err);
-            res.status(500).send({ 'error': 'Error retrieving data.' });
-            // throw err;
-        } finally {
-            sql.close();
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(401).send({ 'error': error })
+        console.log('HIighScores retrieved successfully.');
+        res.status(200).send({ scores: resp.recordset, message: 'success' }); // Send the retrieved data as JSON response
+    } catch (err) {
+        console.error('Error retrieving data:', err);
+        res.status(500).send({ 'error': 'Error retrieving data.' });
+        // throw err;
+    } finally {
+        sql.close();
     }
+    return
+});
+app.get('/new-game', async (req, res) => {
+    let oauthResponse = await verifyToken(req.headers.authorization);
+    if (!oauthResponse['success']) {
+        return { message: 'ERROR: Invalid OAuth Token' }
+    }
+    try {
+        let username = oauthResponse['name'];
+        boards[username] = initializeBoard();
+        console.log('reset game'); 
+        res.status(200).send({ message: 'success' }); // Send the retrieved data as JSON response
+    } catch (err) {
+        console.error('Error retrieving data:', err);
+        res.status(500).send({ 'error': 'Error retrieving data.' });
+        // throw err;
+    } finally {
+        sql.close();
+    }
+    return
 });
 
 app.get('/game', async (req, res) => {
@@ -162,7 +181,7 @@ app.get('/game', async (req, res) => {
     try {
         if (board != undefined)
             console.log('THE BOARD IS NOT EMPTY ', board[0][0]);
-        let cells =[]
+        let cells = []
         let row = 5;
         let col = 4;
         revealCell(board, row, col, cells);
@@ -171,7 +190,7 @@ app.get('/game', async (req, res) => {
         return
     } catch (error) {
         console.log(error);
-        res.send(error).status(400);
+        res.send({ error: error }).status(400);
         return
     }
 })
@@ -190,7 +209,6 @@ async function verifyToken(accessToken) {
         }
         return response.json();
     }).then(data => {
-        console.log(data);
         if (data['error']) {
             console.log('ERROR: ' + data['error']['message']);
             return { success: false, message: data['error']['message'] };
