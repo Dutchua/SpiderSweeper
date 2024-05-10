@@ -1,4 +1,4 @@
-import { CloseDiaglog } from "./button.js";
+import { CloseLoseDialog } from "./button.js";
 
 export const GameLostDialog = () => {
   return (
@@ -15,7 +15,7 @@ export const GameLostDialog = () => {
     
         <p>The spiders got you!</p>
         <section class="dialogbuttoncontainer">` +
-    CloseDiaglog() +
+        CloseLoseDialog() +
     `</section>
         </dialog>`
   );

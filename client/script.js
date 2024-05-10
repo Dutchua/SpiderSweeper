@@ -22,6 +22,7 @@ const routes = {
 
 const timer = new Timer();
 
+
 window.handleTileClick = async (row, col) => {
   try {
     render(GamePage(undefined, undefined, true));
@@ -34,12 +35,13 @@ window.handleTileClick = async (row, col) => {
       render(GamePage([], undefined));
       const winDialog = document.getElementById("winner-dialog");
       winDialog.showModal();
-      const closeWinDiaglog = document.getElementById("close-win-dialog");
+      const closeWinDiaglog = document.getElementById("CloseWinDialog");
       closeWinDiaglog.addEventListener("click", () => {
         winDialog.close();
         handleInitialLoad();
       });
 
+         
       return;
     } else if (condition === "lost") {
       render(GamePage([], undefined));
