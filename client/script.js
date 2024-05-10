@@ -35,7 +35,7 @@ window.handleTileClick = async (row, col) => {
       render(GamePage([], undefined));
       const winDialog = document.getElementById("winner-dialog");
       winDialog.showModal();
-      const closeWinDiaglog = document.getElementById("CloseWinDialog");
+      const closeWinDiaglog = document.getElementById("close-win-dialog");
       closeWinDiaglog.addEventListener("click", () => {
         winDialog.close();
         handleInitialLoad();
