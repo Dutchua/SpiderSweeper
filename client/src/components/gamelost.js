@@ -4,8 +4,8 @@ export const GameLostDialog = () => {
   return (
     `<dialog id="loser-dialog">
 
-        <section class="dialogbuttoncontainer">
-          <img src="profile-default.png"/>
+        <section class="dialogbuttoncontainer column center">
+          <img src="./public/assets/profile-default.png"/>
         </section>      
     
           <h1 id="dialog-header">

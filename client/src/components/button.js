@@ -38,7 +38,7 @@ export const GameRuleButton = () => {
 };
 
 export const CloseDiaglog = () => {
-  return `<button autofocus id="close-dialog-button">Close</button>`;
+  return `<button autofocus id="close-dialog-button" class="close-dialog-button">Close</button>`;
 };
 
 export const CloseWinDialog = () => {
