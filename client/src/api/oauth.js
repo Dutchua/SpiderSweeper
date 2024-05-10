@@ -1,5 +1,6 @@
 const server =
   "http://spidersweeperapp-env.eba-jpuqcsfx.eu-west-1.elasticbeanstalk.com/";
+// const frontend_url = "http://127.0.0.1:5500/client/";
 const frontend_url =
   "http://github-oidc-terraform-aws-tfstates-bucket.s3-website-eu-west-1.amazonaws.com/";
 let username = "";

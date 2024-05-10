@@ -142,6 +142,7 @@ const addButtonEvent = (button, hash) => {
     } else if (hash === "__start__") {
       timer.reset();
       timer.start();
+      handleInitialLoad();
       return;
     } else if (button.id === "logout") {
       sessionStorage.clear();
