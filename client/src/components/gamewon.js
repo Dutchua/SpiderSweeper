@@ -1,10 +1,8 @@
-import {
-    CloseWinDiaglog
-} from "./button.js";
+import { CloseDiaglog } from "./button.js";
 
 export const GameWonDialog = () => {
-    return (
-        `<dialog id="winner-dialog">
+  return (
+    `<dialog id="winner-dialog">
 
         <section class="dialogbuttoncontainer">
           <img src="profile-default.png"/>
@@ -17,8 +15,8 @@ export const GameWonDialog = () => {
     
         <p>You have successfully sweeped away all the spiders!</p>
         <section class="dialogbuttoncontainer">` +
-        CloseWinDiaglog() +        
-        `</section>
+    CloseDiaglog() +
+    `</section>
         </dialog>`
-    )
-}
+  );
+};

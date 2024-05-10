@@ -159,20 +159,20 @@ const createButtons = () => {
   const startButton = document.getElementById("start");
   const playButton = document.getElementById("play");
   const gameRuleButton = document.getElementById("rule");
-  const ruleDialog = document.getElementById("rule-dialog");
-  const closeRuleDialogButton = document.getElementById("close-rule-dialog");
+  const dialog = document.getElementById("dialog");
+  const closeDialogButton = document.getElementById("close-dialog-button");
 
   if (gameRuleButton) {
     gameRuleButton.addEventListener("click", () => {
       timer.pause();
-      ruleDialog.showModal();
+      dialog.showModal();
     });
   }
 
-  if (closeRuleDialogButton) {
-    closeRuleDialogButton.addEventListener("click", () => {
+  if (closeDialogButton) {
+    closeDialogButton.addEventListener("click", () => {
       timer.resume();
-      ruleDialog.close();
+      dialog.close();
     });
   }
 
