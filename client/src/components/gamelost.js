@@ -1,11 +1,11 @@
-import { CloseDiaglog } from "./button.js";
+import { CloseLoseDialog } from "./button.js";
 
 export const GameLostDialog = () => {
   return (
     `<dialog id="loser-dialog">
 
-        <section class="dialogbuttoncontainer">
-          <img src="profile-default.png"/>
+        <section class="dialogbuttoncontainer column center">
+          <img src="./public/assets/profile-default.png"/>
         </section>      
     
           <h1 id="dialog-header">
@@ -15,7 +15,7 @@ export const GameLostDialog = () => {
     
         <p>The spiders got you!</p>
         <section class="dialogbuttoncontainer">` +
-    CloseDiaglog() +
+        CloseLoseDialog() +
     `</section>
         </dialog>`
   );
