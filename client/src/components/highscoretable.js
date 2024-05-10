@@ -3,11 +3,10 @@ const HighScoreTable = (highScores) => {
   const scores = highScores
     .map((score, index) => {
       const date = new Date(score.tmstamp);
-      formattedDate(date);
       return `<tr>
     <td class="HighScoreText">High Score ${index + 1}:</td>
     <td>${score.Score}</td>
-    <td>${formattedDate}</td>
+    <td>${formattedDate(date)}</td>
     </tr>`;
     })
     .join("");

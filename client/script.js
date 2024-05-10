@@ -57,8 +57,7 @@ window.handleTileClick = async (row, col) => {
     // continue, thus update the grid
     await renderGamePage(board);
   } catch (error) {
-    // TODO: Show an error message to the user
-    console.error(error);
+    render(`<h3>${error.message}</h3>`);
   }
 };
 
@@ -77,12 +76,16 @@ const render = (html) => {
 const renderGamePage = async (grid) => {
   try {
     render(GamePage(grid, undefined, true));
-    const highScores = await fetchhighscores();
-    const highScore = highScores[0].Score;
-    console.log(highScore);
+    let highScores = await fetchhighscores();
+    console.log(highScores, 'pog');
+    if (highScores == [] || highScores["Score"] !== undefined && highScores.Score.length === 0) {
+      highScores = [{ Score: "No High Scores Yet" }];
+      console.log('in if', highScores);
+    }
 
-    const showScore = highScore !== undefined && highScore.length > 0;
-    const visibleHighScore = showScore ? highScore : undefined;
+    highScores = highScores[0].Score;
+    const showScore = highScores !== undefined && highScores.length > 0;
+    const visibleHighScore = showScore ? highScores : undefined;
 
     render(GamePage(grid, visibleHighScore));
   } catch (error) {
