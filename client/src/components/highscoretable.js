@@ -1,19 +1,9 @@
+import { formattedDate } from "../utils/format.js";
 const HighScoreTable = (highScores) => {
-  console.log(highScores);
   const scores = highScores
     .map((score, index) => {
-      console.log(score, index);
       const date = new Date(score.tmstamp);
-      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")} ${date
-        .getHours()
-        .toString()
-        .padStart(2, "0")}:${date
-        .getMinutes()
-        .toString()
-        .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`;
-      console.log(date, formattedDate);
+      formattedDate(date);
       return `<tr>
     <td class="HighScoreText">High Score ${index + 1}:</td>
     <td>${score.Score}</td>
@@ -21,7 +11,6 @@ const HighScoreTable = (highScores) => {
     </tr>`;
     })
     .join("");
-  console.log(scores);
   return `<section class="cover column"><table id="HighScoreTable">${scores}</table></section>`;
 };
 

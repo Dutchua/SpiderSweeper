@@ -1,3 +1,5 @@
+import { formatTimestamp } from "./format.js";
+
 class Timer {
   constructor() {
     this.startTime = null;
@@ -14,7 +16,6 @@ class Timer {
       const elapsedTime = Math.floor((currentTime - this.startTime) / 1000);
       const minutes = Math.floor(elapsedTime / 60);
       const seconds = elapsedTime % 60;
-      // console.log(`${minutes}:${seconds}`, minutesLabel, secondsLabel);
       if (minutesLabel && secondsLabel) {
         minutesLabel.innerHTML = minutes < 10 ? `0${minutes}` : minutes;
         secondsLabel.innerHTML = seconds < 10 ? `0${seconds}` : seconds;
@@ -26,8 +27,7 @@ class Timer {
     clearInterval(this.intervalId);
     this.endTime = new Date();
     const elapsedTime = Math.floor((this.endTime - this.startTime) / 1000);
-    return elapsedTime;
-    // console.log(`Total time: ${elapsedTime} seconds`);
+    return formatTimestamp(elapsedTime);
   }
 
   reset() {

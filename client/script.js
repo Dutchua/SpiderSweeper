@@ -10,6 +10,7 @@ import {
   startGame,
 } from "./src/api/interface.js";
 import { Loader } from "./src/components/tiles.js";
+import { fetchhighscores } from "./src/api/fetch-test.js";
 
 const root = document.querySelector("main");
 
@@ -28,6 +29,7 @@ window.handleTileClick = async (row, col) => {
 
     if (condition === "won") {
       const timeTaken = timer.stop();
+      console.log(timeTaken);
       await postHighScore(timeTaken);
       render(GamePage([], undefined));
       const winDialog = document.getElementById("winner-dialog");
@@ -75,16 +77,11 @@ const render = (html) => {
 const renderGamePage = async (grid) => {
   try {
     render(GamePage(grid, undefined, true));
-    const highScores = await getHighScores();
-    const highScore = highScores.reduce((acc, score) => {
-      if (score < acc) {
-        return score;
-      }
+    const highScores = await fetchhighscores();
+    const highScore = highScores[0].Score;
+    console.log(highScore);
 
-      return acc;
-    }, Number.MAX_VALUE);
-
-    const showScore = highScore !== Number.MAX_VALUE;
+    const showScore = highScore !== undefined && highScore.length > 0;
     const visibleHighScore = showScore ? highScore : undefined;
 
     render(GamePage(grid, visibleHighScore));
@@ -113,7 +110,6 @@ const navigateTo = async (hash) => {
 
 const handleInitialLoad = async () => {
   const username = sessionStorage.getItem("username");
-  console.log(username);
   if (username) {
     window.location.hash = "#game";
     render(Loader());
@@ -134,10 +130,7 @@ const addEventListenersToDynamicElements = () => {
 };
 
 const addButtonEvent = (button, hash) => {
-  button.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    if (e.which === 1) console.log("left click");
-    if (e.which === 2) console.log("scroll click");
+  button.addEventListener("click", () => {
     if (button.id === "login") {
       oauthSignIn();
       timer.reset();
@@ -171,7 +164,6 @@ const createButtons = () => {
 
   if (gameRuleButton) {
     gameRuleButton.addEventListener("click", () => {
-      console.log("button clicked");
       timer.pause();
       ruleDialog.showModal();
     });
@@ -197,7 +189,6 @@ const createButtons = () => {
   }
 
   if (playButton) {
-    console.log(playButton);
     addButtonEvent(playButton, "#game");
   }
 

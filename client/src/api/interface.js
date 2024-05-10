@@ -15,17 +15,13 @@ export const getHighScores = async () => {
   }
 
   const result = await response.json();
+  console.log(result);
 
   if (!Array.isArray(result.scores)) {
     throw new Error("Failed to fetch high scores");
   }
 
-  return result.scores;
-};
-
-export const sendHello = async () => {
-  const response = await fetch(`${API_BASE_URL}/hello`);
-  return response.json();
+  return result.Scores;
 };
 
 export const postHighScore = async (highScore) => {
@@ -35,7 +31,7 @@ export const postHighScore = async (highScore) => {
       "Content-Type": "application/json",
       Authorization: `${sessionStorage.getItem("token")}`,
     },
-    body: JSON.stringify({ highScore: highScore }),
+    body: JSON.stringify({ highscore: highScore }),
   });
   return response.json();
 };
