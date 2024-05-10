@@ -33,7 +33,6 @@ export async function oauthSignIn() {
   document.body.appendChild(form);
   let ans = await form.submit();
   await new Promise((resolve) => {
-    console.log("hewo");
     setTimeout(() => {
       resolve("jank");
     }, 1000);
@@ -45,22 +44,18 @@ export async function oauthSignIn() {
   //THEN send to api
 
   await ans;
-  console.log("COTNINUE");
   return true;
 }
 
-async function handleRedirect(resp) {
+export async function handleRedirect(resp) {
   let hash = location.hash.substring(1);
   let fragmentParams = new URLSearchParams(hash);
   accessToken = fragmentParams.get("access_token");
-  console.log("token ", accessToken);
 
   history.replaceState(null, null, window.location.href.split("#")[0]);
   // POPULATES DB AND RETURNS USERNAME
   if (accessToken == undefined || accessToken == null) {
-    console.log("empty");
     urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams);
     return;
   }
   try {
@@ -73,15 +68,12 @@ async function handleRedirect(resp) {
       }, // Convert the data object to JSON
     })
       .then((response) => {
-        console.log("Sent req");
         if (!response.ok) {
           throw new Error(response["message"]);
         }
         return response.json();
       })
       .then((data) => {
-        console.log("response", data);
-
         if (data["message"] == "signed in") {
           sessionStorage.setItem("username", data["username"]);
           sessionStorage.setItem("token", accessToken);
@@ -101,9 +93,3 @@ async function handleRedirect(resp) {
 //IDEALLY grab token, send to API
 //REALITY, since oauth redirects, it goes somehwere, comes back and THEN it add the token to url
 //MEANWHILE it sends to our backend/api with nothing
-
-console.log(location.hash);
-if (location.hash) {
-  console.log("TIME to cook");
-  handleRedirect();
-}

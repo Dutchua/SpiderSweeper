@@ -343,7 +343,8 @@ tr:hover {
   font-size: 2rem;
 }
 
-.close-dialog-button {
+.close-dialog-button{
+>>>>>>>>> Temporary merge branch 2
   display: flex;
   align-items: center;
   font-size: 1rem;
@@ -358,8 +359,10 @@ tr:hover {
   align-self: center;
 }
 
-dialog {
-  background-color: var(--secondary-text-color);
+dialog{
+  background-color: var(--secondary-text-color);  
+<<<<<<<<< Temporary merge branch 1
+=========
   width: 60%;
 }
 

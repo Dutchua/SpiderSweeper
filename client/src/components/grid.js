@@ -8,25 +8,22 @@ import {
   MineTile,
 } from "./tiles.js";
 
-const Grid = ({ grid }) => {
-  const gridHTML = grid.map((row) => {
-    const rowHTML = row.map((tile) => {
-      if (tile.isOpen) {
+const Grid = (grid) => {
+  const gridHTML = grid.map((row, i) => {
+    const rowHTML = row.map((tile, j) => {
+      if (tile.revealed) {
         if (tile.isMine) {
-          if (tile.isFlagged) {
-            return tile.isExploded ? MineExplodedTile() : MineFlagTile();
-          }
           return MineTile();
         }
         if (tile.isFlagged) {
           return FlagTile();
         }
-        if (tile.value === 0) {
+        if (tile.count === 0) {
           return EmptyTile();
         }
-        return NumberTile({ value: tile.value });
+        return NumberTile({ value: tile.count });
       }
-      return ClosedTile();
+      return ClosedTile(i, j);
     });
     return `<section class="gridrow">${rowHTML.join("")}</section>`;
   });

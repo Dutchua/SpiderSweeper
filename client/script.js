@@ -2,7 +2,15 @@ import LogIn from "./src/screens/logIn.js";
 import GamePage from "./src/screens/game-page.js";
 import HighScorePage from "./src/screens/high-score-page.js";
 import Timer from "./src/utils/Timer.js";
-import { oauthSignIn } from "./src/api/oauth.js";
+import { handleRedirect, oauthSignIn } from "./src/api/oauth.js";
+import {
+  getHighScores,
+  makeMove,
+  postHighScore,
+  startGame,
+} from "./src/api/interface.js";
+import { Loader } from "./src/components/tiles.js";
+import { fetchhighscores } from "./src/api/fetch-test.js";
 
 const root = document.querySelector("main");
 
@@ -14,11 +22,76 @@ const routes = {
 
 const timer = new Timer();
 
-const navigateTo = (hash) => {
+window.handleTileClick = async (row, col) => {
+  try {
+    render(GamePage(undefined, undefined, true));
+    const { board, condition } = await makeMove(row, col);
+
+    if (condition === "won") {
+      const timeTaken = timer.stop();
+      console.log(timeTaken);
+      await postHighScore(timeTaken);
+      render(GamePage([], undefined));
+      const winDialog = document.getElementById("winner-dialog");
+      winDialog.showModal();
+      const closeWinDiaglog = document.getElementById("close-win-dialog");
+      closeWinDiaglog.addEventListener("click", () => {
+        winDialog.close();
+        handleInitialLoad();
+      });
+
+      return;
+    } else if (condition === "lost") {
+      render(GamePage([], undefined));
+      const loseDialog = document.getElementById("loser-dialog");
+      loseDialog.showModal();
+      const closeLoseDiaglog = document.getElementById("close-lose-dialog");
+      closeLoseDiaglog.addEventListener("click", () => {
+        loseDialog.close();
+        handleInitialLoad();
+      });
+      timer.stop();
+      return;
+    }
+
+    // continue, thus update the grid
+    await renderGamePage(board);
+  } catch (error) {
+    // TODO: Show an error message to the user
+    console.error(error);
+  }
+};
+
+const render = (html) => {
+  const wrapper = document.createElement("section");
+  wrapper.insertAdjacentHTML("beforeend", html);
+
+  while (wrapper.firstChild) {
+    root.replaceChildren();
+    root.appendChild(wrapper.firstChild);
+  }
+
+  addEventListenersToDynamicElements();
+};
+
+const renderGamePage = async (grid) => {
+  try {
+    render(GamePage(grid, undefined, true));
+    const highScores = await fetchhighscores();
+    const highScore = highScores[0].Score;
+    console.log(highScore);
+
+    const showScore = highScore !== undefined && highScore.length > 0;
+    const visibleHighScore = showScore ? highScore : undefined;
+
+    render(GamePage(grid, visibleHighScore));
+  } catch (error) {
+    render(`<h3>${error.message}</h3>`);
+  }
+};
+
+const navigateTo = async (hash) => {
   switch (hash) {
-    case "#game":
-      timer.start();
-      break;
     case "#login-page":
       timer.reset();
       break;
@@ -30,37 +103,25 @@ const navigateTo = (hash) => {
   }
   root.textContent = "";
   const screenComponent = routes[hash] || LogIn;
-  const screenHTML = screenComponent();
-  const wrapper = document.createElement("section");
-  wrapper.insertAdjacentHTML("beforeend", screenHTML);
+  const screenHTML = await screenComponent();
 
-  while (wrapper.firstChild) {
-    root.appendChild(wrapper.firstChild);
-  }
-
-  addEventListenersToDynamicElements();
+  render(screenHTML);
 };
 
-const handleInitialLoad = () => {
+const handleInitialLoad = async () => {
   const username = sessionStorage.getItem("username");
-  console.log(username);
   if (username) {
     window.location.hash = "#game";
-    timer.reset();
-    timer.start();
-  }
-  const initialHash = window.location.hash || "#login-page";
-  navigateTo(initialHash);
-};
-
-window.addEventListener("hashchange", () => {
-  if (window.location.hash === "#game") {
+    render(Loader());
+    const grid = await startGame();
+    await renderGamePage(grid);
     timer.reset();
     timer.start();
     return;
   }
-  navigateTo(window.location.hash);
-});
+  const initialHash = window.location.hash || "#login-page";
+  navigateTo(initialHash);
+};
 
 document.addEventListener("DOMContentLoaded", handleInitialLoad);
 
@@ -76,11 +137,15 @@ const addButtonEvent = (button, hash) => {
       timer.start();
       return;
     } else if (hash === "#game") {
-      navigateTo("#game");
+      handleInitialLoad();
     } else if (hash === "__start__") {
       timer.reset();
       timer.start();
       return;
+    } else if (button.id === "logout") {
+      sessionStorage.clear();
+      window.location.hash = "#login-page";
+      navigateTo("#login-page");
     } else {
       navigateTo(hash);
     }
@@ -99,7 +164,6 @@ const createButtons = () => {
 
   if (gameRuleButton) {
     gameRuleButton.addEventListener("click", () => {
-      console.log("button clicked");
       timer.pause();
       dialog.showModal();
     });
@@ -125,7 +189,6 @@ const createButtons = () => {
   }
 
   if (playButton) {
-    console.log(playButton);
     addButtonEvent(playButton, "#game");
   }
 
@@ -134,48 +197,7 @@ const createButtons = () => {
   }
 };
 
-let winningCondition = false;
-let losingCondition = false;
-
-// const stopGameButton = document.getElementById("logout");
-
-// stopGameButton.addEventListener("click", () => {
-//   winningCondition = true;
-//   losingCondition = true;
-// });
-const winDialog = document.getElementById("winner-dialog");
-const closeWinDiaglog = document.getElementById("close-win-dialog");
-
-function checkWinningCondition() {
-  if (winningCondition == true && losingCondition == false) {
-    timer.stop();
-    winDialog.showModal();
-  }
+if (location.hash.includes("state")) {
+  await handleRedirect();
+  await handleInitialLoad();
 }
-
-const loseDialog = document.getElementById("loser-dialog");
-const closeLoseDiaglog = document.getElementById("close-lose-dialog");
-
-if (closeWinDiaglog) {
-  closeWinDiaglog.addEventListener("click", () => {
-    winDialog.close();
-  });
-}
-
-function checkLosingCondition() {
-  if (winningCondition == false && losingCondition == true) {
-    timer.stop();
-    loseDialog.showModal();
-  }
-}
-
-if (closeLoseDiaglog) {
-  closeLoseDiaglog.addEventListener("click", () => {
-    loseDialog.close();
-  });
-}
-
-setInterval(() => {
-  checkWinningCondition();
-  checkLosingCondition();
-}, 1000);
