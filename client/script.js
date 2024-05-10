@@ -78,7 +78,7 @@ const renderGamePage = async (grid) => {
     render(GamePage(grid, undefined, true));
     let highScores = await fetchhighscores();
     console.log(highScores, 'pog');
-    if (highScores == [] || highScores["Score"] !== undefined && highScores.Score.length === 0) {
+    if (highScores.length == 0 || highScores["Score"] !== undefined && highScores.Score.length === 0) {
       highScores = [{ Score: "No High Scores Yet" }];
       console.log('in if', highScores);
     }
