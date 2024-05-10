@@ -343,8 +343,7 @@ tr:hover {
   font-size: 2rem;
 }
 
-.close-dialog-button{
->>>>>>>>> Temporary merge branch 2
+.close-dialog-button {
   display: flex;
   align-items: center;
   font-size: 1rem;
@@ -359,10 +358,8 @@ tr:hover {
   align-self: center;
 }
 
-dialog{
-  background-color: var(--secondary-text-color);  
-<<<<<<<<< Temporary merge branch 1
-=========
+dialog {
+  background-color: var(--secondary-text-color);
   width: 60%;
 }
 
@@ -371,4 +368,28 @@ dialog{
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+/* -------------------------------------------------------------------- */
+/* LOADER */
+/* -------------------------------------------------------------------- */
+
+.loader {
+  width: 4rem;
+  height: 4rem;
+  border: 0.5rem solid var(--secondary-color);
+  border-bottom-color: var(--primary-color);
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
