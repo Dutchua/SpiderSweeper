@@ -167,12 +167,17 @@ nav {
 @container (width< 61.875rem) {
   #top-right,
   #bottom-left,
-  #center {
+  #center,
+  #Icon {
     display: none;
   }
 
   .nav-icon {
     padding-left: 50%;
+  }
+
+  #Username {
+    font-size: .9rem;
   }
 
   .button-text {
