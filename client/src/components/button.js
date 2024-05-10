@@ -34,11 +34,9 @@ export const GameRuleButton = () => {
   return `<button class="button row" id="rule">
   <img class="icon" src="./public/icons/howto-icon.svg" alt="icon" />
   <p class="button-text">Game Rules<p>
-  </button>`
-}
+  </button>`;
+};
 
 export const CloseDiaglog = () => {
-  return (
-    `<button autofocus id="close-dialog-button">Close</button>`
-  )
-}
+  return `<button autofocus id="close-dialog-button">Close</button>`;
+};

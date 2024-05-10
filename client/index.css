@@ -15,7 +15,7 @@
   --background-color: #beb7a4;
   --primary-text-color: #000000;
   --secondary-text-color: #ffffff;
-  --font-family-body: "Roboto", sans-serif;  
+  --font-family-body: "Roboto", sans-serif;
 }
 
 /* -------------------------------------------------------------------- */
@@ -33,7 +33,7 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;  
+  overflow: hidden;
   container-type: inline-size;
 }
 
@@ -117,7 +117,7 @@ label {
 /* LOGIN PAGE */
 /* -------------------------------------------------------------------- */
 
-#spider{
+#spider {
   align-items: center;
 }
 
@@ -167,19 +167,19 @@ nav {
 @container (width< 61.875rem) {
   #top-right,
   #bottom-left,
-  #center  {
+  #center {
     display: none;
   }
 
-  .nav-icon{
+  .nav-icon {
     padding-left: 50%;
   }
 
-  .button-text{
+  .button-text {
     display: none;
   }
 
-  .button-text-New-Game{
+  .button-text-New-Game {
     display: none;
   }
 }
@@ -245,13 +245,13 @@ nav {
   border: var(--primary-text-color) solid 0.1rem;
 }
 
-.gridrow{
+.gridrow {
   display: flex;
   align-items: center;
   height: fit-content;
 }
 
-.gridcolumn{
+.gridcolumn {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -340,9 +340,10 @@ tr:hover {
 #dialog-header {
   color: var(--primary-color);
   text-align: center;
+  font-size: 2rem;
 }
 
-#close-dialog-button{
+.close-dialog-button {
   display: flex;
   align-items: center;
   font-size: 1rem;
@@ -357,8 +358,9 @@ tr:hover {
   align-self: center;
 }
 
-dialog{
-  background-color: var(--secondary-text-color);  
+dialog {
+  background-color: var(--secondary-text-color);
+  width: 60%;
 }
 
 .dialogbuttoncontainer {

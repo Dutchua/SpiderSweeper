@@ -143,17 +143,36 @@ let losingCondition = false;
 //   winningCondition = true;
 //   losingCondition = true;
 // });
+const winDialog = document.getElementById("winner-dialog");
+const closeWinDiaglog = document.getElementById("close-win-dialog");
 
 function checkWinningCondition() {
-  if (winningCondition) {
+  if (winningCondition == true && losingCondition == false) {
     timer.stop();
+    winDialog.showModal();
   }
 }
 
+const loseDialog = document.getElementById("loser-dialog");
+const closeLoseDiaglog = document.getElementById("close-lose-dialog");
+
+if (closeWinDiaglog) {
+  closeWinDiaglog.addEventListener("click", () => {
+    winDialog.close();
+  });
+}
+
 function checkLosingCondition() {
-  if (losingCondition) {
+  if (winningCondition == false && losingCondition == true) {
     timer.stop();
+    loseDialog.showModal();
   }
+}
+
+if (closeLoseDiaglog) {
+  closeLoseDiaglog.addEventListener("click", () => {
+    loseDialog.close();
+  });
 }
 
 setInterval(() => {
