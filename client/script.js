@@ -22,7 +22,6 @@ const routes = {
 
 const timer = new Timer();
 
-
 window.handleTileClick = async (row, col) => {
   try {
     render(GamePage(undefined, undefined, true));
@@ -41,7 +40,6 @@ window.handleTileClick = async (row, col) => {
         handleInitialLoad();
       });
 
-         
       return;
     } else if (condition === "lost") {
       render(GamePage([], undefined));
@@ -79,10 +77,13 @@ const renderGamePage = async (grid) => {
   try {
     render(GamePage(grid, undefined, true));
     let highScores = await fetchhighscores();
-    console.log(highScores, 'pog');
-    if (highScores.length == 0 || highScores["Score"] !== undefined && highScores.Score.length === 0) {
+    console.log(highScores, "pog");
+    if (
+      highScores.length == 0 ||
+      (highScores["Score"] !== undefined && highScores.Score.length === 0)
+    ) {
       highScores = [{ Score: "No High Scores Yet" }];
-      console.log('in if', highScores);
+      console.log("in if", highScores);
     }
 
     highScores = highScores[0].Score;
@@ -146,6 +147,7 @@ const addButtonEvent = (button, hash) => {
     } else if (hash === "__start__") {
       timer.reset();
       timer.start();
+      handleInitialLoad();
       return;
     } else if (button.id === "logout") {
       sessionStorage.clear();
